@@ -1,0 +1,46 @@
+Objective of the exercise: Convert numbers to their equivalent in Roman Numerals:
+- Requirements:
+		- User story 1:
+			- Convert the following basic numbers:
+				1 - I = 1
+				2 - V = 5
+				3 - X = 10
+				4 - L = 50
+				5 - C = 100
+				6 - D = 500
+				7 - M = 1000
+		- User story 2: 
+			- Convert to numerals that can be repeated up to 3 times:
+				1 - I, II, III
+				2 - X, XX, XXX
+				3 - C, CC, CCC
+				4 - M, MM, MMM
+			- Generalization check
+			    - MMMCCCXXXIII = 3333
+		- User story 3:
+			- Convert to numerals that can be combined with a numeral of higher value to mean a higher value:
+				1 - VI, XI, LI, CI, DII, MIII
+				2 - XV, LV, CV, DV, MV
+				3 - LX, CX, DXX, MXXX
+				4 - CL, DL, ML
+				5 - DC, MCC, MCCC
+				6 - MD
+			- Generalization check
+			    - MVI = 1006
+				- DCLX = 660
+				- MDCLXVI = 1666
+				- MMMDCLXVI = 3666
+		- User story 4:
+			- Convert to numerals that can be combined with a numeral of immediate higher value to mean a lower value:
+				1 - IV, IX
+				2 - XL, XC
+				3 - CD, CM
+            - Generalization check
+                - MIV = 1004
+                - CMXCIX = 999
+    		    - MDCCCLXXXVIII - 1888
+    		    - MCMXCIX - 1999
+                - CDCLIV = 444
+    		    - MMCXCIII - 2193
+                - MMMCMXLIX = 3949
+
