@@ -1,0 +1,13 @@
+Format an output string based on the following fields according to the pattern:
+
+1 - Name
+2 - City
+Name should always be in caps in the pattern output
+city show always be in lowercase in the pattern output
+3 - State (TX, AZ, LA, FL)
+4 - Year
+
+[name] is from [city]
+[name] is from [city],[state] and was born in [year]
+
+New Rules:
