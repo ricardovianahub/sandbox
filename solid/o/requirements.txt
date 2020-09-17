@@ -1,11 +1,15 @@
 Types of encryptions
 
-Input is a string, output is an encrypted String.
+Input is a string, output is an encrypted String, all uppercase
+If the encryption type is unknown, cancel execution
+
 Types =
 "PLUS1" - Add 1 to the ASCII value of each letter. Z returns A
 "MINUS2" - Subtract 1 from the ASCII value of each letter. A returns Z
-If the encryption type is unknown, cancel execution
-"ROT-13" - Any character except letters is unaffected; case is respected;
+"ROT-13" - add 13 to the ASCII value of each character, wrapping around
+"CYPHER01" - A specific translation from:
+              ABCDEFGHIJKLMNOPQRSTUVWXYZ
+              FGHBELTUVWNOPQCDRSXYZMIJKA
 ----------------------------------------------------------------------------
 
 Rules engine
