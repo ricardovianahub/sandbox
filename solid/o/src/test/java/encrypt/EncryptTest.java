@@ -23,7 +23,12 @@ public class EncryptTest {
             "PLUS1,ABC,BCD",
             "PLUS1,GHI,HIJ",
             "PLUS1,XYZ,YZA",
-            "PLUS1,xyz,yza"
+            "MINUS1,GHI,FGH",
+            "MINUS1,BCD,ABC",
+            "MINUS1,ABC,ZAB",
+//            "ROT13,TESTING,GRFGVAT",
+//            "ROT13,ANOTHER,NABGURE",
+//            "ROT13,TIME,GVZR"
     })
     void encription(String type, String input, String expected) {
         Encrypt encrypt = new Encrypt();
