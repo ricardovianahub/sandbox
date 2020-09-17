@@ -1,4 +1,4 @@
-package domain;
+package rental.domain;
 
 public class Customer {
     private String firstName;

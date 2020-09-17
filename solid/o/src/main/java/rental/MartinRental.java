@@ -1,11 +1,11 @@
-import java.util.List;
+package rental;
 
-import domain.Customer;
-import farecalculation.FareCalculation;
+import rental.domain.Customer;
+import rental.farecalculation.FareCalculation;
 
 public class MartinRental {
 
-    private List<FareCalculation> calculations;
+    private final FareCalculation[] calculations;
 
     public MartinRental() {
         calculations = FareCalculation.factory();

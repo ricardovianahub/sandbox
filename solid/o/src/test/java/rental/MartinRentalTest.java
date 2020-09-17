@@ -1,3 +1,5 @@
+package rental;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
@@ -5,8 +7,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import domain.CarBodyType;
-import domain.Customer;
+import rental.MartinRental;
+import rental.domain.CarBodyType;
+import rental.domain.Customer;
 
 public class MartinRentalTest {
 
@@ -68,22 +71,6 @@ public class MartinRentalTest {
                 martinRental.fare(
                         new Customer("Joe", "Schmo",
                                 origin, "ORD", "999",
-                                type)
-                )
-        );
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "HAV, VAN, 52.5",
-            "ORD, VAN, 50"
-    })
-    void fareApplies10percentFeeIfHavana(String destination, CarBodyType type, double expected) {
-        MartinRental martinRental = new MartinRental();
-        assertEquals(expected,
-                martinRental.fare(
-                        new Customer("Joe", "Schmo",
-                                "MIA", destination, "999",
                                 type)
                 )
         );

@@ -1,6 +1,6 @@
-package farecalculation;
+package rental.farecalculation;
 
-import domain.Customer;
+import rental.domain.Customer;
 
 class FareCalculationDFWDiscount implements FareCalculation {
     @Override

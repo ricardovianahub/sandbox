@@ -1,7 +1,7 @@
-package farecalculation;
+package rental.farecalculation;
 
-import domain.CarBodyType;
-import domain.Customer;
+import rental.domain.CarBodyType;
+import rental.domain.Customer;
 
 class FareCalculationYYZConvertible implements FareCalculation {
 

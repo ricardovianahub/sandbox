@@ -1,4 +1,4 @@
-package domain;
+package rental.domain;
 
 public enum CarBodyType {
     SEDAN(20),
