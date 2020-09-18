@@ -3,23 +3,18 @@ public class PlaneTicket {
     private String destination;
     private String duration;
     private double cost;
-    private String discount;
 
     public PlaneTicket(String origin, String destination, String duration,
-                       double cost, String discount) {
+                       double cost) {
         this.origin = origin;
         this.destination = destination;
         this.duration = duration;
         this.cost = cost;
-        this.discount = discount;
     }
 
     public double fare() {
-        if ("AA20".equals(this.discount)) {
-            return this.cost * 0.8;
-        }
-        if ("NONREV".equals(this.discount)) {
-            return 0;
+        if ("DFW".equals(origin)) {
+            return this.cost * 0.9;
         }
         return this.cost;
     }
@@ -38,9 +33,5 @@ public class PlaneTicket {
 
     public double getCost() {
         return cost;
-    }
-
-    public String getDiscount() {
-        return discount;
     }
 }
