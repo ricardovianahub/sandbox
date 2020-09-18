@@ -1,3 +1,5 @@
+package ticket;
+
 public class AirPass extends PlaneTicket {
     private String company;
 
@@ -9,5 +11,10 @@ public class AirPass extends PlaneTicket {
 
     public String getCompany() {
         return company;
+    }
+
+    @Override
+    public double fare() {
+        return this.getCost();
     }
 }

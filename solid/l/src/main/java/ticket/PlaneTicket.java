@@ -1,19 +1,20 @@
+package ticket;
+
 public class PlaneTicket {
     private String origin;
     private String destination;
-    private String duration;
+    private String type;
     private double cost;
 
-    public PlaneTicket(String origin, String destination, String duration,
+    public PlaneTicket(String origin, String destination, String type,
                        double cost) {
         this.origin = origin;
         this.destination = destination;
-        this.duration = duration;
+        this.type = type;
         this.cost = cost;
     }
-
     public double fare() {
-        if ("DFW".equals(origin)) {
+        if ("DFW".equals(this.origin)) {
             return this.cost * 0.9;
         }
         return this.cost;
@@ -27,8 +28,8 @@ public class PlaneTicket {
         return destination;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getType() {
+        return type;
     }
 
     public double getCost() {

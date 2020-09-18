@@ -1,10 +1,12 @@
+package ticket;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class TicketTest {
+public class PlaneTicketTest {
 
     @ParameterizedTest
     @CsvSource({
@@ -14,8 +16,10 @@ public class TicketTest {
             "DFW,LAX,4:30,1500,REGULAR,1350",
             "ORD,LAX,4:30,1500,NONREV,0"
     })
-    void standardTicketHasBaseFare(String origin, String destination, String duration,
-                                   double cost, String discount, double expected) {
+    void standardTicketHasBaseFare(String origin, String destination,
+                                   String duration,
+                                   double cost, String discount,
+                                   double expected) {
         PlaneTicket planeTicket;
         switch (discount) {
             case "AA20":
@@ -34,7 +38,7 @@ public class TicketTest {
                 );
         }
 
-        assertEquals(expected, planeTicket.fare());
+        Assertions.assertEquals(expected, planeTicket.fare());
     }
 
     @ParameterizedTest
@@ -44,8 +48,10 @@ public class TicketTest {
     })
     void airPass(String origin, String destination, String duration,
                  double cost, double expected) {
-        AirPass airPass = new AirPass(origin, destination, duration, cost);
-        assertEquals(expected, airPass.fare());
+        AirPass airPass = new AirPass(
+                origin, destination, duration, cost, "Something LLC"
+        );
+        Assertions.assertEquals(expected, airPass.fare());
     }
 
 }
