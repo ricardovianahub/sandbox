@@ -1,4 +1,4 @@
-public class Animal {
+public class Animal implements LandAnimal {
     private final String name;
 
     public Animal(String name) {

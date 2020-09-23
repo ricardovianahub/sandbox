@@ -12,4 +12,11 @@ public class AnimalTest {
         assertEquals("yum", animal.eat("fish"));
     }
 
+    @Test
+    void landAnimalInstantiate() {
+        LandAnimal animal = new Animal("Cat");
+        assertEquals("Cat", animal.getName());
+        assertEquals("yum", animal.eat("fish"));
+    }
+
 }

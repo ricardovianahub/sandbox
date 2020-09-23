@@ -29,7 +29,7 @@ public class ReservationTest {
             "B, 100, 120.00"
     })
     void fareByType(String type, double baseFare, double expected) {
-        Reservation reservation = new Reservation(
+        SalesReservation reservation = new Reservation(
                 "ABCDEF",
                 baseFare,
                 "John",
@@ -47,7 +47,7 @@ public class ReservationTest {
 
     })
     void userCode(String firstName, String lastName, String expected ) {
-        Reservation reservation = new Reservation(
+        LoyaltyReservation reservation = new Reservation(
                 "ABCDEF",
                 100,
                 firstName,

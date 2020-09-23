@@ -1,4 +1,4 @@
-public class Reservation {
+public class Reservation implements SalesReservation, LoyaltyReservation {
     private String recordLocator;
     private String firstName;
     private String lastName;
