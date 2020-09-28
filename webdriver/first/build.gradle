@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.3.1',
+            'org.hamcrest:hamcrest-library:2.1'
+    )
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.3.1',
+            'org.junit.jupiter:junit-jupiter-params:5.3.1'
+    )
+
+    testCompile(
+            'io.github.bonigarcia:selenium-jupiter:3.3.5'
+    )
+}
+
+// selenium-jupiter https://bonigarcia.github.io/selenium-jupiter/
