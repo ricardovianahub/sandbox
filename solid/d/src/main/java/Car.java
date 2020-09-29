@@ -1,3 +1,7 @@
 public interface Car {
-    double withGallons(int gallons);
+    double distanceByGallonsOfGas(int gallons);
+
+    Make getMake();
+
+    public enum Make {TOYOTA}
 }

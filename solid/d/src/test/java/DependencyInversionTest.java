@@ -13,20 +13,42 @@ public class DependencyInversionTest {
             "5.5, 2, 11"
     })
     void carFuelConsumption(double milesPerGallon, int gallons, double expected) {
-        Car car = new CarDefault(milesPerGallon);
+        // I would like to produce a report on the mileage of my
+        // various car models
+        // Make
+        // Model
+
+        Car car = new CarDefault(Car.Make.TOYOTA, milesPerGallon);
         
-        assertEquals(expected, car.withGallons(gallons));
+        assertEquals(expected, car.distanceByGallonsOfGas(gallons));
     }
 
     @Test
-    void superCarConsumption() {
-        Car car = new SuperCar();
+    void hydrogenConsumption() {
+        Car car = new HydrogenCar();
 
-        assertEquals(50, car.withGallons(4));
-        assertEquals(50, car.withGallons(7));
-        assertEquals(50, car.withGallons(8));
-        assertEquals(50, car.withGallons(9));
+        assertEquals(50, car.distanceByGallonsOfGas(4));
+        assertEquals(50, car.distanceByGallonsOfGas(7));
+        assertEquals(50, car.distanceByGallonsOfGas(8));
+        assertEquals(50, car.distanceByGallonsOfGas(9));
     }
 
+    @Test
+    void hybridCar() {
+        Car car = new HybridCar();
+        // on a full battery, the electric car will drive 200 miles
+        // before it starts using gas. When it does, the mileage
+        // is 20 miles per gallon
+
+        assertEquals( 200, car.distanceByGallonsOfGas(0));
+        assertEquals( 220, car.distanceByGallonsOfGas(1));
+        assertEquals( 240, car.distanceByGallonsOfGas(2));
+    }
+
+    @Test
+    void carsShouldHaveMake() {
+        Car car = new CarDefault(Car.Make.TOYOTA, 10);
+        assertEquals(Car.Make.TOYOTA, car.getMake());
+    }
 
 }
