@@ -3,5 +3,7 @@ public interface Car {
 
     Make getMake();
 
-    public enum Make {TOYOTA}
+    public enum Make {
+        TOYOTA, HONDA;
+    }
 }
