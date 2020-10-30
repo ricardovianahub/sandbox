@@ -1,4 +1,4 @@
-package prototype;
+package creational.prototype;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

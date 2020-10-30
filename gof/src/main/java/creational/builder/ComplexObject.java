@@ -3,6 +3,7 @@ package creational.builder;
 public class ComplexObject {
     private String first;
     private String second;
+    private String third;
 
     public String getFirst() {
         return this.first;
@@ -22,5 +23,9 @@ public class ComplexObject {
 
     public void setSecond(String second) {
         this.second = second;
+    }
+
+    public void setThird(String third) {
+        this.third = third;
     }
 }

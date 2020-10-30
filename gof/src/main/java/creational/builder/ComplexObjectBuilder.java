@@ -5,6 +5,7 @@ public class ComplexObjectBuilder {
         ComplexObject complexObject = new ComplexObject();
         complexObject.setFirst(first);
         complexObject.setSecond(second);
+        complexObject.setThird(third);
         return complexObject;
     }
 }
