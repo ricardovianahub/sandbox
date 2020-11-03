@@ -1,0 +1,16 @@
+<configuration debug="false" scan="true">
+
+    <appender name="stdout" target="System.out" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LogbackExampleAppender" class="LogbackExampleAppender"/>
+
+    <root level="DEBUG">
+        <appender-ref ref="stdout" />
+        <appender-ref ref="LogbackExampleAppender" />
+    </root>
+
+</configuration>
