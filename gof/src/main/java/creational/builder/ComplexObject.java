@@ -14,7 +14,7 @@ public class ComplexObject {
     }
 
     public String getThird() {
-        return null;
+        return this.third;
     }
 
     public void setFirst(String first) {
