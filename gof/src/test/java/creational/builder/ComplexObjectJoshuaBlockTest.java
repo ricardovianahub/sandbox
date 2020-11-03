@@ -9,7 +9,8 @@ public class ComplexObjectJoshuaBlockTest {
 
     @Test
     void instantiateComplexObject2() {
-        ComplexObjectJoshuaBlock complexObjectJoshuaBlock = new ComplexObjectJoshuaBlock.Builder()
+        ComplexObjectJoshuaBlock complexObjectJoshuaBlock =
+                new ComplexObjectJoshuaBlock.Builder()
                 .withFirst("first")
                 .withSecond("second")
                 .withThird("third")

@@ -1,49 +1,50 @@
 package creational.builder;
 
 public class ComplexObjectJoshuaBlock {
-    private String first;
-    private String second;
-    private String third;
+    private final String first;
+    private final String second;
+    private final String third;
+
+    private ComplexObjectJoshuaBlock(String first, String second, String third) {
+        this.first = first;
+        this.second = second;
+        this.third = third;
+    }
 
     public String getFirst() {
         return first;
-    }
-
-    public void setFirst(String first) {
-        this.first = first;
     }
 
     public String getSecond() {
         return second;
     }
 
-    public void setSecond(String second) {
-        this.second = second;
-    }
-
     public String getThird() {
         return third;
     }
 
-    public void setThird(String third) {
-        this.third = third;
-    }
-
     public static class Builder {
+        private String first;
+        private String second;
+        private String third;
+
         public ComplexObjectJoshuaBlock build() {
-            return null;
+            return new ComplexObjectJoshuaBlock(first, second, third);
         }
 
         public Builder withFirst(String first) {
-            return null;
+            this.first = first;
+            return this;
         }
 
         public Builder withSecond(String second) {
-            return null;
+            this.second = second;
+            return this;
         }
 
         public Builder withThird(String third) {
-            return null;
+            this.third = third;
+            return this;
         }
     }
 }

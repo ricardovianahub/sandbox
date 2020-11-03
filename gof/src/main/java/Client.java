@@ -1,7 +1,7 @@
 import creational.builder.ComplexObject;
 import creational.builder.ComplexObjectBuilder;
 
-public class Consumer {
+public class Client {
 
     public String consume() {
         ComplexObject complexObject = ComplexObjectBuilder.build(
