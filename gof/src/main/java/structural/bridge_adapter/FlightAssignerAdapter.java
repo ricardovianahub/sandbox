@@ -1,6 +1,4 @@
-package structural.bridge;
-
-import sun.security.krb5.internal.Ticket;
+package structural.bridge_adapter;
 
 public class FlightAssignerAdapter {
     static final String TICKET_PURCHASE_TIME = "TicketPurchaseTime";

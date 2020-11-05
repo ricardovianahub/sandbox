@@ -1,4 +1,4 @@
-package structural.bridge;
+package structural.bridge_adapter;
 
 public class FlightPrioritizerElite implements FlightPrioritizer {
     @Override

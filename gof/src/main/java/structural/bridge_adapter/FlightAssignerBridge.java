@@ -1,9 +1,9 @@
-package structural.bridge;
+package structural.bridge_adapter;
 
-public class FlightAssigner {
+public class FlightAssignerBridge {
     private FlightPrioritizer flightPrioritizer;
 
-    public FlightAssigner(FlightPrioritizer flightPrioritizer) {
+    public FlightAssignerBridge(FlightPrioritizer flightPrioritizer) {
         this.flightPrioritizer = flightPrioritizer;
     }
 
