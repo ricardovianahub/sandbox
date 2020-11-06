@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class VirtualProxyTest {
+public class LazyProxyTest {
 
     @Test
     void virtualProxyLoadsHelloWhenCalled() {
-        VirtualProxy virtualProxy = new VirtualProxy();
+        LazyProxy lazyProxy = new LazyProxy();
 
-        assertEquals("hello", virtualProxy.doit());
+        assertEquals("hello", lazyProxy.doit());
 
     }
 }

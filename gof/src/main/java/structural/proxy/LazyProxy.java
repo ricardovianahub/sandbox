@@ -1,10 +1,10 @@
 package structural.proxy;
 
-public class VirtualProxy {
+public class LazyProxy {
 
     private String hello;
 
-    public VirtualProxy() {
+    public LazyProxy() {
         this.hello = null;
     }
 

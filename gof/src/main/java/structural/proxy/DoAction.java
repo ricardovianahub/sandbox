@@ -1,6 +1,6 @@
 package structural.proxy;
 
-public class DoAction {
+class DoAction {
     public String doit() {
         return "hello";
     }
