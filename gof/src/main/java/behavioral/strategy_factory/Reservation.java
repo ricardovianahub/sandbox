@@ -1,4 +1,4 @@
-package behavioral.strategy_absfactory;
+package behavioral.strategy_factory;
 
 public class Reservation {
     public static final String AA20 = "AA20";

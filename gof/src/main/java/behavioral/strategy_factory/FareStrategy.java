@@ -1,4 +1,4 @@
-package behavioral.strategy_absfactory;
+package behavioral.strategy_factory;
 
 public interface FareStrategy {
     double calculateFare(double fare);

@@ -1,10 +1,10 @@
-package behavioral.strategy_absfactory;
+package behavioral.strategy_factory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class StrategyAbsFactoryTest {
+public class StrategyFactoryMethodTest {
 
     @Test
     void calculatedFareWithNormalFareStrategyReturnsBaseFare() {
