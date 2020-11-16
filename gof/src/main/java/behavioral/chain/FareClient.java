@@ -20,12 +20,10 @@ public class FareClient {
     public double priceWithDiscountOf(Reservation reservation) {
 //        if ("DFW".equals(reservation.getOriginAirport())) {
 //            return reservation.getBaseFare() * 0.95;
-//        }
-//        if ("LAX".equals(reservation.getOriginAirport())) {
+//        } else if ("LAX".equals(reservation.getOriginAirport())) {
 //            return reservation.getBaseFare() + 10;
-//        }
-//        if ("ORD".equals(reservation.getOriginAirport())) {
-//            return reservation.getBaseFare() * this.dailyFactor;
+//        } else {
+//            return reservation.getBaseFare();
 //        }
 
         double fare = reservation.getBaseFare();

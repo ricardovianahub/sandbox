@@ -13,7 +13,7 @@ public class ChainOfResponsibilityTest {
     // Other airports = Base fare
     // --------------------------------
     // then
-    // Multiply by daily factor = all
+    // dailyfactor (0.9) - should be applied to all reservations
 
     @Test
     void priceWithDiscountOfApply5PercentDiscountIfDFW() {
