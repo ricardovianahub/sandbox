@@ -7,8 +7,12 @@ import org.junit.jupiter.api.Test;
 public class ChainOfResponsibilityTest {
 
     // Requirements
+    // --------------------------------
     // 5% Percent Discount = DFW
     // Add Flat fee $10 = LAX
+    // Other airports = Base fare
+    // --------------------------------
+    // then
     // Multiply by daily factor = all
 
     @Test
@@ -30,6 +34,15 @@ public class ChainOfResponsibilityTest {
     }
 
     @Test
+    void returnBaseFareIfOther() {
+        Reservation reservation = new Reservation("ZZZ", 100d);
+
+        FareClient fareClient = new FareClient();
+
+        assertEquals(100d, fareClient.priceWithDiscountOf(reservation));
+    }
+
+    @Test
     void priceWithDiscountOfMultiplyByDailyFactor() {
         assertEquals(90d,
                 new FareClient(0.9d)
@@ -40,15 +53,6 @@ public class ChainOfResponsibilityTest {
         assertEquals(99d,
                 new FareClient(0.9d)
                         .priceWithDiscountOf(new Reservation("LAX", 100d)));
-    }
-
-    @Test
-    void returnBaseFareIfOther() {
-        Reservation reservation = new Reservation("ZZZ", 100d);
-
-        FareClient fareClient = new FareClient();
-
-        assertEquals(100d, fareClient.priceWithDiscountOf(reservation));
     }
 
 }
