@@ -1,9 +1,9 @@
 package behavioral.command;
 
-public class SabrePNRUpdate implements SabreOperation {
+public class SabrePNRUpdateCommand implements SabreCommand {
     private final SabreReceiver sabreReceiver;
 
-    public SabrePNRUpdate(String original, String changed) {
+    public SabrePNRUpdateCommand(String original, String changed) {
         this.sabreReceiver = new SabreReceiver("updated [" + original + "] to [" + changed + "]");
     }
 

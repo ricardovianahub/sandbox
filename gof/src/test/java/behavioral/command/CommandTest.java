@@ -6,28 +6,36 @@ import org.junit.jupiter.api.Test;
 
 public class CommandTest {
 
+//    Possible indications:
+//
+//    History of requests or other logging mechanis
+//    Callback functionality managed outside of the Received class
+//    Requests handled at different times or orders
+//    The invoker should be decoupled from the object handling the invocation.
+//    There are common adjustments to the parameters or ways to call the Receiver, but it is a third-party
+//          class and we don't own the source code
+
     @Test
     void sabreCreatePNR() {
-        SabreOperation sabrePNRCreation = new SabrePNRCreation("one");
-        SabreCommand sabreCommand = new SabreCommand();
+        SabreCommand creationCommand = new SabrePNRCreationCommand("one");
+        SabreInvoker sabreInvoker = new SabreInvoker();
 
-        assertEquals("created [one]", sabreCommand.executeOperation(sabrePNRCreation));
+        assertEquals("created [one]", sabreInvoker.executeCommand(creationCommand));
     }
 
     @Test
     void sabreUpdatePNR() {
-        SabreOperation sabrePNRUpdate = new SabrePNRUpdate("one", "two");
-        SabreCommand sabreCommand = new SabreCommand();
+        SabreCommand updateCommand = new SabrePNRUpdateCommand("one", "two");
+        SabreInvoker sabreInvoker = new SabreInvoker();
 
-        assertEquals("updated [one] to [two]", sabreCommand.executeOperation(sabrePNRUpdate));
+        assertEquals("updated [one] to [two]", sabreInvoker.executeCommand(updateCommand));
     }
 
     @Test
     void sabreDeletePNR() {
-        SabreOperation sabrePNRDeletion = new SabrePNRDeletion("one");
-        SabreCommand sabreCommand = new SabreCommand();
+        SabreCommand deletionCommand = new SabrePNRDeletionCommand("one");
+        SabreInvoker sabreInvoker = new SabreInvoker();
 
-        assertEquals("deleted [one]", sabreCommand.executeOperation(sabrePNRDeletion));
+        assertEquals("deleted [one]", sabreInvoker.executeCommand(deletionCommand));
     }
-
 }

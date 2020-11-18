@@ -1,10 +1,10 @@
 package behavioral.command;
 
-public class SabrePNRDeletion implements SabreOperation {
+public class SabrePNRDeletionCommand implements SabreCommand {
 
     private final SabreReceiver sabreReceiver;
 
-    public SabrePNRDeletion(String record) {
+    public SabrePNRDeletionCommand(String record) {
         this.sabreReceiver = new SabreReceiver("deleted [" + record + "]");
     }
 
