@@ -6,9 +6,11 @@ import org.junit.jupiter.api.Test;
 
 public class CommandTest {
 
+//    Invoker -> Command (Interface) + Concrete classes -> Receiver
+
 //    Possible indications:
 //
-//    History of requests or other logging mechanis
+//    History of requests or other logging mechanism
 //    Callback functionality managed outside of the Received class
 //    Requests handled at different times or orders
 //    The invoker should be decoupled from the object handling the invocation.

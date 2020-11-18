@@ -1,6 +1,8 @@
 package behavioral.command;
 
 public class SabreReceiver {
+    // ALl the logic to connect with and contact Sabre
+
     private final String record;
 
     public SabreReceiver(String record) {
