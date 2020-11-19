@@ -20,6 +20,6 @@ public interface ReservationState {
     }
 
     default void pay(Reservation reservation, double fare) {
-
+        throw new IllegalStateException("Reservation cannot be paid when its state is " + reservation.getState());
     }
 }

@@ -1,6 +1,6 @@
 package behavioral.state;
 
-public class Reservation {
+public class Reservation implements ReservationMessage {
 
     private ReservationState reservationState;
     private String firstName;

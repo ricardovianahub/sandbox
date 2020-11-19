@@ -80,7 +80,7 @@ public class StateTest {
         );
     }
 
-//    @Test
+    @Test
     void paidReservationCannotBePaidAgain() {
         Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
         reservation.pay(100d);
@@ -89,7 +89,7 @@ public class StateTest {
         );
     }
 
-//    @Test
+    @Test
     void ticketedReservationCannotBePaidAgain() {
         Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
         reservation.pay(100d);
@@ -99,8 +99,9 @@ public class StateTest {
         );
     }
 
-//    void reservationMessageShouldBeCurrentInterfaceValue() {
-//        Reservation reservation = Reservation.newReservationInProgress();
-//        assertEquals(ReservationMessage.CURRENT_MESSAGE, reservation.getMessage());
-//    }
+    @Test
+    void reservationMessageShouldBeCurrentInterfaceValue() {
+        Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
+        assertEquals(ReservationMessage.CURRENT_MESSAGE, reservation.getMessage());
+    }
 }
