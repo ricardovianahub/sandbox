@@ -11,17 +11,19 @@ public class StateTest {
 
     @Test
     void reservationInitialStateIsInProcess() {
-        Reservation reservation = Reservation.newReservationInProgress();
+        Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
 
         assertTrue(reservation.canBeChangedForFree());
         assertEquals(Reservation.State.IN_PROGRESS, reservation.getState());
         assertFalse(reservation.eligibleForRefund());
         assertFalse(reservation.allowedToBoard());
+        assertEquals("John", reservation.getFirstName());
+        assertEquals("Doe", reservation.getLastName());
     }
 
     @Test
     void reservationIsPlacedOnHold() {
-        Reservation reservation = Reservation.newReservationInProgress();
+        Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
         reservation.placeOnHold();
 
         assertFalse(reservation.canBeChangedForFree());
@@ -32,7 +34,7 @@ public class StateTest {
 
     @Test
     void reservationIsPaidThenPlacedBackOnHold() {
-        Reservation reservation = Reservation.newReservationInProgress();
+        Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
         reservation.pay(100d);
 
         assertFalse(reservation.canBeChangedForFree());
@@ -47,7 +49,7 @@ public class StateTest {
 
     @Test
     void reservationIsTicketed() {
-        Reservation reservation = Reservation.newReservationInProgress();
+        Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
         reservation.pay(100d);
         reservation.ticket();
 
@@ -60,7 +62,7 @@ public class StateTest {
 
     @Test
     void reservationIsPlacedOnHoldThenPaid() {
-        Reservation reservation = Reservation.newReservationInProgress();
+        Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
         reservation.placeOnHold();
         reservation.pay(100d);
 
@@ -71,16 +73,16 @@ public class StateTest {
     @Test
     void ticketingAReservationNotPaidThrowsAnIllegalStateException() {
         assertThrows(IllegalStateException.class,
-                () -> Reservation.newReservationInProgress().ticket()
+                () -> Reservation.newReservationInProgress("John", "Doe").ticket()
         );
         assertThrows(IllegalStateException.class,
-                () -> Reservation.newReservationInProgress().placeOnHold().ticket()
+                () -> Reservation.newReservationInProgress("John", "Doe").placeOnHold().ticket()
         );
     }
 
 //    @Test
     void paidReservationCannotBePaidAgain() {
-        Reservation reservation = Reservation.newReservationInProgress();
+        Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
         reservation.pay(100d);
         assertThrows(IllegalStateException.class,
                 () -> reservation.pay(100d)
@@ -89,7 +91,7 @@ public class StateTest {
 
 //    @Test
     void ticketedReservationCannotBePaidAgain() {
-        Reservation reservation = Reservation.newReservationInProgress();
+        Reservation reservation = Reservation.newReservationInProgress("John", "Doe");
         reservation.pay(100d);
         reservation.ticket();
         assertThrows(IllegalStateException.class,

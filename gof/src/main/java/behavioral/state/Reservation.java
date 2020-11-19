@@ -3,8 +3,12 @@ package behavioral.state;
 public class Reservation {
 
     private ReservationState reservationState;
+    private String firstName;
+    private String lastName;
 
-    private Reservation() {
+    private Reservation(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.reservationState = new ReservationStateInProgress();
     }
 
@@ -12,8 +16,8 @@ public class Reservation {
         this.reservationState = reservationState;
     }
 
-    public static Reservation newReservationInProgress() {
-        return new Reservation();
+    public static Reservation newReservationInProgress(String firstName, String lastName) {
+        return new Reservation(firstName, lastName);
     }
 
     public State getState() {
@@ -50,4 +54,12 @@ public class Reservation {
     }
 
     public enum State {ON_HOLD, PAID, TICKETED, IN_PROGRESS}
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
 }
