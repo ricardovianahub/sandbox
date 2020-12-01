@@ -28,8 +28,4 @@ public class InterpreterRomansTest {
         assertEquals(90, Romans.decoder(Romans.TENS).interpret("XC"));
     }
 
-    @Test
-    void tensAndOnes() {
-        assertEquals(11, Romans.decoder(Romans.TENS).interpret("XI"));
-    }
 }
