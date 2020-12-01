@@ -2,10 +2,9 @@ package behavioral.observer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -70,7 +69,7 @@ public class ObserverTest {
 
     }
 
-    //@Test
+    @Test
     void weakReference() {
         NewsSource newsSource1 = new NewsSourceMagazine("Mad");
         WeakReference<NewsSource> newsSource2 = new WeakReference<>(new NewsSourceMagazine("Reader's Digest"));
@@ -82,8 +81,8 @@ public class ObserverTest {
         System.gc();
 
         assertEquals("Mad", newsSource1.getTitle());
-        assertNotNull(newsSource2.get());
-        assertEquals("Reader's Digest", newsSource2.get().getTitle());
+        assertNotNull(newsSource2);
+        assertNull(newsSource2.get());
     }
 
 }

@@ -1,29 +1,38 @@
 package behavioral.observer;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NewsAgency {
 
-    List<NewsObserver> newsObservers;
+    List<WeakReference<NewsObserver>> newsObservers;
 
     public NewsAgency() {
         this.newsObservers = new ArrayList<>();
     }
 
     public void broadcastNews(String news) {
-        for (NewsObserver newsObserver : newsObservers) {
-            newsObserver.broadcast(news);
+        for (WeakReference<NewsObserver> newsObserver : newsObservers) {
+            if (newsObserver.get() != null) {
+                newsObserver.get().broadcast(news);
+            }
         }
     }
 
     public void unsubscribe(Object observer) {
-        this.newsObservers.remove(observer);
+        for (WeakReference<NewsObserver> newsObserverWeakReference : this.newsObservers) {
+            if (Objects.equals(newsObserverWeakReference.get(), observer)) {
+                this.newsObservers.remove(newsObserverWeakReference);
+                break;
+            }
+        }
     }
 
     public void subscribe(Object observer) {
         if (observer instanceof NewsObserver) {
-            this.newsObservers.add((NewsObserver) observer);
+            this.newsObservers.add(new WeakReference<>((NewsObserver) observer));
         }
     }
 }
