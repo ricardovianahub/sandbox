@@ -15,9 +15,7 @@ public class NewsAgency {
 
     public void broadcastNews(String news) {
         for (WeakReference<NewsObserver> newsObserver : newsObservers) {
-            if (newsObserver.get() != null) {
-                newsObserver.get().broadcast(news);
-            }
+            Objects.requireNonNull(newsObserver.get()).broadcast(news);
         }
     }
 
