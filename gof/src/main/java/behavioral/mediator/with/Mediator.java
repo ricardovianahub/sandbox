@@ -4,6 +4,7 @@ public class Mediator {
     private AirReservation airReservation;
     private Hotel hotel;
     private Voucher voucher;
+    private RentalCar rentalCar;
 
     public void setVoucher(Voucher voucher) {
         this.voucher = voucher;
@@ -27,10 +28,17 @@ public class Mediator {
 
     public void hotelCreateHotelReservation() {
         this.hotel.createHotelReservation();
+        this.rentalCar.createRentalCarReservation();
     }
 
     public void assignRoomUnavailable() {
+        rentalCar.cancelReservation();
         voucherAssignIssued();
         airReservationChangeStatus(AirReservation.Status.DELAYED_OVERNIGHT_WITH_VOUCHER);
     }
+
+    public void setRentalCar(RentalCar rentalCar) {
+        this.rentalCar = rentalCar;
+    }
+
 }

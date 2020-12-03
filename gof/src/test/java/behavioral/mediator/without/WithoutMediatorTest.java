@@ -12,24 +12,29 @@ public class WithoutMediatorTest {
     void defineReservationHotelVoucher() {
         Voucher voucher = new Voucher();
         Hotel hotel = new Hotel(voucher);
-        AirReservation airReservation = new AirReservation(hotel, voucher);
+        RentalCar rentalCar = new RentalCar(voucher);
+        AirReservation airReservation = new AirReservation(hotel, voucher, rentalCar);
         hotel.setAirReservation(airReservation);
+        hotel.setRentalCar(rentalCar);
 
         //
 
         assertFalse(hotel.isHotelReserved());
+        assertFalse(rentalCar.isRentalCarReserved());
         assertFalse(voucher.isIssued());
         assertEquals(AirReservation.Status.TICKETED, airReservation.getStatus());
 
         airReservation.changeStatus(AirReservation.Status.DELAYED_OVERNIGHT);
 
         assertTrue(hotel.isHotelReserved());
+        assertTrue(rentalCar.isRentalCarReserved());
         assertFalse(voucher.isIssued());
         assertEquals(AirReservation.Status.DELAYED_OVERNIGHT, airReservation.getStatus());
 
         hotel.assignRoomUnavailable();
 
         assertFalse(hotel.isHotelReserved());
+        assertFalse(rentalCar.isRentalCarReserved());
         assertTrue(voucher.isIssued());
         assertEquals(AirReservation.Status.DELAYED_OVERNIGHT_WITH_VOUCHER, airReservation.getStatus());
 

@@ -10,4 +10,9 @@ public class ReservationVisitorLongName implements ReservationVisitor {
     public void visit(ReservationNonrev reservationNonrev) {
         reservationNonrev.setName("Reservation Non-revenue - free for employees");
     }
+
+    @Override
+    public void visit(ReservationDefault reservationDefault) {
+        reservationDefault.setName("Reservation - standard issue");
+    }
 }

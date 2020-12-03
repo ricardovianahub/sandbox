@@ -5,6 +5,7 @@ public class Hotel {
     private AirReservation airReservation;
 
     private boolean reserved;
+    private RentalCar rentalCar;
 
     public Hotel(Voucher voucher) {
         this.voucher = voucher;
@@ -25,7 +26,13 @@ public class Hotel {
 
     public void assignRoomUnavailable() {
         this.reserved = false;
+        rentalCar.cancelReservation();
         voucher.assignIssued();
         airReservation.changeStatus(AirReservation.Status.DELAYED_OVERNIGHT_WITH_VOUCHER);
     }
+
+    public void setRentalCar(RentalCar rentalCar) {
+        this.rentalCar = rentalCar;
+    }
+
 }
