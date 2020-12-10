@@ -80,10 +80,6 @@ public class Reservation {
         public ReservationMemento(Reservation reservation) {
             this.reservation = reservation;
         }
-
-        private Reservation getReservation() {
-            return reservation;
-        }
     }
 
     @Override

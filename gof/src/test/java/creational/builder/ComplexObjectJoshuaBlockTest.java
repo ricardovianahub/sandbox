@@ -11,10 +11,10 @@ public class ComplexObjectJoshuaBlockTest {
     void instantiateComplexObject2() {
         ComplexObjectJoshuaBlock complexObjectJoshuaBlock =
                 new ComplexObjectJoshuaBlock.Builder()
-                .withFirst("first")
-                .withSecond("second")
-                .withThird("third")
-                .build();
+                        .withFirst("first")
+                        .withSecond("second")
+                        .withThird("third")
+                        .build();
         assertNotNull(complexObjectJoshuaBlock);
         assertEquals("first", complexObjectJoshuaBlock.getFirst());
         assertEquals("second", complexObjectJoshuaBlock.getSecond());
