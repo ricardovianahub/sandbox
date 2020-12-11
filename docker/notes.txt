@@ -1,0 +1,4 @@
+docker build --tag anyname .
+docker run anyname
+docker images
+docker ps -a
