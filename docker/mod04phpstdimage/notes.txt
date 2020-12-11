@@ -1,0 +1,8 @@
+docker run -d --rm -v%cd%:/var/www/html -p8085:80 --name toto php:apache
+
+-d 	detached - runs in the background (not sure why this is not the default)
+--rm 	container will be deleted when it stops
+-v	volumes - it mounts a volume from the host into the container (it's a "live wire", the container will impact the host folder directly)
+-p	ports - port in the host (8085) that will map to a port in the container (80)
+--name	name the instance (in addition to the hash code that it always receives)
+
