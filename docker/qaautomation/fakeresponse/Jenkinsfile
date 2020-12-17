@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    stages {
+		stage('Handshake & setup') {
+			steps {
+				sh 'echo Starting the job. Working directory is `pwd`'
+				dir('./docker/qaautomation/fakeresponse') {
+				    sh 'chmod +x ./gradlew'
+					sh './gradlew wrapper'
+				}
+			}
+		}
+		stage('Is docker there') {
+		    steps {
+		        sh 'echo ============= output from docker ================= '
+		        sh 'docker ps'
+		    }
+		}
+        stage('Build') {
+            steps {
+				dir('./docker/qaautomation/fakeresponse') {
+					sh './gradlew assemble'
+				}
+            }
+        }
+        stage('Create jar') {
+            steps {
+				dir('./docker/qaautomation/fakeresponse') {
+					sh './gradlew bootJar'
+				}
+            }
+        }
+        stage('Build Docker image') {
+            steps {
+				dir('./docker/qaautomation/fakeresponse') {
+					sh './gradlew docker'
+				}
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+				dir('./docker/qaautomation/fakeresponse') {
+					sh 'docker rm -f fakeresponse'
+					sh './gradlew dockerRun'
+				}
+            }
+        }
+    }
+}
