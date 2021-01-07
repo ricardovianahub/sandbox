@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  backend:
+    build: backend/.
+    depends_on:
+      - backend2
+  backend2:
+    build: backend2/.
+  frontend:
+    image: php:apache
+    volumes:
+      - ./frontend/app:/var/www/html
+    ports:
+      - "8091:80"
+    depends_on:
+      - backend
+      - backend2
