@@ -9,6 +9,8 @@ services:
     build: backend2/.
   frontend:
     image: php:apache
+    environment:
+      - whereami
     volumes:
       - ./frontend/app:/var/www/html
     ports:

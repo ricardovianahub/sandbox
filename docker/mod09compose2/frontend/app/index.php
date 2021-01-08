@@ -7,6 +7,6 @@ echo file_get_contents("http://backend:5000");
 echo "<hr/>";
 echo file_get_contents("http://backend2:5000"); 
 echo "<hr/>";
-echo file_get_contents("http://ricbox.com/one"); 
+echo "[" . getenv("whereami") . "]";
 ?> 
 </h2>
