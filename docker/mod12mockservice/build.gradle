@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+// https://www.mock-server.com/#what-is-mockserver
+
+dependencies {
+    implementation 'org.mock-server:mockserver-netty:5.11.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-params:5.3.1'
+}
+
+test {
+    useJUnitPlatform()
+}
