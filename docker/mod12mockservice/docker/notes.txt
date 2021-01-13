@@ -1,0 +1,4 @@
+docker pull mockserver/mockserver
+docker run -d --rm -p 1080:1080 mockserver/mockserver
+docker run -v $(pwd):/config -p 1080:1080  mockserver/mockserver -serverPort 1080
+docker run -v %cd%:/config -p 1080:1080  mockserver/mockserver -serverPort 1080
