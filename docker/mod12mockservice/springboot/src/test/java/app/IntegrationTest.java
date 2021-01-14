@@ -37,7 +37,7 @@ public class IntegrationTest {
                 .when(
                         request()
                                 .withMethod("GET")
-                                .withPath("/name")
+                                .withPath("/person")
                 )
                 .respond(
                         response()
@@ -82,7 +82,6 @@ public class IntegrationTest {
                                 .withBody("something else")
                 );
 
-
         ResponseEntity<String> response = testRestTemplate.getForEntity("http://localhost:8112/check?something", String.class);
         assertEquals("200 OK", response.getStatusCode().toString());
         assertEquals("something else", response.getBody());
@@ -90,10 +89,29 @@ public class IntegrationTest {
 
     @Test
     void personResponseFitsExpectedFormat() {
-        Person person = testRestTemplate.getForObject("http://localhost:8112/name", Person.class);
+        Person person = testRestTemplate.getForObject("http://localhost:8112/person", Person.class);
         assertEquals("John", person.getFirstName());
         assertEquals("Doe", person.getLastName());
         assertEquals(20, person.getAge().intValue());
+    }
+
+    @Test
+    void nameResponseFitsExpectedFormat() {
+        new MockServerClient("localhost", 8112)
+                .when(
+                        request()
+                                .withMethod("GET")
+                                .withPath("/name")
+                )
+                .respond(
+                        response()
+                                .withStatusCode(200)
+                                .withBody("{ \"first\": \"Alan\", \"last\": \"Jones\" }")
+                                .withHeader("Content-type", "application/json")
+                );
+        Name name = testRestTemplate.getForObject("http://localhost:8112/name", Name.class);
+        assertEquals("Alan", name.getFirst());
+        assertEquals("Jones", name.getLast());
     }
 
     @AfterAll
