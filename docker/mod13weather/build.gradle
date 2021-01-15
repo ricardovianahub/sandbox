@@ -1,0 +1,45 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.0'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'com.palantir.docker' version '0.25.0'
+    id 'com.palantir.docker-run' version '0.25.0'
+}
+
+String imageName = "ricardoviana/images:latlong"
+String jarFile = "mod13weather-0.0.1-SNAPSHOT.jar"
+
+docker {
+    name imageName
+    files "build/libs/${jarFile}"
+    buildArgs([JAR_FILE: jarFile])
+}
+
+dockerRun {
+    name "${project.name}"
+    image imageName
+    ports '8086:8080'
+    clean true
+    daemonize true
+}
+
+group = 'com.aa'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '14'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.mock-server:mockserver-netty:5.11.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-params:5.3.1'
+}
+
+test {
+    useJUnitPlatform()
+}
