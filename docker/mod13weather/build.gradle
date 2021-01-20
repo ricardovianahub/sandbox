@@ -9,16 +9,18 @@ plugins {
 String imageName = "ricardoviana/images:latlong"
 String jarFile = "mod13weather-0.0.1-SNAPSHOT.jar"
 
+// equivalent to docker build
 docker {
     name imageName
     files "build/libs/${jarFile}"
     buildArgs([JAR_FILE: jarFile])
 }
 
+// equivalent to docker run
 dockerRun {
     name "${project.name}"
     image imageName
-    ports '8086:8080'
+    ports '8071:8070'
     clean true
     daemonize true
 }

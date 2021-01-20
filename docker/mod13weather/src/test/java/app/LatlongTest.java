@@ -17,14 +17,16 @@ import org.mockserver.integration.ClientAndServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = LatlongApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = LatlongApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("live")
 public class LatlongTest {
 
     private ClientAndServer clientAndServer;
@@ -90,12 +92,17 @@ public class LatlongTest {
         assertEquals("TX", cityState2.getProperties().getRelativeLocation().getProperties().getState());
     }
 
+    @Test
+    void cityState() {
+        String result = testRestTemplate.getForObject("http://localhost:8071/cityState", String.class);
+        assertEquals("City: Allen - TX", result);
+    }
+
     @AfterAll
     void afterAll() {
         if (latlongEndpoint.isLocal()) {
             clientAndServer.stop();
         }
     }
-
 
 }
