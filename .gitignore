@@ -8,6 +8,4 @@ out/
 classes/
 gradle/
 node_modules/
-wordlist.txt
-gradlew*
 
