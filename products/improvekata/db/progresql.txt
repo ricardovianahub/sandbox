@@ -17,8 +17,7 @@ psql
 docker run -it --rm --network some-network postgres psql -h some-postgres -U postgres
 docker run -it --rm --name postgres -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust postgres:alpine psql -U postgres
 
-docker run -d --rm --name postgres -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust postgres:alpine
-psql -U postgres
+docker run -d --rm --name postgres -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust postgres:alpine psql -U postgres
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 docker run -d \
@@ -178,5 +177,22 @@ CREATE TABLE IF NOT EXISTS IMPROVEMENT_GRID(
    field3_next VARCHAR(255),
    field4_breakdown VARCHAR(255)
 );
+
+------------------------------------------------------------------------------------------------------
+The official postgres docker image will run .sql scripts found in the /docker-entrypoint-initdb.d/ folder. 
+
+sql/init.sql
+
+CREATE USER docker;
+CREATE DATABASE docker;
+GRANT ALL PRIVILEGES ON DATABASE docker TO docker;
+
+FROM postgres:alpine
+COPY sql/init.sql /docker-entrypoint-initdb.d/
+
+------------------------------------------------------------------------------------------------------
+
+docker build --tag db .
+docker run --rm --name db -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust db -v ${pwd}/data:/var/lib/postgresql/data
 
 
