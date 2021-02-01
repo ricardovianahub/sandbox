@@ -1,0 +1,169 @@
+https://docs.docker.com/storage/volumes/
+
+Database is uninitialized and superuser password is not specified.
+You must specify POSTGRES_PASSWORD to a non-empty value for the
+superuser. For example, "-e POSTGRES_PASSWORD=password" on "docker run".
+
+You may also use "POSTGRES_HOST_AUTH_METHOD=trust" to allow all
+connections without a password. This is *not* recommended.
+
+
+docker pull postgres:alpine
+
+docker run -it --rm -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust postgres:alpine psql -U postgres
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+psql
+docker run -it --rm --network some-network postgres psql -h some-postgres -U postgres
+docker run -it --rm --name postgres -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust postgres:alpine psql -U postgres
+
+docker run -d --rm --name postgres -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust postgres:alpine
+psql -U postgres
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+docker run -d \
+    --name test-postgres \
+    -e POSTGRES_PASSWORD=mysecretpassword \
+    -e PGDATA=/var/lib/postgresql/data/pgdata \
+    -v ${pwd}/data:/var/lib/postgresql/data \
+    postgres
+
+docker run -it --rm \
+    --name test-postgres \
+    -e POSTGRES_PASSWORD=mysecretpassword \
+    -e PGDATA=/var/lib/postgresql/data/pgdata \
+    -v ${pwd}/data:/var/lib/postgresql/data \
+    postgres
+
+Docker compose
+-------------------------------------------------------
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+
+Environment Variables
+
+POSTGRES_PASSWORD
+POSTGRES_USER
+POSTGRES_DB
+POSTGRES_INITDB_ARGS
+POSTGRES_INITDB_WALDIR
+POSTGRES_HOST_AUTH_METHOD
+PGDATA
+
+Example:
+
+docker run -d \
+    --name some-postgres \
+    -e POSTGRES_PASSWORD=mysecretpassword \
+    -e PGDATA=/var/lib/postgresql/data/pgdata \
+    -v /custom/mount:/var/lib/postgresql/data \
+    postgres
+
+Initialization scripts
+
+If you would like to do additional initialization in an image derived from this one, add one or more *.sql, *.sql.gz, or *.sh scripts under /docker-entrypoint-initdb.d (creating the directory if necessary). After the entrypoint calls initdb to create the default postgres user and database, it will run any *.sql files, run any executable *.sh scripts, and source any non-executable *.sh scripts found in that directory to do further initialization before starting the service.
+
+Warning: scripts in /docker-entrypoint-initdb.d are only run if you start the container with a data directory that is empty; any pre-existing database will be left untouched on container startup. One common problem is that if one of your /docker-entrypoint-initdb.d scripts fails (which will cause the entrypoint script to exit) and your orchestrator restarts the container with the already initialized data directory, it will not continue on with your scripts.
+
+For example, to add an additional user and database, add the following to /docker-entrypoint-initdb.d/init-user-db.sh:
+
+#!/bin/bash
+set -e
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    CREATE USER docker;
+    CREATE DATABASE docker;
+    GRANT ALL PRIVILEGES ON DATABASE docker TO docker;
+EOSQL
+
+Locale Customization
+
+You can extend the Debian-based images with a simple Dockerfile to set a different locale. The following example will set the default locale to de_DE.utf8:
+
+FROM postgres:9.4
+RUN localedef -i de_DE -c -f UTF-8 -A /usr/share/locale/locale.alias de_DE.UTF-8
+ENV LANG de_DE.utf8
+
+Volumes/Images
+
+docker service create \
+    --mount 'type=volume,src=<VOLUME-NAME>,dst=<CONTAINER-PATH>,volume-driver=local,volume-opt=type=nfs,volume-opt=device=<nfs-server>:<nfs-path>,"volume-opt=o=addr=<nfs-address>,vers=4,soft,timeo=180,bg,tcp,rw"'
+    --name myservice \
+    <IMAGE>
+
+Create and manage volumes
+
+Unlike a bind mount, you can create and manage volumes outside the scope of any container.
+
+Create a volume:
+
+$ docker volume create my-vol
+
+List volumes:
+
+$ docker volume ls
+
+local               my-vol
+
+Inspect a volume:
+
+$ docker volume inspect my-vol
+[
+    {
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/my-vol/_data",
+        "Name": "my-vol",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+Remove a volume:
+
+$ docker volume rm my-vol
+
+----------------------------------------------------------------------------------------------
+
+docker run -d \
+  --name devtest \
+  --mount source=myvol2,target=/app \
+  nginx:latest
+
+
+docker run -d \
+  --name devtest \
+  -v myvol2:/app \
+  nginx:latest
+
+---------------------------------------------------------------------------------------------
+
+docker volume rm myvol2
+
+Use a volume with docker-compose
+
+A single docker compose service with a volume looks like this:
+
+version: "3.9"
+services:
+  frontend:
+    image: node:lts
+    volumes:
+      - myapp:/home/node/app
+volumes:
+  myapp:
+
