@@ -193,6 +193,7 @@ COPY sql/init.sql /docker-entrypoint-initdb.d/
 ------------------------------------------------------------------------------------------------------
 
 docker build --tag db .
+docker run --rm --name db -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust db
 docker run --rm --name db -e POSTGRES_PASSWORD=password -e POSTGRES_HOST_AUTH_METHOD=trust db -v ${pwd}/data:/var/lib/postgresql/data
 
 
