@@ -31,4 +31,9 @@ public class ImproveKataBenApplication {
 		improvementGridRepository.insert(improvementGrid);
 	}
 
+	@GetMapping(path = "/monitor", produces = "text/plain")
+	public String monitor() {
+		return "ImproveKataBenApplication UP";
+	}
+
 }

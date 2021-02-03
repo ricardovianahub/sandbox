@@ -56,6 +56,13 @@ class ImprovementKataBenApplicationTest {
     }
 
     @Test
+    void monitor() {
+        insertRecord();
+        String s = testRestTemplate.getForObject("http://localhost:8200/monitor", String.class);
+        assertEquals("ImproveKataBenApplication UP", s);
+    }
+
+    @Test
     void queryAll() {
         insertRecord();
         String s = testRestTemplate.getForObject("http://localhost:8200/queryAll", String.class);

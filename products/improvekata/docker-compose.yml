@@ -8,3 +8,10 @@ services:
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_HOST_AUTH_METHOD=trust
+  ben:
+     build: ben/.
+     ports:
+       - "8200:8200"
+     depends_on:
+       - db
+
