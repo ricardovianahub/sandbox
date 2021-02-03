@@ -2,6 +2,7 @@ package com.aa.improvekataben;
 
 import com.aa.improvekataben.data.ImprovementGrid;
 import com.aa.improvekataben.repository.ImprovementGridRepository;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,17 +11,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = ImproveKataBenApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = ImproveKataBenApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ImprovementKataBenApplicationTest {
+
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private ImprovementGridRepository improvementGridRepository;
@@ -58,14 +64,18 @@ class ImprovementKataBenApplicationTest {
     @Test
     void monitor() {
         insertRecord();
-        String s = testRestTemplate.getForObject("http://localhost:8201/monitor", String.class);
-        assertEquals("ImproveKataBenApplication UP", s);
+        String s = testRestTemplate.getForObject("http://localhost:" +
+                port +
+                "/monitor", String.class);
+        assertTrue(s.startsWith("ImproveKataBenApplication UP since"));
     }
 
     @Test
     void queryAll() {
         insertRecord();
-        String s = testRestTemplate.getForObject("http://localhost:8201/queryAll", String.class);
+        String s = testRestTemplate.getForObject("http://localhost:" +
+                port +
+                "/queryAll", String.class);
         assertEquals("[{\"teamName\":\"Team name\",\"title\":\"Title\",\"field1Awesome\":\"Awesome\",\"field2Now\":\"Now\",\"field3Next\":\"Next\",\"field4Breakdown\":\"Breakdown\"}]"
                 , s);
     }
@@ -79,8 +89,8 @@ class ImprovementKataBenApplicationTest {
                 .setField2Now("field2")
                 .setField3Next("field3")
                 .setField4Breakdown("field4");
-        testRestTemplate.postForObject("http://localhost:8201/insert", improvementGrid, ImprovementGrid.class);
-        String s = testRestTemplate.getForObject("http://localhost:8201/queryAll", String.class);
+        testRestTemplate.postForObject("http://localhost:8200/insert", improvementGrid, ImprovementGrid.class);
+        String s = testRestTemplate.getForObject("http://localhost:8200/queryAll", String.class);
         assertEquals("[{\"teamName\":\"inserted team name\",\"title\":\"inserted title\",\"field1Awesome\":\"field1\",\"field2Now\":\"field2\",\"field3Next\":\"field3\",\"field4Breakdown\":\"field4\"}]"
                 , s);
     }
@@ -97,6 +107,5 @@ class ImprovementKataBenApplicationTest {
         );
         return result;
     }
-
 
 }

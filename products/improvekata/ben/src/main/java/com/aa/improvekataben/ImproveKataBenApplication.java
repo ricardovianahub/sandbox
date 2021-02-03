@@ -7,12 +7,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
 
 @SpringBootApplication
 @RestController
 @RequestMapping(path = "/")
 public class ImproveKataBenApplication {
+
+	private Instant startUpTime = Instant.now();
 
 	@Autowired
 	private ImprovementGridRepository improvementGridRepository;
@@ -33,7 +36,7 @@ public class ImproveKataBenApplication {
 
 	@GetMapping(path = "/monitor", produces = "text/plain")
 	public String monitor() {
-		return "ImproveKataBenApplication UP";
+		return "ImproveKataBenApplication UP since " + startUpTime;
 	}
 
 }
