@@ -70,31 +70,6 @@ class ImprovementKataBenApplicationTest {
         assertTrue(s.startsWith("ImproveKataBenApplication UP since"));
     }
 
-    @Test
-    void queryAll() {
-        insertRecord();
-        String s = testRestTemplate.getForObject("http://localhost:" +
-                port +
-                "/queryAll", String.class);
-        assertEquals("[{\"teamName\":\"Team name\",\"title\":\"Title\",\"field1Awesome\":\"Awesome\",\"field2Now\":\"Now\",\"field3Next\":\"Next\",\"field4Breakdown\":\"Breakdown\"}]"
-                , s);
-    }
-
-    @Test
-    void insert() {
-        ImprovementGrid improvementGrid = new ImprovementGrid()
-                .setTeamName("inserted team name")
-                .setTitle("inserted title")
-                .setField1Awesome("field1")
-                .setField2Now("field2")
-                .setField3Next("field3")
-                .setField4Breakdown("field4");
-        testRestTemplate.postForObject("http://localhost:8200/insert", improvementGrid, ImprovementGrid.class);
-        String s = testRestTemplate.getForObject("http://localhost:8200/queryAll", String.class);
-        assertEquals("[{\"teamName\":\"inserted team name\",\"title\":\"inserted title\",\"field1Awesome\":\"field1\",\"field2Now\":\"field2\",\"field3Next\":\"field3\",\"field4Breakdown\":\"field4\"}]"
-                , s);
-    }
-
     private int insertRecord() {
         String teamName = "Team name";
         String title = "Title";

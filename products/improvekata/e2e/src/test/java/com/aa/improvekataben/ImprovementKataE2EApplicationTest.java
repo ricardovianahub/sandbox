@@ -1,6 +1,7 @@
 package com.aa.improvekataben;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
@@ -21,6 +22,12 @@ class ImprovementKataE2EApplicationTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @Test
+    void monitor() {
+        String s = testRestTemplate.getForObject("http://localhost:8200/monitor", String.class);
+        assertTrue(s.startsWith("ImproveKataBenApplication UP since "));
+    }
 
     @Test
     void addNewRecord() {
