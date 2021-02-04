@@ -11,6 +11,8 @@ class App extends Component {
     handleInsertClick () {
         axios.get('http://localhost:8200/monitor')
             .then(response => console.log(response))
+        axios.get('http://localhost:8200/queryAll')
+            .then(response => console.log(response));
     }
 
     render() {

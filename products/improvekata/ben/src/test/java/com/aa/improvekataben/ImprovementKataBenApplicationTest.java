@@ -42,10 +42,10 @@ class ImprovementKataBenApplicationTest {
         jdbcTemplate.update("truncate table IMPROVEMENT_GRID; ");
     }
 
-    @AfterEach
-    void afterEach() {
-        jdbcTemplate.update("truncate table IMPROVEMENT_GRID; ");
-    }
+//    @AfterEach
+//    void afterEach() {
+//        jdbcTemplate.update("truncate table IMPROVEMENT_GRID; ");
+//    }
 
     @Test
     void writeToDB() {
