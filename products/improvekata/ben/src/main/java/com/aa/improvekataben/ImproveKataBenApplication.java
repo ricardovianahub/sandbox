@@ -13,6 +13,7 @@ import java.util.List;
 @SpringBootApplication
 @RestController
 @RequestMapping(path = "/")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ImproveKataBenApplication {
 
 	private Instant startUpTime = Instant.now();
