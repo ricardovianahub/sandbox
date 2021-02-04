@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import './App.css'
 
 class App extends Component {
@@ -8,7 +9,8 @@ class App extends Component {
     }
 
     handleInsertClick () {
-        console.log('Success!')
+        axios.get('http://localhost:8200/monitor')
+            .then(response => console.log(response))
     }
 
     render() {
