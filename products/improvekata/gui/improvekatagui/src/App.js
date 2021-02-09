@@ -13,7 +13,7 @@ class App extends Component {
         axios.get('http://localhost:8200/queryAll')
             .then(response => {
                 const ig = response.data[0];
-                this.field1.va = ig.field1Awesome;
+                this.field1.current = ig.field1Awesome;
                 this.field2.current = ig.field2Now;
                 this.field3.current = ig.field3Next;
                 this.field1.current = ig.field4Breakdown;
@@ -34,7 +34,7 @@ class App extends Component {
                     <p className='title__container'>Improvement Kata</p>
                 </header>
                 <hr/>
-                <textarea rows="12" cols="55" ref={this.field1}></textarea>
+                <textarea data-testid="field1" rows="12" cols="55" ref={this.field1}></textarea>
                 <textarea rows="12" cols="55" ref={this.field2}></textarea>
                 <br/>
                 <textarea rows="12" cols="55" ref={this.field3}></textarea>

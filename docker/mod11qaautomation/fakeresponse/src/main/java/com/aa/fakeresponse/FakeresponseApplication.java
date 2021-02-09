@@ -22,6 +22,24 @@ public class FakeresponseApplication {
         return "root";
     }
 
+    @GetMapping(value = "/three", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Data3> three() {
+        List<Data3> data3List = new ArrayList<>();
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
+        data3List.add(new Data3("DFWLAX", "Carrots", "Mr"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
+
+        return data3List;
+    }
+
     @GetMapping(value = "/one", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Data1> one() {
         List<Data1> data1List = new ArrayList<>();
@@ -104,6 +122,42 @@ public class FakeresponseApplication {
         public Data1 setAge(int age) {
             this.age = age;
             return this;
+        }
+    }
+
+    public static class Data3 {
+        private String itinerary;
+        private String origin;
+        private String date;
+
+        public Data3(String itinerary, String origin, String date) {
+            this.itinerary = itinerary;
+            this.origin = origin;
+            this.date = date;
+        }
+
+        public String getItinerary() {
+            return itinerary;
+        }
+
+        public void setItinerary(String itinerary) {
+            this.itinerary = itinerary;
+        }
+
+        public String getOrigin() {
+            return origin;
+        }
+
+        public void setOrigin(String origin) {
+            this.origin = origin;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
         }
     }
 
