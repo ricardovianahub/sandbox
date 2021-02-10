@@ -14,3 +14,9 @@ services:
        - "8200:8200"
      depends_on:
        - db
+  gui:
+     image: httpd:latest
+     volumes:       
+       - d:/r/local/dev/github/sandbox/products/improvekata/gui/improvekatagui/src/simple:/usr/local/apache2/htdocs
+     ports:
+       - "8210:80"
