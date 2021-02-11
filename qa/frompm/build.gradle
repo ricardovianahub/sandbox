@@ -1,0 +1,34 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.aa'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation(
+			'org.junit.jupiter:junit-jupiter-api:5.3.1',
+			'org.hamcrest:hamcrest-library:2.1'
+	)
+	testRuntimeOnly(
+			'org.junit.jupiter:junit-jupiter-engine:5.3.1',
+			'org.junit.jupiter:junit-jupiter-params:5.3.1'
+	)
+
+	testCompile(
+			'io.github.bonigarcia:selenium-jupiter:3.3.5'
+	)
+}
+
+test {
+	useJUnitPlatform()
+}
