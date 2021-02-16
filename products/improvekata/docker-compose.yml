@@ -1,22 +1,32 @@
 version: "3"
 
 services:
+  reverse:
+    container_name: reverse
+    hostname: reverse
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./reverse/conf:/etc/nginx
+      - ./reverse/monitor:/html/monitor
+    depends_on:
+      - db
+      - ben
+      - gui
   db:
     build: db/.
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_HOST_AUTH_METHOD=trust
   ben:
      build: ben/.
-     ports:
-       - "8200:8200"
      depends_on:
        - db
   gui:
      image: httpd:latest
      volumes:       
-       - d:/r/local/dev/github/sandbox/products/improvekata/gui/improvekatagui/src/simple:/usr/local/apache2/htdocs
-     ports:
-       - "8210:80"
+       - ./gui/improvekatagui/src/simple:/usr/local/apache2/htdocs
+     depends_on:
+       - ben
