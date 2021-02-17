@@ -1,0 +1,56 @@
+[INFO  - 2021-02-17T14:51:31.394Z] GhostDriver - Main - running on port 7546
+[INFO  - 2021-02-17T14:51:31.711Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2021-02-17T14:51:31.712Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - page.customHeaders:  - {}
+[INFO  - 2021-02-17T14:51:31.712Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2021-02-17T14:51:31.712Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 9f6d3cb0-712f-11eb-8a0e-4f71781f7483
+[ERROR - 2021-02-17T14:51:32.007Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - page.onError - msg: ReferenceError: Can't find variable: Set
+[ERROR - 2021-02-17T14:51:32.007Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/@babel/standalone@7.12.16/babel.min.js:1)
+  (anonymous function) (https://unpkg.com/@babel/standalone@7.12.16/babel.min.js:1)
+[ERROR - 2021-02-17T14:51:32.010Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - page.onError - msg: ReferenceError: Can't find variable: Map
+[ERROR - 2021-02-17T14:51:32.011Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/react@17.0.1/umd/react.development.js:1686)
+  (anonymous function) (https://unpkg.com/react@17.0.1/umd/react.development.js:12)
+[ERROR - 2021-02-17T14:51:32.028Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - page.onError - msg: ReferenceError: Can't find variable: Set
+[ERROR - 2021-02-17T14:51:32.028Z] Session [9f6d3cb0-712f-11eb-8a0e-4f71781f7483] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js:108)
+  (anonymous function) (https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js:12)
+[ERROR - 2021-02-17T14:51:32.363Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1613573492341
+[INFO  - 2021-02-17T14:51:32.425Z] ShutdownReqHand - _handle - About to shutdown
+[INFO  - 2021-02-17T14:51:32.561Z] GhostDriver - Main - running on port 25588
+[INFO  - 2021-02-17T14:51:32.624Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2021-02-17T14:51:32.626Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - page.customHeaders:  - {}
+[INFO  - 2021-02-17T14:51:32.627Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2021-02-17T14:51:32.627Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 9ff88cc0-712f-11eb-bfb4-4312567c9b93
+[ERROR - 2021-02-17T14:51:32.873Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - page.onError - msg: ReferenceError: Can't find variable: Set
+[ERROR - 2021-02-17T14:51:32.874Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/@babel/standalone@7.12.16/babel.min.js:1)
+  (anonymous function) (https://unpkg.com/@babel/standalone@7.12.16/babel.min.js:1)
+[ERROR - 2021-02-17T14:51:32.877Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - page.onError - msg: ReferenceError: Can't find variable: Map
+[ERROR - 2021-02-17T14:51:32.877Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/react@17.0.1/umd/react.development.js:1686)
+  (anonymous function) (https://unpkg.com/react@17.0.1/umd/react.development.js:12)
+[ERROR - 2021-02-17T14:51:32.897Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - page.onError - msg: ReferenceError: Can't find variable: Set
+[ERROR - 2021-02-17T14:51:32.897Z] Session [9ff88cc0-712f-11eb-bfb4-4312567c9b93] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js:108)
+  (anonymous function) (https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js:12)
+[ERROR - 2021-02-17T14:51:33.261Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1613573493212
+[INFO  - 2021-02-17T14:51:33.364Z] ShutdownReqHand - _handle - About to shutdown
+[INFO  - 2021-02-17T14:51:33.466Z] GhostDriver - Main - running on port 22887
+[INFO  - 2021-02-17T14:51:33.581Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2021-02-17T14:51:33.582Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - page.customHeaders:  - {}
+[INFO  - 2021-02-17T14:51:33.582Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2021-02-17T14:51:33.582Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: a08a4570-712f-11eb-b3af-93b8e02ce80d
+[ERROR - 2021-02-17T14:51:33.853Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - page.onError - msg: ReferenceError: Can't find variable: Set
+[ERROR - 2021-02-17T14:51:33.853Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/@babel/standalone@7.12.16/babel.min.js:1)
+  (anonymous function) (https://unpkg.com/@babel/standalone@7.12.16/babel.min.js:1)
+[ERROR - 2021-02-17T14:51:33.856Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - page.onError - msg: ReferenceError: Can't find variable: Map
+[ERROR - 2021-02-17T14:51:33.856Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/react@17.0.1/umd/react.development.js:1686)
+  (anonymous function) (https://unpkg.com/react@17.0.1/umd/react.development.js:12)
+[ERROR - 2021-02-17T14:51:33.876Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - page.onError - msg: ReferenceError: Can't find variable: Set
+[ERROR - 2021-02-17T14:51:33.876Z] Session [a08a4570-712f-11eb-b3af-93b8e02ce80d] - page.onError - stack:
+  (anonymous function) (https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js:108)
+  (anonymous function) (https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js:12)
+[INFO  - 2021-02-17T14:51:34.080Z] ShutdownReqHand - _handle - About to shutdown

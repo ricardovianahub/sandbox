@@ -48,6 +48,8 @@ public class ImprovementKataGuiTest {
     void clickInsertButtonVerifyTimeOutResponse(FirefoxDriver driver) throws Exception {
         // setup
         driver.get("http://localhost");
+        driver.executeScript("setEndpoint('/nowhere');");
+        System.out.println("==> " + driver.executeScript("return endPoint;"));
 
         // execution
         driver.findElementByCssSelector("button[data-testid=insertButton]").click();

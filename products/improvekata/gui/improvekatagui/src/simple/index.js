@@ -1,6 +1,12 @@
+var endPoint = '/ben/monitor';
+
+function setEndpoint(value) {
+    endPoint = value;
+}
+
 const App = () => {
     function handleInsertButtonClick() {
-        axios.get('/ben/monitor')
+        axios.get(endPoint)
             .then(response => {
                 document.getElementById("reaccom-message").innerText = "Record inserted succesfully";
             })
