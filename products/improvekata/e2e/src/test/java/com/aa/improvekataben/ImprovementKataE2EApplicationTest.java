@@ -25,7 +25,7 @@ class ImprovementKataE2EApplicationTest {
 
     @Test
     void monitor() {
-        String s = testRestTemplate.getForObject("http://localhost:8200/monitor", String.class);
+        String s = testRestTemplate.getForObject("http://localhost/ben/monitor", String.class);
         assertTrue(s.startsWith("ImproveKataBenApplication UP since "));
     }
 
@@ -33,7 +33,7 @@ class ImprovementKataE2EApplicationTest {
     void addNewRecord() {
         String randomTitle = UUID.randomUUID().toString();
         insertRecord(randomTitle);
-        String s = testRestTemplate.getForObject("http://localhost:8200/queryAll", String.class);
+        String s = testRestTemplate.getForObject("http://localhost/ben/queryAll", String.class);
         assertEquals("[{\"teamName\":\"inserted team name\",\"title\":\"" +
                         randomTitle +
                         "\",\"field1Awesome\":\"field1\",\"field2Now\":\"field2\",\"field3Next\":\"field3\",\"field4Breakdown\":\"field4\"}]"
@@ -48,7 +48,7 @@ class ImprovementKataE2EApplicationTest {
                 .setField2Now("field2")
                 .setField3Next("field3")
                 .setField4Breakdown("field4");
-        testRestTemplate.postForObject("http://localhost:8200/insert", improvementGrid, ImprovementGrid.class);
+        testRestTemplate.postForObject("http://localhost/ben/insert", improvementGrid, ImprovementGrid.class);
     }
 
 }
