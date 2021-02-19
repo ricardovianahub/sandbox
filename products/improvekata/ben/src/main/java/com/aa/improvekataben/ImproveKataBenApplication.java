@@ -1,14 +1,21 @@
 package com.aa.improvekataben;
 
-import com.aa.improvekataben.data.ImprovementGrid;
-import com.aa.improvekataben.repository.ImprovementGridRepository;
+import java.time.Instant;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
-import java.util.List;
+import com.aa.improvekataben.data.ImprovementGrid;
+import com.aa.improvekataben.repository.ImprovementGridRepository;
 
 @SpringBootApplication
 @RestController
@@ -27,6 +34,11 @@ public class ImproveKataBenApplication {
 	@GetMapping(path = "/queryAll", produces="application/json")
 	public List<ImprovementGrid> queryAll() {
 		return improvementGridRepository.queryAll();
+	}
+
+	@DeleteMapping(path = "/deleteTeam/{teamName}")
+	public void deleteTeam(@PathVariable String teamName) {
+		improvementGridRepository.deleteByTeam(teamName);
 	}
 
 	@PostMapping(path = "/insert", consumes = "application/json")

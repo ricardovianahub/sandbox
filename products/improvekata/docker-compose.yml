@@ -21,7 +21,7 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_HOST_AUTH_METHOD=trust
   ben:
-     build: ben/.
+     image: improvekata_ben
      depends_on:
        - db
   gui:

@@ -79,6 +79,11 @@ public class ImprovementKataGuiTest {
         driver.findElementByCssSelector("[data-testid=fieldBreakdown]").sendKeys("Breakdown Data 2");
         driver.findElementByCssSelector("button[data-testid=insertButton]").click();
 
+        // refresh page
+        driver.navigate().refresh();
+
+
+
         // execution
 
         // assertion

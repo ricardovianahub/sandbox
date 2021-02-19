@@ -25,7 +25,7 @@ public class FrompmTest {
     @Autowired
     private TestRestTemplate testRestTemplate; // "Postman"
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void verifyThereIsAItineraryInPNR() throws Exception {

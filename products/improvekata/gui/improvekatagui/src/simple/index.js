@@ -8,9 +8,13 @@ const App = () => {
     function handleInsertButtonClick() {
         axios.get(endPoint)
             .then(response => {
+                var improvementGrid = "{\"teamName\":\""  + document.querySelectorAll("[data-testid=\"versionsList\"]")[0] + "\",\"title\":\"" +
+                "Look ma no hands" +
+                "\",\"field1Awesome\":\"field1\",\"field2Now\":\"field2\",\"field3Next\":\"field3\",\"field4Breakdown\":\"field4\"}";
+                axios.post('/ben/insert', improvementGrid);
                 document.getElementById("reaccom-message").innerText = "Record inserted succesfully";
-                document.querySelectorAll("[data-testid=versionsList]").forEach((versionsList) => {
-                    let note: Element = document.createElement("li");
+                document.querySelectorAll("[data-testid=\"versionsList\"]").forEach((versionsList) => {
+                    let node: Element = document.createElement("li");
                     let textNode: Element = document.createTextNode(new Date());
                     node.appendChild(textNode);
                     versionsList.appendChild(node);
@@ -43,5 +47,22 @@ const App = () => {
         </div>
     )
 }
+
+axios.get('/ben/queryAll')
+    .then(response => {
+        for (let row of response.data) {
+            document.querySelectorAll("[data-testid=\"versionsList\"]").forEach((ul) => {
+                let anchor: Element = document.createElement("a");
+                let li: Element = document.createElement("li");
+                let text: Element = document.createTextNode(row.title);
+                anchor.setAttribute("href", "");
+                anchor.setAttribute("onclick", "alert('boo'); return false");
+                anchor.appendChild(text);
+                li.appendChild(anchor);
+                ul.appendChild(li);
+            })
+        }
+    });
+
 
 ReactDOM.render(<App/>, document.getElementById("root"));

@@ -25,17 +25,17 @@ public class FakeresponseApplication {
     @GetMapping(value = "/three", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Data3> three() {
         List<Data3> data3List = new ArrayList<>();
-        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
-        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
-        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
-        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
-        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs"));
-        data3List.add(new Data3("DFWLAX", "Carrots", "Mr"));
-        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
-        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
-        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
-        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
-        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots"));
+        data3List.add(new Data3("DFWLAX", "Carrots", "Mr", ""));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", ""));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", "    "));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", " "));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", "   "));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", "LAX"));
 
         return data3List;
     }
@@ -129,11 +129,13 @@ public class FakeresponseApplication {
         private String itinerary;
         private String origin;
         private String date;
+        private String destination;
 
-        public Data3(String itinerary, String origin, String date) {
+        public Data3(String itinerary, String origin, String date, String destination) {
             this.itinerary = itinerary;
             this.origin = origin;
             this.date = date;
+            this.destination = destination;
         }
 
         public String getItinerary() {
@@ -158,6 +160,14 @@ public class FakeresponseApplication {
 
         public void setDate(String date) {
             this.date = date;
+        }
+
+        public String getDestination() {
+            return destination;
+        }
+
+        public void setDestination(String destination) {
+            this.destination = destination;
         }
     }
 
