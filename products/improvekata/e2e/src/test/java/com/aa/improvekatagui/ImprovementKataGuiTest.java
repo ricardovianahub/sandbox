@@ -22,7 +22,9 @@ public class ImprovementKataGuiTest {
         verifyTagName(driver, "[data-testid=fieldNext]", "textarea");
         verifyTagName(driver, "[data-testid=fieldBreakdown]", "textarea");
 
-        assertEquals("rgb(68, 0, 255)",
+        verifyTagName(driver, "[data-testid=versionsList]", "ul");
+
+        assertEquals("rgb(170, 170, 255)",
                 driver.findElement(By.cssSelector("body")).getCssValue("background-color")
         );
 
@@ -42,6 +44,7 @@ public class ImprovementKataGuiTest {
 
         // assertion
         verifyText(driver, "[data-testid=message]", "Record inserted succesfully");
+        verifyText(driver, "[data-testid=versionsList]", "WRONG");
     }
 
     @Test
@@ -55,6 +58,30 @@ public class ImprovementKataGuiTest {
 
         // assertion
         verifyText(driver, "[data-testid=message]", "Connection to the backend timed out");
+    }
+
+    @Test
+    void sdfsdfsdf(FirefoxDriver driver) {
+        // setup
+        driver.get("http://localhost");
+
+        // populate data 1
+        driver.findElementByCssSelector("[data-testid=fieldAwesome]").sendKeys("Awesome Data 1");
+        driver.findElementByCssSelector("[data-testid=fieldNow]").sendKeys("Now Data 1");
+        driver.findElementByCssSelector("[data-testid=fieldNext]").sendKeys("Next Data 1");
+        driver.findElementByCssSelector("[data-testid=fieldBreakdown]").sendKeys("Breakdown Data 1");
+        driver.findElementByCssSelector("button[data-testid=insertButton]").click();
+
+        // populate data 1
+        driver.findElementByCssSelector("[data-testid=fieldAwesome]").sendKeys("Awesome Data 2");
+        driver.findElementByCssSelector("[data-testid=fieldNow]").sendKeys("Now Data 2");
+        driver.findElementByCssSelector("[data-testid=fieldNext]").sendKeys("Next Data 2");
+        driver.findElementByCssSelector("[data-testid=fieldBreakdown]").sendKeys("Breakdown Data 2");
+        driver.findElementByCssSelector("button[data-testid=insertButton]").click();
+
+        // execution
+
+        // assertion
     }
 
     private void verifyTagName(FirefoxDriver driver, String selector, String tagName) {

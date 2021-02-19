@@ -9,6 +9,12 @@ const App = () => {
         axios.get(endPoint)
             .then(response => {
                 document.getElementById("reaccom-message").innerText = "Record inserted succesfully";
+                document.querySelectorAll("[data-testid=versionsList]").forEach((versionsList) => {
+                    let note: Element = document.createElement("li");
+                    let textNode: Element = document.createTextNode(new Date());
+                    node.appendChild(textNode);
+                    versionsList.appendChild(node);
+                })
             })
             .catch(reason => {
                 document.getElementById("reaccom-message").innerText = "Connection to the backend timed out";
@@ -32,6 +38,8 @@ const App = () => {
             </button>
             <br/>
             <div id="reaccom-message" data-testid="message"></div>
+            <hr/>
+            <ul data-testid="versionsList"></ul>
         </div>
     )
 }
