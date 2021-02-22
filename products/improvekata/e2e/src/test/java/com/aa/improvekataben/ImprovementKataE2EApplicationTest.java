@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -27,7 +28,12 @@ class ImprovementKataE2EApplicationTest {
 
     @BeforeAll
     void beforeAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/TEST");
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+    }
+
+    @AfterAll
+    void afterAll() {
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
     }
 
     @Test
@@ -40,7 +46,7 @@ class ImprovementKataE2EApplicationTest {
     void insertReturnsInsertedObject() {
         String randomTitle = UUID.randomUUID().toString();
         String insert = addAndRetrieveRecord(randomTitle);
-        assertEquals("[{\"teamName\":\"TEST\",\"title\":\"" +
+        assertEquals("[{\"teamName\":\"DOD_REACCOM\",\"title\":\"" +
                         randomTitle +
                         "\",\"field1Awesome\":\"field1\",\"field2Now\":\"field2\",\"field3Next\":\"field3\",\"field4Breakdown\":\"field4\"}]"
                 , insert);
@@ -50,7 +56,7 @@ class ImprovementKataE2EApplicationTest {
     void deleteRecordsForTeam() {
         String randomTitle = UUID.randomUUID().toString();
         addAndRetrieveRecord(randomTitle);
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/TEST");
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
         String queryAll = testRestTemplate.getForObject("http://localhost/ben/queryAll", String.class);
         assertEquals("[]", queryAll);
     }
@@ -63,7 +69,7 @@ class ImprovementKataE2EApplicationTest {
 
     private void insertRecord(String randomTitle) {
         ImprovementGrid improvementGrid = new ImprovementGrid()
-                .setTeamName("TEST")
+                .setTeamName("DOD_REACCOM")
                 .setTitle(randomTitle)
                 .setField1Awesome("field1")
                 .setField2Now("field2")

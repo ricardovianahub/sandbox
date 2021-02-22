@@ -17,6 +17,8 @@ public class ImprovementKataGuiTest {
     void ensureNecessaryFieldsArePresent(FirefoxDriver driver) throws Exception {
         driver.get("http://localhost");
 
+        verifyTagName(driver, "[data-testid=title]", "input");
+
         verifyTagName(driver, "[data-testid=fieldAwesome]", "textarea");
         verifyTagName(driver, "[data-testid=fieldNow]", "textarea");
         verifyTagName(driver, "[data-testid=fieldNext]", "textarea");
