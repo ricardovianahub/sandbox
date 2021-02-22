@@ -2,12 +2,11 @@ package com.aa.improvekataben;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,14 +25,14 @@ class ImprovementKataE2EApplicationTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-    @BeforeAll
-    void beforeAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+    @BeforeEach
+    void beforeEach() {
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/TEST");
     }
 
-    @AfterAll
-    void afterAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+    @AfterEach
+    void afterEach() {
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/TEST");
     }
 
     @Test
@@ -45,8 +44,8 @@ class ImprovementKataE2EApplicationTest {
     @Test
     void insertReturnsInsertedObject() {
         String randomTitle = UUID.randomUUID().toString();
-        String insert = addAndRetrieveRecord(randomTitle);
-        assertEquals("[{\"teamName\":\"DOD_REACCOM\",\"title\":\"" +
+        String insert = addAndRetrieveRecord("TEST", randomTitle);
+        assertEquals("[{\"teamName\":\"TEST\",\"title\":\"" +
                         randomTitle +
                         "\",\"field1Awesome\":\"field1\",\"field2Now\":\"field2\",\"field3Next\":\"field3\",\"field4Breakdown\":\"field4\"}]"
                 , insert);
@@ -55,21 +54,22 @@ class ImprovementKataE2EApplicationTest {
     @Test
     void deleteRecordsForTeam() {
         String randomTitle = UUID.randomUUID().toString();
-        addAndRetrieveRecord(randomTitle);
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
-        String queryAll = testRestTemplate.getForObject("http://localhost/ben/queryAll", String.class);
-        assertEquals("[]", queryAll);
+        addAndRetrieveRecord("TEST", randomTitle);
+        addAndRetrieveRecord("NOISE", randomTitle);
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/TEST");
+        String queryByTeamName = testRestTemplate.getForObject("http://localhost/ben/queryByTeamName/TEST", String.class);
+        assertEquals("[]", queryByTeamName);
     }
 
-    private String addAndRetrieveRecord(String randomTitle) {
-        insertRecord(randomTitle);
-        String queryAll = testRestTemplate.getForObject("http://localhost/ben/queryAll", String.class);
+    private String addAndRetrieveRecord(String teamName, String randomTitle) {
+        insertRecord(teamName, randomTitle);
+        String queryAll = testRestTemplate.getForObject(String.format("http://localhost/ben/queryByTeamName/%s", teamName), String.class);
         return queryAll;
     }
 
-    private void insertRecord(String randomTitle) {
+    private void insertRecord(String teamName, String randomTitle) {
         ImprovementGrid improvementGrid = new ImprovementGrid()
-                .setTeamName("DOD_REACCOM")
+                .setTeamName(teamName)
                 .setTitle(randomTitle)
                 .setField1Awesome("field1")
                 .setField2Now("field2")

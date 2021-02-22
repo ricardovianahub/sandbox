@@ -17,6 +17,8 @@ services:
       - gui
   db:
     build: db/.
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_HOST_AUTH_METHOD=trust
@@ -26,7 +28,7 @@ services:
        - db
   gui:
      image: httpd:latest
-     volumes:       
+     volumes:
        - ./gui/improvekatagui/src/simple:/usr/local/apache2/htdocs
      depends_on:
        - ben

@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -23,7 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = ImproveKataBenApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 class ImprovementKataBenApplicationTest {
+
+    private static final String testTeamName = "BACKEND_TEST";
 
     @LocalServerPort
     private int port;
@@ -39,39 +43,55 @@ class ImprovementKataBenApplicationTest {
 
     @BeforeEach
     void beforeEach() {
-        jdbcTemplate.update("truncate table IMPROVEMENT_GRID; ");
+        deleteBackendTestTeam();
     }
 
-//    @AfterEach
-//    void afterEach() {
-//        jdbcTemplate.update("truncate table IMPROVEMENT_GRID; ");
-//    }
+    @AfterEach
+    void afterEach() {
+        deleteBackendTestTeam();
+    }
+
+    private void deleteBackendTestTeam() {
+        jdbcTemplate.update("truncate table IMPROVEMENT_GRID");
+//        jdbcTemplate.update("delete from IMPROVEMENT_GRID where team_name = ?; ", testTeamName);
+    }
 
     @Test
     void writeToDB() {
-        int result = insertRecord();
+        int result = insertRecord(testTeamName);
         assertEquals(result, 1);
     }
 
     @Test
     void readFromDB() {
-        insertRecord();
+        insertRecord(testTeamName);
         List<ImprovementGrid> improvementGrids = improvementGridRepository.queryAll();
         assertEquals(1, improvementGrids.size());
         assertEquals("Title", improvementGrids.get(0).getTitle());
     }
 
     @Test
+    void readFromDBByTeamName() {
+        insertRecord("Team Alpha");
+        insertRecord("Trash");
+        insertRecord("Team Gamma");
+        insertRecord("Team Gamma");
+
+        List<ImprovementGrid> improvementGridsTeamAlpha = improvementGridRepository.queryByTeamName("Team Alpha");
+        List<ImprovementGrid> improvementGridsTeamGamma = improvementGridRepository.queryByTeamName("Team Gamma");
+
+        assertEquals(1, improvementGridsTeamAlpha.size());
+        assertEquals(2, improvementGridsTeamGamma.size());
+    }
+
+    @Test
     void monitor() {
-        insertRecord();
-        String s = testRestTemplate.getForObject("http://localhost:" +
-                port +
-                "/monitor", String.class);
+        insertRecord(testTeamName);
+        String s = testRestTemplate.getForObject(String.format("http://localhost:%d/ben/monitor", port), String.class);
         assertTrue(s.startsWith("ImproveKataBenApplication UP since"));
     }
 
-    private int insertRecord() {
-        String teamName = "Team name";
+    private int insertRecord(String teamName) {
         String title = "Title";
         String field1Awesome = "Awesome";
         String field2Now = "Now";

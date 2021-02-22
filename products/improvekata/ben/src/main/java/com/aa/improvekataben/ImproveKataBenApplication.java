@@ -22,33 +22,38 @@ import com.aa.improvekataben.repository.ImprovementGridRepository;
 @RequestMapping(path = "/ben")
 public class ImproveKataBenApplication {
 
-	private Instant startUpTime = Instant.now();
+    private Instant startUpTime = Instant.now();
 
-	@Autowired
-	private ImprovementGridRepository improvementGridRepository;
+    @Autowired
+    private ImprovementGridRepository improvementGridRepository;
 
-	public static void main(String[] args) {
-		SpringApplication.run(ImproveKataBenApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ImproveKataBenApplication.class, args);
+    }
 
-	@GetMapping(path = "/queryAll", produces="application/json")
-	public List<ImprovementGrid> queryAll() {
-		return improvementGridRepository.queryAll();
-	}
+    @GetMapping(path = "/queryAll", produces = "application/json")
+    public List<ImprovementGrid> queryAll() {
+        return improvementGridRepository.queryAll();
+    }
 
-	@DeleteMapping(path = "/deleteTeam/{teamName}")
-	public void deleteTeam(@PathVariable String teamName) {
-		improvementGridRepository.deleteByTeam(teamName);
-	}
+    @GetMapping(path = "/queryByTeamName/{teamName}", produces = "application/json")
+    public List<ImprovementGrid> queryByTeamName(@PathVariable String teamName) {
+        return improvementGridRepository.queryByTeamName(teamName);
+    }
 
-	@PostMapping(path = "/insert", consumes = "application/json")
-	public void insert(@RequestBody ImprovementGrid improvementGrid) {
-		improvementGridRepository.insert(improvementGrid);
-	}
+    @DeleteMapping(path = "/deleteTeam/{teamName}")
+    public void deleteTeam(@PathVariable String teamName) {
+        improvementGridRepository.deleteByTeam(teamName);
+    }
 
-	@GetMapping(path = "/monitor", produces = "text/plain")
-	public String monitor() {
-		return "ImproveKataBenApplication UP since " + startUpTime;
-	}
+    @PostMapping(path = "/insert", consumes = "application/json")
+    public void insert(@RequestBody ImprovementGrid improvementGrid) {
+        improvementGridRepository.insert(improvementGrid);
+    }
+
+    @GetMapping(path = "/monitor", produces = "text/plain")
+    public String monitor() {
+        return "ImproveKataBenApplication UP since " + startUpTime;
+    }
 
 }

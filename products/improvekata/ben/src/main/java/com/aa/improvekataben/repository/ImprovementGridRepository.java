@@ -46,4 +46,16 @@ public class ImprovementGridRepository {
         System.out.println("==> DELETING team [" + teamName + "]");
         jdbcTemplate.update("DELETE FROM IMPROVEMENT_GRID WHERE team_name = ?", teamName);
     }
+
+    public List<ImprovementGrid> queryByTeamName(String teamName) {
+        return jdbcTemplate.query("select * from IMPROVEMENT_GRID where team_name = '" + teamName + "'",
+                (resultSet, rowNum) -> new ImprovementGrid()
+                        .setTeamName(resultSet.getString("team_name"))
+                        .setTitle(resultSet.getString("title"))
+                        .setField1Awesome(resultSet.getString("field1_awesome"))
+                        .setField2Now(resultSet.getString("field2_now"))
+                        .setField3Next(resultSet.getString("field3_next"))
+                        .setField4Breakdown(resultSet.getString("field4_breakdown"))
+        );
+    }
 }
