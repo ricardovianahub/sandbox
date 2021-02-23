@@ -5,6 +5,8 @@ GRANT ALL PRIVILEGES ON DATABASE docker TO docker;
 \c docker
 
 CREATE TABLE IF NOT EXISTS IMPROVEMENT_GRID(
+   unique_id varchar(100),
+   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
    team_name VARCHAR(100),
    title VARCHAR(100),
    field1_awesome VARCHAR(255),

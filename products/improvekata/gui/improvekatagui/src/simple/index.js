@@ -9,23 +9,24 @@ const App = () => {
         axios.get(endPoint)
             .then(response => {
                 let timestamp = new Date();
-                var improvementGrid = "{\"teamName\":\"" + document.querySelectorAll("[data-testid=\"versionsList\"]")[0] + "\"," +
-                    "\"teamName\":\"DOD_REACCOM\",\"field1Awesome\":\"field1\"," +
-                    "\"title\":\"" + timestamp + "\",\"field1Awesome\":\"field1\"," +
-                    "\"field2Now\":\"field2\"," +
-                    "\"field3Next\":\"field3\"," +
-                    "\"field4Breakdown\":\"field4\"}";
+                var improvementGrid = "{\"teamName\":\"" + document.getElementById("versionsList") + "\"," +
+                    "\"teamName\":\"DOD_REACCOM\"," +
+                    "\"title\":\"" + document.getElementById("title").value + "\"," +
+                    "\"field1Awesome\":\"" + document.getElementById("field1Awesome").value + "\"," +
+                    "\"field2Now\":\"" + document.getElementById("field2Now").value + "\"," +
+                    "\"field3Next\":\"" + document.getElementById("field3Next").value + "\"," +
+                    "\"field4Breakdown\":\"" + document.getElementById("field4Breakdown").value + "\"}";
                 const options = {
                     headers: {'Content-Type': 'application/json'}
                 };
-                axios.post('/ben/insert', improvementGrid, options);
-                document.getElementById("reaccom-message").innerText = "Record inserted succesfully";
-                document.querySelectorAll("[data-testid=\"versionsList\"]").forEach((ul_versionsList) => {
-                    let li: Element = document.createElement("li");
-                    let text: Element = document.createTextNode(timestamp);
-                    li.appendChild(text);
-                    ul_versionsList.appendChild(li);
-                })
+                axios.post('/ben/insert', improvementGrid, options)
+                    .then(insertResponse => {
+                        document.getElementById("reaccom-message").innerText = "Record inserted succesfully";
+                        let li: Element = document.createElement("li");
+                        let text: Element = document.createTextNode(timestamp);
+                        li.appendChild(text);
+                        document.getElementById("versionsList").appendChild(li);
+                    });
             })
             .catch(reason => {
                 document.getElementById("reaccom-message").innerText = "Connection to the backend timed out";
@@ -38,14 +39,14 @@ const App = () => {
             <h1 data-testid="headerTitle">
                 Improvement Kata
             </h1>
-            <input type="text" data-testid="title"></input>
+            <input type="text" id="title" data-testid="title"/>
             <br/>
             <hr/>
-            <textarea data-testid="fieldAwesome"></textarea>
-            <textarea data-testid="fieldNow"></textarea>
+            <textarea id="field1Awesome" data-testid="fieldAwesome"/>
+            <textarea id="field2Now" data-testid="fieldNow"/>
             <br/>
-            <textarea data-testid="fieldNext"></textarea>
-            <textarea data-testid="fieldBreakdown"></textarea>
+            <textarea id="field3Next" data-testid="fieldNext"/>
+            <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
             <br/>
             <button data-testid="insertButton" onClick={handleInsertButtonClick}>
                 Insert
@@ -53,7 +54,7 @@ const App = () => {
             <br/>
             <div id="reaccom-message" data-testid="message"></div>
             <hr/>
-            <ul data-testid="versionsList"></ul>
+            <ul id="versionsList" data-testid="versionsList"></ul>
         </div>
     )
 }
