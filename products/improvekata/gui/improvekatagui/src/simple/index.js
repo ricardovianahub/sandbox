@@ -71,7 +71,7 @@ axios.get('/ben/queryAll')
                 let li: Element = document.createElement("li");
                 let text: Element = document.createTextNode(row.title);
                 anchor.setAttribute("href", "");
-                anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.title + "'); return false");
+                anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.uniqueId + "'); return false");
                 anchor.appendChild(text);
                 li.appendChild(anchor);
                 ul.appendChild(li);

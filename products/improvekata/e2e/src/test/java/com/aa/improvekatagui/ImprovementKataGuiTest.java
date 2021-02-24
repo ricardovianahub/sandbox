@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -46,20 +47,20 @@ public class ImprovementKataGuiTest {
 
     @BeforeAll
     void beforeAll() {
-        driver = initWebDriver();
-    }
-
-    private WebDriver initWebDriver() {
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
-        options.setHeadless(true);  // <-- headless set here
-        return new FirefoxDriver(options);
+        options.setHeadless(true);
+        driver = new FirefoxDriver(options);
+        driver.get("http://localhost");
+    }
+
+    @AfterAll
+    void afterAll() {
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
     }
 
     @Test
     void ensureNecessaryFieldsArePresent() throws Exception {
-        driver.get("http://localhost");
-
         verifyTagName(driver, "[data-testid=title]", "input");
 
         verifyTagName(driver, "[data-testid=fieldAwesome]", "textarea");
@@ -81,8 +82,8 @@ public class ImprovementKataGuiTest {
 
     @Test
     void clickInsertButtonVerifySuccessfulResponse() throws Exception {
+        // setup
         String testTitle = "test title " + Math.random();
-        driver.get("http://localhost");
         driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys(testTitle);
 
         // execution
@@ -90,17 +91,19 @@ public class ImprovementKataGuiTest {
 
         // assertion
         verifyText(driver, "[data-testid=message]", "Record inserted succesfully");
-//        verifyText(driver, "[data-testid=versionsList]", "WRONG");
+        verifyText(driver, "[data-testid=versionsList]", "2020-02-10 10:34:15"); // regex SimpleDataPattern
 
         String queryByTeamName = testRestTemplate.getForObject("http://localhost/ben/queryByTeamName/DOD_REACCOM", String.class);
         List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>(){});
-        assertEquals(driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"), data.get(data.size() - 1).get("title"));
+        assertEquals(
+                driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"),
+                data.get(data.size() - 1).get("title")
+        );
     }
 
     @Test
     void clickInsertButtonVerifyTimeOutResponse() throws Exception {
         // setup
-        driver.get("http://localhost");
         driver.get("javascript:setEndpoint('/nowhere');");
 
         // execution
@@ -108,13 +111,11 @@ public class ImprovementKataGuiTest {
 
         // assertion
         verifyText(driver, "[data-testid=message]", "Connection to the backend timed out");
+        driver.navigate().refresh();
     }
 
     @Test
-    void sdfsdfsdf() {
-        // setup
-        driver.get("http://localhost");
-
+    void savindAndRetrievingDifferentGrids() {
         // populate data 1
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("Now Data 1");
@@ -131,11 +132,6 @@ public class ImprovementKataGuiTest {
 
         // refresh page
         driver.navigate().refresh();
-
-
-        // execution
-
-        // assertion
     }
 
     private void verifyTagName(WebDriver driver, String selector, String tagName) {

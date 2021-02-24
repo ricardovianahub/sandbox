@@ -41,6 +41,11 @@ public class ImproveKataBenApplication {
         return improvementGridRepository.queryByTeamName(teamName);
     }
 
+    @GetMapping(path = "/queryUniqueId/{uniqueId}", produces = "application/json")
+    public List<ImprovementGrid> queryByUniqueId(@PathVariable String uniqueId) {
+        return improvementGridRepository.queryByUniqueId(uniqueId);
+    }
+
     @DeleteMapping(path = "/deleteTeam/{teamName}")
     public void deleteTeam(@PathVariable String teamName) {
         improvementGridRepository.deleteByTeam(teamName);
