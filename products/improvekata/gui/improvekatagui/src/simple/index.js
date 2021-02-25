@@ -36,31 +36,45 @@ const App = () => {
 
     return (
         <div>
+            <div className="centralize">
             <h1 data-testid="headerTitle">
                 Improvement Kata
             </h1>
             <input type="text" id="title" data-testid="title"/>
-            <br/>
+            </div>
             <hr/>
-            <textarea id="field1Awesome" data-testid="fieldAwesome"/>
-            <textarea id="field2Now" data-testid="fieldNow"/>
-            <br/>
-            <textarea id="field3Next" data-testid="fieldNext"/>
-            <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
-            <br/>
-            <button data-testid="insertButton" onClick={handleInsertButtonClick}>
-                Insert
-            </button>
-            <br/>
-            <div id="reaccom-message" data-testid="message"></div>
-            <hr/>
-            <ul id="versionsList" data-testid="versionsList"></ul>
+            <div className="wrapper">
+                <div className="float">
+                    <textarea id="field1Awesome" data-testid="fieldAwesome"/>
+                    <textarea id="field2Now" data-testid="fieldNow"/>
+                    <br/>
+                    <textarea id="field3Next" data-testid="fieldNext"/>
+                    <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
+                    <br/>
+                    <button data-testid="insertButton" onClick={handleInsertButtonClick}>
+                        Insert
+                    </button>
+                    <div id="reaccom-message" data-testid="message"></div>
+                </div>
+                <div className="float">
+                    <ul id="versionsList" data-testid="versionsList"></ul>
+                </div>
+            </div>
         </div>
     )
 }
 
-let handleLiAnchorClick = (title) => {
-    alert("Hello! You have clicked\n" + title);
+let handleLiAnchorClick = (uniqueId) => {
+    axios.get('/ben/queryByUniqueId/' + uniqueId)
+        .then(response => {
+            for (let row of response.data) {
+                document.getElementById("title").value = row.title;
+                document.getElementById("field1Awesome").value = row.field1Awesome;
+                document.getElementById("field2Now").value = row.field2Now;
+                document.getElementById("field3Next").value = row.field3Next;
+                document.getElementById("field4Breakdown").value = row.field4Breakdown;
+            }
+        });
 }
 
 axios.get('/ben/queryAll')

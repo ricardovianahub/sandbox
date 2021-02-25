@@ -61,10 +61,10 @@ public class ImprovementKataGuiTest {
         driver.get("http://localhost");
     }
 
-    @AfterAll
-    void afterAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
-    }
+//    @AfterAll
+//    void afterAll() {
+//        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+//    }
 
     @Test
     void ensureNecessaryFieldsArePresent() throws Exception {
@@ -139,13 +139,18 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
-    void savindAndRetrievingDifferentGrids() {
+    void savindAndRetrievingDifferentGrids() throws Exception {
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
         // populate data 1
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("Now Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("Next Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("Breakdown Data 1");
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+
+        // refresh page
+        driver.navigate().refresh();
+        Thread.sleep(1000);
 
         // populate data 1
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 2");
@@ -156,6 +161,29 @@ public class ImprovementKataGuiTest {
 
         // refresh page
         driver.navigate().refresh();
+        Thread.sleep(1000);
+
+        // Capture the list of links
+        RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
+        List<WebElement> lis = ul.findElementsByTagName("li");
+
+        // Click on the second instance and verify it
+        lis.get(1).click();
+        Thread.sleep(200);
+
+        assertEquals("Awesome Data 2", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getText());
+        assertEquals("Now Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getText());
+        assertEquals("Next Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getText());
+        assertEquals("Breakdown Data 2", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getText());
+
+        // Click on the first instance and verify it
+        lis.get(0).click();
+        Thread.sleep(200);
+
+        assertEquals("Awesome Data 1", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getText());
+        assertEquals("Now Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getText());
+        assertEquals("Next Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getText());
+        assertEquals("Breakdown Data 1", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getText());
     }
 
     private void verifyTagName(WebDriver driver, String selector, String tagName) {

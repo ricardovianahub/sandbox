@@ -1,5 +1,6 @@
 FROM openjdk:14
-ARG JAR_FILE
-COPY ${JAR_FILE} /improvekataben.jar
+COPY . /src
+WORKDIR /src
+RUN ./gradlew bootJar --no-daemon
 EXPOSE 8200
-ENTRYPOINT ["java","-jar","/improvekataben.jar"]
+ENTRYPOINT ["java","-jar","/src/build/libs/backend-0.0.1-SNAPSHOT.jar"]
