@@ -1,11 +1,8 @@
 *.class
 .gradle/
-gradle/
 build/
 .idea/
 out/
 *.iml
 classes/
-gradle/
 node_modules/
-
