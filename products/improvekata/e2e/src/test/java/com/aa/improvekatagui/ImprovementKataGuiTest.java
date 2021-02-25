@@ -50,7 +50,7 @@ public class ImprovementKataGuiTest {
 
     @BeforeAll
     void beforeAll() {
-//        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
         //
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
@@ -61,7 +61,7 @@ public class ImprovementKataGuiTest {
 
     @AfterAll
     void afterAll() {
-//        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
     }
 
     @Test
