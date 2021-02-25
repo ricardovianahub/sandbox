@@ -69,7 +69,7 @@ axios.get('/ben/queryAll')
             document.querySelectorAll("[data-testid=\"versionsList\"]").forEach((ul) => {
                 let anchor: Element = document.createElement("a");
                 let li: Element = document.createElement("li");
-                let text: Element = document.createTextNode(row.title);
+                let text: Element = document.createTextNode(row.createdAt);
                 anchor.setAttribute("href", "");
                 anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.uniqueId + "'); return false");
                 anchor.appendChild(text);
