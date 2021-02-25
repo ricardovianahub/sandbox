@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -97,13 +99,22 @@ public class ImprovementKataGuiTest {
         // assertion
         verifyText(driver, "[data-testid=message]", "Record inserted succesfully");
 
-        RemoteWebElement element = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
+        RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
         String patternText = "202\\d-[01]\\d-[0123]\\d [012]\\d:[012345]\\d:[012345]\\d"; // 2020-02-10 10:34:15 am
         Pattern pattern = Pattern.compile(patternText);
 
-        for (WebElement each : element.findElementsByTagName("li")) {
-            assertTrue(pattern.matcher(each.getText()).matches(), "Does not match = " + each.getText() + " - tagName = " + each.getTagName());
+        List<WebElement> lis = ul.findElementsByTagName("li");
+
+        for (WebElement li : lis) {
+            assertTrue(pattern.matcher(li.getText()).matches(), "Does not match = " + li.getText() + " - tagName = " + li.getTagName());
         }
+
+        OffsetDateTime printedDateTime = OffsetDateTime.parse(
+                lis.get(lis.size() - 1).getText() + " -06:00",
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
+        );
+
+        assertTrue(OffsetDateTime.now().isAfter(printedDateTime), "The printed time on the screen is after the current server time");
 
         String queryByTeamName = testRestTemplate.getForObject("http://localhost/ben/queryByTeamName/DOD_REACCOM", String.class);
         List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>() {
