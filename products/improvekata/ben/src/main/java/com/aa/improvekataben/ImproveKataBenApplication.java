@@ -41,7 +41,7 @@ public class ImproveKataBenApplication {
         return improvementGridRepository.queryByTeamName(teamName);
     }
 
-    @GetMapping(path = "/queryUniqueId/{uniqueId}", produces = "application/json")
+    @GetMapping(path = "/queryByUniqueId/{uniqueId}", produces = "application/json")
     public List<ImprovementGrid> queryByUniqueId(@PathVariable String uniqueId) {
         return improvementGridRepository.queryByUniqueId(uniqueId);
     }

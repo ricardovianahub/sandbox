@@ -2,9 +2,13 @@ package com.aa.improvekatagui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,6 +22,7 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -47,6 +52,8 @@ public class ImprovementKataGuiTest {
 
     @BeforeAll
     void beforeAll() {
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+        //
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(true);
@@ -54,10 +61,10 @@ public class ImprovementKataGuiTest {
         driver.get("http://localhost");
     }
 
-    @AfterAll
-    void afterAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
-    }
+//    @AfterAll
+//    void afterAll() {
+//        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+//    }
 
     @Test
     void ensureNecessaryFieldsArePresent() throws Exception {
@@ -91,10 +98,27 @@ public class ImprovementKataGuiTest {
 
         // assertion
         verifyText(driver, "[data-testid=message]", "Record inserted succesfully");
-        verifyText(driver, "[data-testid=versionsList]", "2020-02-10 10:34:15"); // regex SimpleDataPattern
+
+        RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
+        String patternText = "202\\d-[01]\\d-[0123]\\d [012]\\d:[012345]\\d:[012345]\\d"; // 2020-02-10 10:34:15 am
+        Pattern pattern = Pattern.compile(patternText);
+
+        List<WebElement> lis = ul.findElementsByTagName("li");
+
+        for (WebElement li : lis) {
+            assertTrue(pattern.matcher(li.getText()).matches(), "Does not match = " + li.getText() + " - tagName = " + li.getTagName());
+        }
+
+        OffsetDateTime printedDateTime = OffsetDateTime.parse(
+                lis.get(lis.size() - 1).getText() + " -06:00",
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
+        );
+
+        assertTrue(OffsetDateTime.now().isAfter(printedDateTime), "The printed time on the screen is after the current server time");
 
         String queryByTeamName = testRestTemplate.getForObject("http://localhost/ben/queryByTeamName/DOD_REACCOM", String.class);
-        List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>(){});
+        List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>() {
+        });
         assertEquals(
                 driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"),
                 data.get(data.size() - 1).get("title")
@@ -115,13 +139,18 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
-    void savindAndRetrievingDifferentGrids() {
+    void savindAndRetrievingDifferentGrids() throws Exception {
+        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
         // populate data 1
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("Now Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("Next Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("Breakdown Data 1");
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+
+        // refresh page
+        driver.navigate().refresh();
+        Thread.sleep(1000);
 
         // populate data 1
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 2");
@@ -132,6 +161,29 @@ public class ImprovementKataGuiTest {
 
         // refresh page
         driver.navigate().refresh();
+        Thread.sleep(1000);
+
+        // Capture the list of links
+        RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
+        List<WebElement> lis = ul.findElementsByTagName("li");
+
+        // Click on the second instance and verify it
+        lis.get(1).click();
+        Thread.sleep(200);
+
+        assertEquals("Awesome Data 2", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getText());
+        assertEquals("Now Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getText());
+        assertEquals("Next Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getText());
+        assertEquals("Breakdown Data 2", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getText());
+
+        // Click on the first instance and verify it
+        lis.get(0).click();
+        Thread.sleep(200);
+
+        assertEquals("Awesome Data 1", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getText());
+        assertEquals("Now Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getText());
+        assertEquals("Next Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getText());
+        assertEquals("Breakdown Data 1", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getText());
     }
 
     private void verifyTagName(WebDriver driver, String selector, String tagName) {
