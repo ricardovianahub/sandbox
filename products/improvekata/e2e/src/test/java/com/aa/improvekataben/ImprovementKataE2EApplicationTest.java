@@ -3,6 +3,8 @@ package com.aa.improvekataben;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,11 +18,15 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.aa.improvekataben.data.ImprovementGrid;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = ImproveKataE2EApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ImprovementKataE2EApplicationTest {
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -42,13 +48,19 @@ class ImprovementKataE2EApplicationTest {
     }
 
     @Test
-    void insertReturnsInsertedObject() {
+    void insertReturnsInsertedObject() throws Exception {
         String randomTitle = UUID.randomUUID().toString();
-        String insert = addAndRetrieveRecord("TEST", randomTitle);
-        assertEquals("[{\"teamName\":\"TEST\",\"title\":\"" +
-                        randomTitle +
-                        "\",\"field1Awesome\":\"field1\",\"field2Now\":\"field2\",\"field3Next\":\"field3\",\"field4Breakdown\":\"field4\"}]"
-                , insert);
+        insertRecord("TEST", randomTitle);
+        String queryByTeamName = testRestTemplate.getForObject("http://localhost/ben/queryByTeamName/TEST", String.class);
+        List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>() {
+        });
+
+        assertEquals("TEST", data.get(0).get("teamName"));
+        assertEquals(randomTitle, data.get(0).get("title"));
+        assertEquals("field1", data.get(0).get("field1Awesome"));
+        assertEquals("field2", data.get(0).get("field2Now"));
+        assertEquals("field3", data.get(0).get("field3Next"));
+        assertEquals("field4", data.get(0).get("field4Breakdown"));
     }
 
     @Test
