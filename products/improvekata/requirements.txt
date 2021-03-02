@@ -1,0 +1,6 @@
+- Add labels to text areas
+  - Field1 = Definition of awesome = "Awesome"
+  - Field2 = Now = "Now"
+  - Field3 = Next Step = "Next"
+  - Field4 = Breakdown of steps = "Breakdown"
+  - Look / See

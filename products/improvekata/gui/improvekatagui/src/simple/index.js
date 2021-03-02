@@ -37,19 +37,31 @@ const App = () => {
     return (
         <div>
             <div className="centralize">
-            <h1 data-testid="headerTitle">
-                Improvement Kata
-            </h1>
-            <input type="text" id="title" data-testid="title"/>
+                <h1 data-testid="headerTitle">
+                    Improvement Kata
+                </h1>
+                <input type="text" id="title" data-testid="title"/>
             </div>
             <hr/>
             <div className="wrapper">
                 <div className="float">
-                    <textarea id="field1Awesome" data-testid="fieldAwesome"/>
-                    <textarea id="field2Now" data-testid="fieldNow"/>
+                    <div className="float">
+                        <div data-testid="fieldAwesomeLabel">Awesome</div>
+                        <textarea id="field1Awesome" data-testid="fieldAwesome"/>
+                    </div>
+                    <div className="float">
+                        <div data-testid="fieldNowLabel">Now</div>
+                        <textarea id="field2Now" data-testid="fieldNow"/>
+                    </div>
                     <br/>
-                    <textarea id="field3Next" data-testid="fieldNext"/>
-                    <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
+                    <div className="float">
+                        <div data-testid="fieldNextLabel">Next</div>
+                        <textarea id="field3Next" data-testid="fieldNext"/>
+                    </div>
+                    <div className="float">
+                        <div data-testid="fieldBreakdownLabel">Breakdown</div>
+                        <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
+                    </div>
                     <br/>
                     <button data-testid="insertButton" onClick={handleInsertButtonClick}>
                         Insert

@@ -78,9 +78,16 @@ public class ImprovementKataGuiTest {
     void ensureNecessaryFieldsArePresent() throws Exception {
         verifyTagName(driver, "[data-testid=title]", "input");
 
+        verifyText(driver, "div[data-testid=fieldAwesomeLabel]", "Awesome");
         verifyTagName(driver, "[data-testid=fieldAwesome]", "textarea");
+
+        verifyText(driver, "div[data-testid=fieldNowLabel]", "Now");
         verifyTagName(driver, "[data-testid=fieldNow]", "textarea");
+
+        verifyText(driver, "div[data-testid=fieldNextLabel]", "Next");
         verifyTagName(driver, "[data-testid=fieldNext]", "textarea");
+
+        verifyText(driver, "div[data-testid=fieldBreakdownLabel]", "Breakdown");
         verifyTagName(driver, "[data-testid=fieldBreakdown]", "textarea");
 
         verifyTagName(driver, "[data-testid=versionsList]", "ul");
