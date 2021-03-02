@@ -30,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.aa.TestUtils;
 import com.aa.improvekataben.ImproveKataE2EApplication;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,28 +50,31 @@ public class ImprovementKataGuiTest {
     private ObjectMapper mapper = new ObjectMapper();
 
     private WebDriver driver;
-
     private Wait wait;
 
+    private String baseURL;
+
     @BeforeAll
-    void beforeAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+    void beforeAll() throws Exception {
+        baseURL = TestUtils.retrieveBaseURL();
+        //
+        testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         //
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(true);
         driver = new FirefoxDriver(options);
-        driver.get("http://localhost");
+        driver.get(baseURL);
         //
         wait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(2000))
+                .withTimeout(Duration.ofSeconds(5000))
                 .pollingEvery(Duration.ofMillis(100))
                 .ignoring(NoSuchElementException.class);
     }
 
     @AfterAll
     void afterAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+        testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         driver.close();
     }
 
@@ -131,7 +135,7 @@ public class ImprovementKataGuiTest {
 
         assertTrue(OffsetDateTime.now().isAfter(printedDateTime), "The printed time on the screen is after the current server time");
 
-        String queryByTeamName = testRestTemplate.getForObject("http://localhost/ben/queryByTeamName/DOD_REACCOM", String.class);
+        String queryByTeamName = testRestTemplate.getForObject(baseURL + "/ben/queryByTeamName/DOD_REACCOM", String.class);
         List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>() {
         });
         assertEquals(
@@ -155,7 +159,7 @@ public class ImprovementKataGuiTest {
 
     @Test
     void savingAndRetrievingDifferentGrids() throws Exception {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+        testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         // populate data 1
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("Now Data 1");
