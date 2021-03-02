@@ -54,13 +54,13 @@ public class ImprovementKataGuiTest {
 
     @BeforeAll
     void beforeAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+        testRestTemplate.delete("http://localhost:8080/ben/deleteTeam/DOD_REACCOM");
         //
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(true);
         driver = new FirefoxDriver(options);
-        driver.get("http://localhost");
+        driver.get("http://localhost:8080");
         //
         wait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(2000))
@@ -70,7 +70,7 @@ public class ImprovementKataGuiTest {
 
     @AfterAll
     void afterAll() {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+        testRestTemplate.delete("http://localhost:8080/ben/deleteTeam/DOD_REACCOM");
         driver.close();
     }
 
@@ -131,7 +131,7 @@ public class ImprovementKataGuiTest {
 
         assertTrue(OffsetDateTime.now().isAfter(printedDateTime), "The printed time on the screen is after the current server time");
 
-        String queryByTeamName = testRestTemplate.getForObject("http://localhost/ben/queryByTeamName/DOD_REACCOM", String.class);
+        String queryByTeamName = testRestTemplate.getForObject("http://localhost:8080/ben/queryByTeamName/DOD_REACCOM", String.class);
         List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>() {
         });
         assertEquals(
@@ -155,7 +155,7 @@ public class ImprovementKataGuiTest {
 
     @Test
     void savingAndRetrievingDifferentGrids() throws Exception {
-        testRestTemplate.delete("http://localhost/ben/deleteTeam/DOD_REACCOM");
+        testRestTemplate.delete("http://localhost:8080/ben/deleteTeam/DOD_REACCOM");
         // populate data 1
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 1");
         driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("Now Data 1");
