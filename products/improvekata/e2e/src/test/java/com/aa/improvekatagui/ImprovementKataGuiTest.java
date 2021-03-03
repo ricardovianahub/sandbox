@@ -67,7 +67,7 @@ public class ImprovementKataGuiTest {
         driver.get(baseURL);
         //
         wait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(5000))
+                .withTimeout(Duration.ofSeconds(10))
                 .pollingEvery(Duration.ofMillis(100))
                 .ignoring(NoSuchElementException.class);
     }
