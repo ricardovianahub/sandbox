@@ -22,8 +22,8 @@ const App = () => {
                 axios.post('/ben/insert', improvementGrid, options)
                     .then(insertResponse => {
                         document.getElementById("reaccom-message").innerText = "Record inserted succesfully";
-                        let li: Element = document.createElement("li");
-                        let text: Element = document.createTextNode(moment(timestamp).format("YYYY-MM-DD hh:mm:ss"));
+                        let li = document.createElement("li");
+                        let text = document.createTextNode(moment(timestamp).format("YYYY-MM-DD hh:mm:ss"));
                         li.appendChild(text);
                         document.getElementById("versionsList").appendChild(li);
                     });
@@ -93,9 +93,9 @@ axios.get('/ben/queryAll')
     .then(response => {
         for (let row of response.data) {
             document.querySelectorAll("[data-testid=\"versionsList\"]").forEach((ul) => {
-                let anchor: Element = document.createElement("a");
-                let li: Element = document.createElement("li");
-                let text: Element = document.createTextNode(moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss"));
+                let anchor = document.createElement("a");
+                let li = document.createElement("li");
+                let text = document.createTextNode(moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss"));
                 anchor.setAttribute("href", "");
                 anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.uniqueId + "'); return false");
                 anchor.appendChild(text);
@@ -104,6 +104,5 @@ axios.get('/ben/queryAll')
             })
         }
     });
-
 
 ReactDOM.render(<App/>, document.getElementById("root"));

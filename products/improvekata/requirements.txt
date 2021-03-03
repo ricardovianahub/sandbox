@@ -4,3 +4,14 @@
   - Field3 = Next Step = "Next"
   - Field4 = Breakdown of steps = "Breakdown"
   - Look / See
+
+- Delete function
+  - Save the latest loaded record from the database (unique id) to the frontend
+  - Create a Delete button that will delete the record corresponding to the current screen
+    - When that happens, clear the fields in the screen
+  - Add X links at each timestamp and allow them to be deleted directly
+
+- Screen reaction
+  - When the fields in the screen are empty, disable the insert button
+  - When the fields in the screen are empty, disable the delete button
+  - Change the color of a link that was clicked so we can easily glance at what is being shown in the screen

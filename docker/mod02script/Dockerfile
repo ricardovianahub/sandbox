@@ -1,4 +1,3 @@
-FROM alpine:latest
+FROM ubuntu:latest
 COPY script.sh .
 CMD ./script.sh
-
