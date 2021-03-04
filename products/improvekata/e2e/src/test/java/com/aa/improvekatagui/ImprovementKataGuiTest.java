@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.AfterAll;
@@ -66,11 +65,7 @@ public class ImprovementKataGuiTest {
         options.setHeadless(true);
         driver = new FirefoxDriver(options);
         driver.get(baseURL);
-        //
-        wait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(20))
-                .pollingEvery(Duration.ofMillis(500))
-                .ignoring(NoSuchElementException.class);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     @AfterAll
@@ -182,8 +177,7 @@ public class ImprovementKataGuiTest {
 
         // refresh page
         driver.navigate().refresh();
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
-//        wait.until((Function<WebDriver, WebElement>) driver -> driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")));
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
         // Capture the list of links
         RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
@@ -192,7 +186,6 @@ public class ImprovementKataGuiTest {
         // Click on the second instance and verify it
         lis.get(1).click();
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-//        wait.until((Function<WebDriver, WebElement>) driver -> driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")));
 
         assertEquals("Awesome Data 2", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
         assertEquals("Now Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
