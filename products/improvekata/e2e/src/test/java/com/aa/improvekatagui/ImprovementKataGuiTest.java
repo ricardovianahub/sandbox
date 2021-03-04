@@ -100,6 +100,8 @@ public class ImprovementKataGuiTest {
         verifyText(driver, "button[data-testid=insertButton]", "Insert");
 
         verifyTagName(driver, "[data-testid=message]", "div");
+
+        verifyTagName(driver, "[data-testid=uniqueKey]", "input");
     }
 
     @Test

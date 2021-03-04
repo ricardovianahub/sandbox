@@ -71,6 +71,7 @@ const App = () => {
                 <div className="float">
                     <ul id="versionsList" data-testid="versionsList"></ul>
                 </div>
+                <input type="hidden" data-testid="uniqueKey"/>
             </div>
         </div>
     )
