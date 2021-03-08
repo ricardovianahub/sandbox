@@ -22,7 +22,11 @@ public class ImprovementGridRepository {
         System.out.println("==> INSERTING for team [" + teamName + "] - title " + title);
         return jdbcTemplate.update(
                 "INSERT INTO IMPROVEMENT_GRID (unique_id, team_name,title,field1_awesome,field2_now,field3_next,field4_breakdown) VALUES (?,?,?,?,?,?,?)",
-                UUID.randomUUID().toString(), teamName, title, field1Awesome, field2Now, field3Next, field4Breakdown);
+                generateUniqueID(), teamName, title, field1Awesome, field2Now, field3Next, field4Breakdown);
+    }
+
+    private String generateUniqueID() {
+        return UUID.randomUUID().toString();
     }
 
     public List<ImprovementGrid> queryAll() {

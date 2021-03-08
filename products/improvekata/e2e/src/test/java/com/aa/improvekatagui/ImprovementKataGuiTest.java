@@ -1,6 +1,7 @@
 package com.aa.improvekatagui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
@@ -169,7 +170,6 @@ public class ImprovementKataGuiTest {
         driver.navigate().refresh();
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 
-
         // populate data 1
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 2");
         driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("Now Data 2");
@@ -193,6 +193,7 @@ public class ImprovementKataGuiTest {
         assertEquals("Now Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
         assertEquals("Next Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
         assertEquals("Breakdown Data 2", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
+        assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueKey]")).getAttribute("value").trim()));
 
         // Click on the first instance and verify it
         lis.get(0).click();
@@ -203,6 +204,7 @@ public class ImprovementKataGuiTest {
         assertEquals("Now Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
         assertEquals("Next Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
         assertEquals("Breakdown Data 1", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
+        assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueKey]")).getAttribute("value").trim()));
     }
 
     private void verifyTagName(WebDriver driver, String selector, String tagName) {
