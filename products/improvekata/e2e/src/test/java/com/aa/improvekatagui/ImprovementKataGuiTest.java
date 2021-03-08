@@ -101,7 +101,7 @@ public class ImprovementKataGuiTest {
 
         verifyTagName(driver, "[data-testid=message]", "div");
 
-        verifyTagName(driver, "[data-testid=uniqueKey]", "input");
+        verifyTagName(driver, "[data-testid=uniqueKey][type=hidden]", "input");
     }
 
     @Test
