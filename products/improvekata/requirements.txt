@@ -5,9 +5,9 @@ X Add labels to text areas
   - Field4 = Breakdown of steps = "Breakdown"
   - Look / See
 
-- Delete function
-  - Create hidden field that will hold the unique-id from the database
-  - Save the latest loaded record from the database (unique id) to the frontend
+> Delete function
+  X Create hidden field that will hold the unique-id from the database
+  > Save the latest loaded record from the database (unique id) to the frontend
   - Create a Delete button that will delete the record corresponding to the current screen
     - When that happens, clear the fields in the screen
   - Add X links at each timestamp and allow them to be deleted directly
