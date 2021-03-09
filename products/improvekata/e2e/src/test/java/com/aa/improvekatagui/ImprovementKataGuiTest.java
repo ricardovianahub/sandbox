@@ -117,14 +117,21 @@ public class ImprovementKataGuiTest {
         // assertion
         verifyText(driver, "[data-testid=message]", "Record inserted succesfully");
 
+        String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
+        Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
+
+        WebElement uniqueKeyElement = driver.findElement(By.cssSelector("[data-testid=uniqueKey]"));
+        assertTrue(patternUniqueID.matcher(uniqueKeyElement.getText()).matches());
+
+
         RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
-        String patternText = "202\\d-[01]\\d-[0123]\\d [012]\\d:[012345]\\d:[012345]\\d"; // 2020-02-10 10:34:15 am
-        Pattern pattern = Pattern.compile(patternText);
+        String patternDateTemplate = "202\\d-[01]\\d-[0123]\\d [012]\\d:[012345]\\d:[012345]\\d"; // 2020-02-10 10:34:15 am
+        Pattern patternDate = Pattern.compile(patternDateTemplate);
 
         List<WebElement> lis = ul.findElementsByTagName("li");
 
         for (WebElement li : lis) {
-            assertTrue(pattern.matcher(li.getText()).matches(), "Does not match = " + li.getText() + " - tagName = " + li.getTagName());
+            assertTrue(patternDate.matcher(li.getText()).matches(), "Does not match = " + li.getText() + " - tagName = " + li.getTagName());
         }
 
         OffsetDateTime printedDateTime = OffsetDateTime.parse(
