@@ -22,6 +22,7 @@ const App = () => {
                 axios.post('/ben/insert', improvementGrid, options)
                     .then(insertResponse => {
                         document.getElementById("reaccom-message").innerText = "Record inserted succesfully";
+                        document.getElementById("uniqueId").value = insertResponse.data.uniqueId;
                         let li = document.createElement("li");
                         let text = document.createTextNode(moment(timestamp).format("YYYY-MM-DD hh:mm:ss"));
                         li.appendChild(text);
@@ -71,7 +72,7 @@ const App = () => {
                 <div className="float">
                     <ul id="versionsList" data-testid="versionsList"></ul>
                 </div>
-                <input type="hidden" data-testid="uniqueKey" value="X" />
+                <input id="uniqueId" type="hidden" data-testid="uniqueId" />
             </div>
         </div>
     )
@@ -86,6 +87,7 @@ let handleLiAnchorClick = (uniqueId) => {
                 document.getElementById("field2Now").value = row.field2Now;
                 document.getElementById("field3Next").value = row.field3Next;
                 document.getElementById("field4Breakdown").value = row.field4Breakdown;
+                document.getElementById("uniqueId").value = row.uniqueId;
             }
         });
 }

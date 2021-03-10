@@ -102,7 +102,7 @@ public class ImprovementKataGuiTest {
 
         verifyTagName(driver, "[data-testid=message]", "div");
 
-        verifyTagName(driver, "[data-testid=uniqueKey][type=hidden]", "input");
+        verifyTagName(driver, "[data-testid=uniqueId][type=hidden]", "input");
     }
 
     @Test
@@ -120,8 +120,8 @@ public class ImprovementKataGuiTest {
         String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
         Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
 
-        WebElement uniqueKeyElement = driver.findElement(By.cssSelector("[data-testid=uniqueKey]"));
-        assertTrue(patternUniqueID.matcher(uniqueKeyElement.getText()).matches());
+        WebElement uniqueIdElement = driver.findElement(By.cssSelector("[data-testid=uniqueId]"));
+        assertTrue(patternUniqueID.matcher(uniqueIdElement.getAttribute("value")).matches(), "Value [" + uniqueIdElement.getAttribute("value") + "] does not match " + patternUniqueIDTemplate) ;
 
 
         RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
@@ -200,7 +200,7 @@ public class ImprovementKataGuiTest {
         assertEquals("Now Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
         assertEquals("Next Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
         assertEquals("Breakdown Data 2", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
-        assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueKey]")).getAttribute("value").trim()));
+        assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim()));
 
         // Click on the first instance and verify it
         lis.get(0).click();
@@ -211,7 +211,7 @@ public class ImprovementKataGuiTest {
         assertEquals("Now Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
         assertEquals("Next Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
         assertEquals("Breakdown Data 1", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
-        assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueKey]")).getAttribute("value").trim()));
+        assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim()));
     }
 
     private void verifyTagName(WebDriver driver, String selector, String tagName) {

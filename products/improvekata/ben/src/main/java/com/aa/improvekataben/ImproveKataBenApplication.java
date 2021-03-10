@@ -52,8 +52,9 @@ public class ImproveKataBenApplication {
     }
 
     @PostMapping(path = "/insert", consumes = "application/json")
-    public void insert(@RequestBody ImprovementGrid improvementGrid) {
+    public String insert(@RequestBody ImprovementGrid improvementGrid) {
         improvementGridRepository.insert(improvementGrid);
+        return "{\"uniqueId\":\"12345678-1234-1234-1234-123456789101\"}";
     }
 
     @GetMapping(path = "/monitor", produces = "text/plain")
