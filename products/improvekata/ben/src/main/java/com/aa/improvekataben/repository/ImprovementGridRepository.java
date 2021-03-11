@@ -18,11 +18,14 @@ public class ImprovementGridRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public int insert(String teamName, String title, String field1Awesome, String field2Now, String field3Next, String field4Breakdown) {
+    public String insert(String teamName, String title, String field1Awesome, String field2Now, String field3Next, String field4Breakdown) {
         System.out.println("==> INSERTING for team [" + teamName + "] - title " + title);
-        return jdbcTemplate.update(
+        String uniqueId = generateUniqueID();
+        jdbcTemplate.update(
                 "INSERT INTO IMPROVEMENT_GRID (unique_id, team_name,title,field1_awesome,field2_now,field3_next,field4_breakdown) VALUES (?,?,?,?,?,?,?)",
-                generateUniqueID(), teamName, title, field1Awesome, field2Now, field3Next, field4Breakdown);
+                uniqueId, teamName, title, field1Awesome, field2Now, field3Next, field4Breakdown);
+
+        return uniqueId;
     }
 
     private String generateUniqueID() {
@@ -42,7 +45,7 @@ public class ImprovementGridRepository {
         );
     }
 
-    public int insert(ImprovementGrid improvementGrid) {
+    public String insert(ImprovementGrid improvementGrid) {
         return insert(
                 improvementGrid.getTeamName(), improvementGrid.getTitle(), improvementGrid.getField1Awesome(),
                 improvementGrid.getField2Now(), improvementGrid.getField3Next(), improvementGrid.getField4Breakdown()

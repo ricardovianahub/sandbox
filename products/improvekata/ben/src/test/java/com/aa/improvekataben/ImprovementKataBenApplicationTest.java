@@ -2,7 +2,6 @@ package com.aa.improvekataben;
 
 import com.aa.improvekataben.data.ImprovementGrid;
 import com.aa.improvekataben.repository.ImprovementGridRepository;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -58,8 +58,10 @@ class ImprovementKataBenApplicationTest {
 
     @Test
     void writeToDB() {
-        int result = insertRecord(testTeamName);
-        assertEquals(result, 1);
+        String result = insertRecord(testTeamName);
+        String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
+        Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
+        assertTrue(patternUniqueID.matcher(result).matches(), "Matches pattern");
     }
 
     @Test
@@ -91,16 +93,15 @@ class ImprovementKataBenApplicationTest {
         assertTrue(s.startsWith("ImproveKataBenApplication UP since"));
     }
 
-    private int insertRecord(String teamName) {
+    private String insertRecord(String teamName) {
         String title = "Title";
         String field1Awesome = "Awesome";
         String field2Now = "Now";
         String field3Next = "Next";
         String field4Breakdown = "Breakdown";
-        int result = improvementGridRepository.insert(
+        return improvementGridRepository.insert(
                 teamName, title, field1Awesome, field2Now, field3Next, field4Breakdown
         );
-        return result;
     }
 
 }
