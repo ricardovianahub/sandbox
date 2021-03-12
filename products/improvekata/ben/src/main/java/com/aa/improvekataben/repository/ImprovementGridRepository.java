@@ -1,5 +1,6 @@
 package com.aa.improvekataben.repository;
 
+import com.aa.improvekataben.api.BenResponse;
 import com.aa.improvekataben.data.ImprovementGrid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,14 @@ public class ImprovementGridRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public String insert(String teamName, String title, String field1Awesome, String field2Now, String field3Next, String field4Breakdown) {
+    public BenResponse insert(String teamName, String title, String field1Awesome, String field2Now, String field3Next, String field4Breakdown) {
         System.out.println("==> INSERTING for team [" + teamName + "] - title " + title);
         String uniqueId = generateUniqueID();
         jdbcTemplate.update(
                 "INSERT INTO IMPROVEMENT_GRID (unique_id, team_name,title,field1_awesome,field2_now,field3_next,field4_breakdown) VALUES (?,?,?,?,?,?,?)",
                 uniqueId, teamName, title, field1Awesome, field2Now, field3Next, field4Breakdown);
 
-        return uniqueId;
+        return new BenResponse(uniqueId);
     }
 
     private String generateUniqueID() {
@@ -45,7 +46,7 @@ public class ImprovementGridRepository {
         );
     }
 
-    public String insert(ImprovementGrid improvementGrid) {
+    public BenResponse insert(ImprovementGrid improvementGrid) {
         return insert(
                 improvementGrid.getTeamName(), improvementGrid.getTitle(), improvementGrid.getField1Awesome(),
                 improvementGrid.getField2Now(), improvementGrid.getField3Next(), improvementGrid.getField4Breakdown()

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aa.improvekataben.api.BenResponse;
 import com.aa.improvekataben.data.ImprovementGrid;
 import com.aa.improvekataben.repository.ImprovementGridRepository;
 
@@ -52,9 +53,8 @@ public class ImproveKataBenApplication {
     }
 
     @PostMapping(path = "/insert", consumes = "application/json")
-    public String insert(@RequestBody ImprovementGrid improvementGrid) {
-        improvementGridRepository.insert(improvementGrid);
-        return "{\"uniqueId\":\"12345678-1234-1234-1234-123456789101\"}";
+    public BenResponse insert(@RequestBody ImprovementGrid improvementGrid) {
+        return improvementGridRepository.insert(improvementGrid);
     }
 
     @GetMapping(path = "/monitor", produces = "text/plain")

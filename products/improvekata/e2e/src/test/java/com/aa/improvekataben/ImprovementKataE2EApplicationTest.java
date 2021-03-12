@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.aa.TestUtils;
+import com.aa.improvekataben.api.ben.BenResponse;
 import com.aa.improvekataben.data.ImprovementGrid;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,6 +58,14 @@ class ImprovementKataE2EApplicationTest {
     }
 
     @Test
+    void benResponseShouldBeValidAsExpected() throws Exception {
+        BenResponse response = insertRecord("TEST", "Title");
+        String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
+        Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
+        assertTrue(patternUniqueID.matcher(response.getUniqueId()).matches());
+    }
+
+    @Test
     void insertReturnsInsertedObject() throws Exception {
         String randomTitle = UUID.randomUUID().toString();
         insertRecord("TEST", randomTitle);
@@ -88,7 +98,7 @@ class ImprovementKataE2EApplicationTest {
         return queryAll;
     }
 
-    private void insertRecord(String teamName, String randomTitle) {
+    private BenResponse insertRecord(String teamName, String randomTitle) {
         ImprovementGrid improvementGrid = new ImprovementGrid()
                 .setTeamName(teamName)
                 .setTitle(randomTitle)
@@ -96,7 +106,7 @@ class ImprovementKataE2EApplicationTest {
                 .setField2Now("field2")
                 .setField3Next("field3")
                 .setField4Breakdown("field4");
-        testRestTemplate.postForObject(baseURL + "/ben/insert", improvementGrid, ImprovementGrid.class);
+        return testRestTemplate.postForObject(baseURL + "/ben/insert", improvementGrid, BenResponse.class);
     }
 
 }

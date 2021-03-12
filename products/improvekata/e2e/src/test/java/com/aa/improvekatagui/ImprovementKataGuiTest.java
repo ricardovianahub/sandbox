@@ -4,12 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -24,7 +22,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -113,6 +110,7 @@ public class ImprovementKataGuiTest {
 
         // execution
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 
         // assertion
         verifyText(driver, "[data-testid=message]", "Record inserted succesfully");
@@ -121,8 +119,11 @@ public class ImprovementKataGuiTest {
         Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
 
         WebElement uniqueIdElement = driver.findElement(By.cssSelector("[data-testid=uniqueId]"));
+        String queryByTeamName = testRestTemplate.getForObject(baseURL + "/ben/queryByTeamName/DOD_REACCOM", String.class);
+        List<Map<String, Object>> dataInserted = mapper.readValue(queryByTeamName, new TypeReference<>() {
+        });
         assertTrue(patternUniqueID.matcher(uniqueIdElement.getAttribute("value")).matches(), "Value [" + uniqueIdElement.getAttribute("value") + "] does not match " + patternUniqueIDTemplate) ;
-
+        assertEquals(dataInserted.get(dataInserted.size() - 1).get("uniqueId"), uniqueIdElement.getAttribute("value"));
 
         RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
         String patternDateTemplate = "202\\d-[01]\\d-[0123]\\d [012]\\d:[012345]\\d:[012345]\\d"; // 2020-02-10 10:34:15 am
@@ -141,12 +142,11 @@ public class ImprovementKataGuiTest {
 
         assertTrue(OffsetDateTime.now().isAfter(printedDateTime), "The printed time on the screen is after the current server time");
 
-        String queryByTeamName = testRestTemplate.getForObject(baseURL + "/ben/queryByTeamName/DOD_REACCOM", String.class);
-        List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>() {
+        List<Map<String, Object>> dataLatest = mapper.readValue(queryByTeamName, new TypeReference<>() {
         });
         assertEquals(
                 driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"),
-                data.get(data.size() - 1).get("title")
+                dataLatest.get(dataLatest.size() - 1).get("title")
         );
     }
 
