@@ -7,9 +7,16 @@ X Add labels to text areas
 
 > Delete function
   X Create hidden field that will hold the unique-id from the database
-  > Save the latest loaded record from the database (unique id) to the frontend
-  - Create a Delete button that will delete the record corresponding to the current screen
-    - When that happens, clear the fields in the screen
+  X Save the latest loaded record from the database (unique id) to the frontend
+  - Create a Delete button
+    - Place the Delete button in the page
+    - When clicked, delete the record corresponding to the current screen in the database
+    - Refresh the list of timestamps on the right of page to eliminate the record that was deleted
+      - Refresh the whole page or remove manually the timestamp that was eliminated? If so, how are we going to identify in the page,
+         since it's technically possible to have 2 records created at the exact same second
+    - When that happens successfully, clear the fields in the screen
+    - When a error is received from the backend, show the message "Deletion failed" - and don't update the page in any way
+      (clear the text areas, delete the timestamp from the list, etc)
   - Add X links at each timestamp and allow them to be deleted directly
 
 - Screen reaction
