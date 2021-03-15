@@ -5,6 +5,8 @@ function setEndpoint(value) {
 }
 
 const App = () => {
+    function handleDeleteButtonClick() {
+    }
     function handleInsertButtonClick() {
         axios.get(endPoint)
             .then(response => {
@@ -64,9 +66,8 @@ const App = () => {
                         <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
                     </div>
                     <br/>
-                    <button data-testid="insertButton" onClick={handleInsertButtonClick}>
-                        Insert
-                    </button>
+                    <button data-testid="insertButton" onClick={handleInsertButtonClick}>Insert</button>
+                    <button data-testid="deleteButton" onClick={handleDeleteButtonClick}>Delete</button>
                     <div id="reaccom-message" data-testid="message"></div>
                 </div>
                 <div className="float">
