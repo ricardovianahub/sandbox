@@ -110,17 +110,22 @@ public class ImprovementKataGuiTest {
         driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys(testTitle);
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
 
         // execution
+        driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();
+        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        List uniqueIdDeleted = testRestTemplate.getForObject(baseURL + "/ben/queryByUniqueId/" + uniqueId, List.class);
+
         // assertion
+        assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
     }
 
     //@Test
     void clickDeleteButtonVerifySuccessfulResponseWhenClickingOnATimestampLink() throws Exception {
 
     }
-
-        @Test
+    @Test
     void clickInsertButtonVerifySuccessfulResponse() throws Exception {
         // setup
         String testTitle = "test title " + Math.random();

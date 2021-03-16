@@ -1,14 +1,17 @@
-var endPoint = '/ben/monitor';
+let endPointMonitor = '/ben/monitor';
 
 function setEndpoint(value) {
-    endPoint = value;
+    endPointMonitor = value;
 }
 
 const App = () => {
     function handleDeleteButtonClick() {
+        const uniqueId = document.getElementById("uniqueId").value;
+        axios.post('/ben/deleteByUniqueId/' + uniqueId);
     }
+
     function handleInsertButtonClick() {
-        axios.get(endPoint)
+        axios.get(endPointMonitor)
             .then(response => {
                 let timestamp = new Date();
                 var improvementGrid = "{\"teamName\":\"" + document.getElementById("versionsList") + "\"," +
