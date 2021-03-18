@@ -85,4 +85,9 @@ public class ImprovementGridRepository {
                         .setField4Breakdown(resultSet.getString("field4_breakdown"))
         );
     }
+
+    public void deleteByUniqueId(String uniqueId) {
+        System.out.println("==> DELETING record by unique Id [" + uniqueId + "]");
+        jdbcTemplate.update("DELETE FROM IMPROVEMENT_GRID WHERE unique_id = ?", uniqueId);
+    }
 }

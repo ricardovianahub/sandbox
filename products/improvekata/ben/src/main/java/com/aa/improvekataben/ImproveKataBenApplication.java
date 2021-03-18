@@ -52,6 +52,11 @@ public class ImproveKataBenApplication {
         improvementGridRepository.deleteByTeam(teamName);
     }
 
+    @DeleteMapping(path = "/deleteByUniqueId/{uniqueId}")
+    public void deleteByUniqueId(@PathVariable String uniqueId) {
+        improvementGridRepository.deleteByUniqueId(uniqueId);
+    }
+
     @PostMapping(path = "/insert", consumes = "application/json")
     public BenResponse insert(@RequestBody ImprovementGrid improvementGrid) {
         return improvementGridRepository.insert(improvementGrid);
