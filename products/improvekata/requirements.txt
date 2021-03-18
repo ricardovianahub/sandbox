@@ -21,6 +21,9 @@ X Add labels to text areas
   - Disable delete button when there is nothing to deleted
     - Define "Nothing to delete" (not clicked on the timestamps? no records at all? nothing inserted in this session?)
 
+- Add logging mechanism
+  - Output to standard output
+
 - Screen reaction
   - When the fields in the screen are empty, disable the insert button
   - When the fields in the screen are empty, disable the delete button
