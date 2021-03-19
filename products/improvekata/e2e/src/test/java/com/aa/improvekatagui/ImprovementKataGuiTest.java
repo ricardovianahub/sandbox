@@ -119,6 +119,8 @@ public class ImprovementKataGuiTest {
 
         // assertion
         assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
+
+        verifyText(driver, "[data-testid=message]", "Record deleted successfully");
     }
 
     //@Test
@@ -136,7 +138,7 @@ public class ImprovementKataGuiTest {
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 
         // assertion
-        verifyText(driver, "[data-testid=message]", "Record inserted succesfully");
+        verifyText(driver, "[data-testid=message]", "Record inserted successfully");
 
         String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
         Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
@@ -176,7 +178,7 @@ public class ImprovementKataGuiTest {
     @Test
     void clickInsertButtonVerifyTimeOutResponse() throws Exception {
         // setup
-        driver.get("javascript:setEndpoint('/nowhere');");
+        driver.get("javascript:setEndpointInsert('/nowhere');");
 
         // execution
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();

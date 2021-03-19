@@ -1,13 +1,21 @@
 let endPointMonitor = '/ben/monitor';
+let endpointInsert = '/ben/insert';
 
-function setEndpoint(value) {
+function setEndpointInsert(value) {
+    endpointInsert = value;
+}
+
+function setEndpointMonitor(value) {
     endPointMonitor = value;
 }
 
 const App = () => {
     function handleDeleteButtonClick() {
         const uniqueId = document.getElementById("uniqueId").value;
-        axios.post('/ben/deleteByUniqueId/' + uniqueId);
+        axios.delete('/ben/deleteByUniqueId/' + uniqueId)
+            .then(deleteResponse => {
+                document.getElementById("reaccom-message").innerText = "Record deleted successfully";
+            });
     }
 
     function handleInsertButtonClick() {
@@ -24,14 +32,17 @@ const App = () => {
                 const options = {
                     headers: {'Content-Type': 'application/json'}
                 };
-                axios.post('/ben/insert', improvementGrid, options)
+                axios.post(endpointInsert, improvementGrid, options)
                     .then(insertResponse => {
-                        document.getElementById("reaccom-message").innerText = "Record inserted succesfully";
+                        document.getElementById("reaccom-message").innerText = "Record inserted successfully";
                         document.getElementById("uniqueId").value = insertResponse.data.uniqueId;
                         let li = document.createElement("li");
                         let text = document.createTextNode(moment(timestamp).format("YYYY-MM-DD hh:mm:ss"));
                         li.appendChild(text);
                         document.getElementById("versionsList").appendChild(li);
+                    })
+                    .catch(reason => {
+                        document.getElementById("reaccom-message").innerText = "Connection to the backend timed out";
                     });
             })
             .catch(reason => {
