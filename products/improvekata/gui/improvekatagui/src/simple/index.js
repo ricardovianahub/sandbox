@@ -15,6 +15,12 @@ const App = () => {
         axios.delete('/ben/deleteByUniqueId/' + uniqueId)
             .then(deleteResponse => {
                 document.getElementById("reaccom-message").innerText = "Record deleted successfully";
+                document.getElementById("title").value = "";
+                document.getElementById("field1Awesome").value = "";
+                document.getElementById("field2Now").value = "";
+                document.getElementById("field3Next").value = "";
+                document.getElementById("field4Breakdown").value = "";
+                document.getElementById("uniqueId").value = "";
             });
     }
 

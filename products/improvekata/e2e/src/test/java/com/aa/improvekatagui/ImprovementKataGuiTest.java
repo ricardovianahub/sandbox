@@ -108,6 +108,11 @@ public class ImprovementKataGuiTest {
         // setup
         String testTitle = "test title " + Math.random();
         driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys(testTitle);
+        driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("field awesome text");
+        driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("field now text");
+        driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("field next text");
+        driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("field breakdown text");
+
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
         String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
@@ -121,7 +126,33 @@ public class ImprovementKataGuiTest {
         assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
 
         verifyText(driver, "[data-testid=message]", "Record deleted successfully");
+
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
     }
+
+    void insertTwoRecordsRetrieveFirstRecordEnsureFirstIsDeleted() throws Exception {
+        driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys("test title 1");
+        driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("field awesome text 1");
+        driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("field now text 1");
+        driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("field next text 1");
+        driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("field breakdown text 1");
+        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+        driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys("test title 2");
+        driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("field awesome text 2");
+        driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("field now text 2");
+        driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("field next text 2");
+        driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("field breakdown text 2");
+        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+
+
+    }
+
+
 
     //@Test
     void clickDeleteButtonVerifySuccessfulResponseWhenClickingOnATimestampLink() throws Exception {
