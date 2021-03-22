@@ -135,6 +135,7 @@ public class ImprovementKataGuiTest {
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
     }
 
+    //TODO: incomplete test
     void insertTwoRecordsRetrieveFirstRecordEnsureFirstIsDeleted() throws Exception {
         driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys("test title 1");
         driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("field awesome text 1");
