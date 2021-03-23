@@ -1,5 +1,6 @@
 package com.aa.improvekataben;
 
+import com.aa.improvekataben.api.BenResponse;
 import com.aa.improvekataben.data.ImprovementGrid;
 import com.aa.improvekataben.repository.ImprovementGridRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -58,10 +59,10 @@ class ImprovementKataBenApplicationTest {
 
     @Test
     void writeToDB() {
-        String result = insertRecord(testTeamName);
+        BenResponse result = insertRecord(testTeamName);
         String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
         Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
-        assertTrue(patternUniqueID.matcher(result).matches(), "Matches pattern");
+        assertTrue(patternUniqueID.matcher(result.getUniqueId()).matches(), "Matches pattern");
     }
 
     @Test
@@ -93,7 +94,7 @@ class ImprovementKataBenApplicationTest {
         assertTrue(s.startsWith("ImproveKataBenApplication UP since"));
     }
 
-    private String insertRecord(String teamName) {
+    private BenResponse insertRecord(String teamName) {
         String title = "Title";
         String field1Awesome = "Awesome";
         String field2Now = "Now";
