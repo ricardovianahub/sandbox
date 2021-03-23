@@ -74,44 +74,44 @@ public class ImprovementKataGuiTest {
 
     @Test
     void ensureNecessaryFieldsArePresent() throws Exception {
-        verifyTagName(driver, "[data-testid=title]", "input");
+        assertTagNameEquals(driver, "[data-testid=title]", "input");
 
-        verifyText(driver, "div[data-testid=fieldAwesomeLabel]", "Awesome");
-        verifyTagName(driver, "[data-testid=fieldAwesome]", "textarea");
+        assertTextEquals(driver, "div[data-testid=fieldAwesomeLabel]", "Awesome");
+        assertTagNameEquals(driver, "[data-testid=fieldAwesome]", "textarea");
 
-        verifyText(driver, "div[data-testid=fieldNowLabel]", "Now");
-        verifyTagName(driver, "[data-testid=fieldNow]", "textarea");
+        assertTextEquals(driver, "div[data-testid=fieldNowLabel]", "Now");
+        assertTagNameEquals(driver, "[data-testid=fieldNow]", "textarea");
 
-        verifyText(driver, "div[data-testid=fieldNextLabel]", "Next");
-        verifyTagName(driver, "[data-testid=fieldNext]", "textarea");
+        assertTextEquals(driver, "div[data-testid=fieldNextLabel]", "Next");
+        assertTagNameEquals(driver, "[data-testid=fieldNext]", "textarea");
 
-        verifyText(driver, "div[data-testid=fieldBreakdownLabel]", "Breakdown");
-        verifyTagName(driver, "[data-testid=fieldBreakdown]", "textarea");
+        assertTextEquals(driver, "div[data-testid=fieldBreakdownLabel]", "Breakdown");
+        assertTagNameEquals(driver, "[data-testid=fieldBreakdown]", "textarea");
 
-        verifyTagName(driver, "[data-testid=versionsList]", "ul");
+        assertTagNameEquals(driver, "[data-testid=versionsList]", "ul");
 
         assertEquals("rgb(170, 170, 255)",
                 driver.findElement(By.cssSelector("body")).getCssValue("background-color")
         );
 
-        verifyText(driver, "[data-testid=headerTitle]", "Improvement Kata");
-        verifyText(driver, "button[data-testid=insertButton]", "Insert");
-        verifyText(driver, "button[data-testid=deleteButton]", "Delete");
+        assertTextEquals(driver, "[data-testid=headerTitle]", "Improvement Kata");
+        assertTextEquals(driver, "button[data-testid=insertButton]", "Insert");
+        assertTextEquals(driver, "button[data-testid=deleteButton]", "Delete");
 
-        verifyTagName(driver, "[data-testid=message]", "div");
+        assertTagNameEquals(driver, "[data-testid=message]", "div");
 
-        verifyTagName(driver, "[data-testid=uniqueId][type=hidden]", "input");
+        assertTagNameEquals(driver, "[data-testid=uniqueId][type=hidden]", "input");
     }
 
     @Test
     void clickDeleteButtonVerifySuccessfulResponseImmediatelyAfterInserting() throws Exception {
         // setup
         String testTitle = "test title " + Math.random();
-        driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys(testTitle);
-        driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("field awesome text");
-        driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("field now text");
-        driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("field next text");
-        driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("field breakdown text");
+        assignValue("[data-testid=title]", testTitle);
+        assignValue("[data-testid=fieldAwesome]", "field awesome text");
+        assignValue("[data-testid=fieldNow]", "field now text");
+        assignValue("[data-testid=fieldNext]", "field next text");
+        assignValue("[data-testid=fieldBreakdown]", "field breakdown text");
 
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
@@ -125,7 +125,7 @@ public class ImprovementKataGuiTest {
         // assertion
         assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
 
-        verifyText(driver, "[data-testid=message]", "Record deleted successfully");
+        assertTextEquals(driver, "[data-testid=message]", "Record deleted successfully");
 
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"));
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
@@ -135,27 +135,45 @@ public class ImprovementKataGuiTest {
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
     }
 
-    //TODO: incomplete test
+    @Test
     void insertTwoRecordsRetrieveFirstRecordEnsureFirstIsDeleted() throws Exception {
-        driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys("test title 1");
-        driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("field awesome text 1");
-        driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("field now text 1");
-        driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("field next text 1");
-        driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("field breakdown text 1");
+        assignValue("[data-testid=title]", "test title 1");
+        assignValue("[data-testid=fieldAwesome]", "field awesome text 1");
+        assignValue("[data-testid=fieldNow]", "field now text 1");
+        assignValue("[data-testid=fieldNext]", "field next text 1");
+        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 1");
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys("test title 2");
-        driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("field awesome text 2");
-        driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("field now text 2");
-        driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("field next text 2");
-        driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("field breakdown text 2");
+        assignValue("[data-testid=title]", "test title 2");
+        assignValue("[data-testid=fieldAwesome]", "field awesome text 2");
+        assignValue("[data-testid=fieldNow]", "field now text 2");
+        assignValue("[data-testid=fieldNext]", "field next text 2");
+        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 2");
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+        driver.findElement(By.cssSelector("ul[data-testid=versionList]:first-child > a")).click();
+//        driver.findElement(By.xpath("//ul[data-testid=versionList]/li[0]/a")).click();
+        String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
+        driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();
+        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        List uniqueIdDeleted = testRestTemplate.getForObject(baseURL + "/ben/queryByUniqueId/" + uniqueId, List.class);
+
+        // assertion
+        assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
+
+        assertTextEquals(driver, "[data-testid=message]", "Record deleted successfully");
+
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
+        assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
 
 
     }
 
 
-
     //@Test
+
     void clickDeleteButtonVerifySuccessfulResponseWhenClickingOnATimestampLink() throws Exception {
 
     }
@@ -163,14 +181,14 @@ public class ImprovementKataGuiTest {
     void clickInsertButtonVerifySuccessfulResponse() throws Exception {
         // setup
         String testTitle = "test title " + Math.random();
-        driver.findElement(By.cssSelector("[data-testid=title]")).sendKeys(testTitle);
+        assignValue("[data-testid=title]", testTitle);
 
         // execution
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 
         // assertion
-        verifyText(driver, "[data-testid=message]", "Record inserted successfully");
+        assertTextEquals(driver, "[data-testid=message]", "Record inserted successfully");
 
         String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
         Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
@@ -206,7 +224,6 @@ public class ImprovementKataGuiTest {
                 dataLatest.get(dataLatest.size() - 1).get("title")
         );
     }
-
     @Test
     void clickInsertButtonVerifyTimeOutResponse() throws Exception {
         // setup
@@ -216,7 +233,7 @@ public class ImprovementKataGuiTest {
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
 
         // assertion
-        verifyText(driver, "[data-testid=message]", "Connection to the backend timed out");
+        assertTextEquals(driver, "[data-testid=message]", "Connection to the backend timed out");
         driver.navigate().refresh();
     }
 
@@ -224,10 +241,10 @@ public class ImprovementKataGuiTest {
     void savingAndRetrievingDifferentGrids() throws Exception {
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         // populate data 1
-        driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 1");
-        driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("Now Data 1");
-        driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("Next Data 1");
-        driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("Breakdown Data 1");
+        assignValue("[data-testid=fieldAwesome]", "Awesome Data 1");
+        assignValue("[data-testid=fieldNow]", "Now Data 1");
+        assignValue("[data-testid=fieldNext]", "Next Data 1");
+        assignValue("[data-testid=fieldBreakdown]", "Breakdown Data 1");
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
 
         // refresh page
@@ -235,10 +252,10 @@ public class ImprovementKataGuiTest {
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 
         // populate data 1
-        driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).sendKeys("Awesome Data 2");
-        driver.findElement(By.cssSelector("[data-testid=fieldNow]")).sendKeys("Now Data 2");
-        driver.findElement(By.cssSelector("[data-testid=fieldNext]")).sendKeys("Next Data 2");
-        driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).sendKeys("Breakdown Data 2");
+        assignValue("[data-testid=fieldAwesome]", "Awesome Data 2");
+        assignValue("[data-testid=fieldNow]", "Now Data 2");
+        assignValue("[data-testid=fieldNext]", "Next Data 2");
+        assignValue("[data-testid=fieldBreakdown]", "Breakdown Data 2");
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
 
         // refresh page
@@ -271,14 +288,17 @@ public class ImprovementKataGuiTest {
         assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim()));
     }
 
-    private void verifyTagName(WebDriver driver, String selector, String tagName) {
+    private void assertTagNameEquals(WebDriver driver, String selector, String tagName) {
         WebElement element = driver.findElement(By.cssSelector(selector));
         assertEquals(tagName, element.getTagName());
     }
 
-    private void verifyText(WebDriver driver, String selector, String text) {
+    private void assertTextEquals(WebDriver driver, String selector, String text) {
         WebElement element = driver.findElement(By.cssSelector(selector));
         assertEquals(text, element.getText());
     }
 
+    private void assignValue(String selector, String value) {
+        driver.findElement(By.cssSelector(selector)).sendKeys(value);
+    }
 }
