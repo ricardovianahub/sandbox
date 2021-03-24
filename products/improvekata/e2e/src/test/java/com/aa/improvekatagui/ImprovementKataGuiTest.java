@@ -149,7 +149,7 @@ public class ImprovementKataGuiTest {
         assignValue("[data-testid=fieldNext]", "field next text 2");
         assignValue("[data-testid=fieldBreakdown]", "field breakdown text 2");
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        driver.findElement(By.cssSelector("ul[data-testid=versionList]:first-child > a")).click();
+        driver.findElement(By.cssSelector("ul[data-testid=versionsList] > li:first-child > a")).click();
 //        driver.findElement(By.xpath("//ul[data-testid=versionList]/li[0]/a")).click();
         String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
         driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();

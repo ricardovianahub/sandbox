@@ -42,10 +42,7 @@ const App = () => {
                     .then(insertResponse => {
                         document.getElementById("reaccom-message").innerText = "Record inserted successfully";
                         document.getElementById("uniqueId").value = insertResponse.data.uniqueId;
-                        let li = document.createElement("li");
-                        let text = document.createTextNode(moment(timestamp).format("YYYY-MM-DD hh:mm:ss"));
-                        li.appendChild(text);
-                        document.getElementById("versionsList").appendChild(li);
+                        add1LineToVersionsList(insertResponse.data);
                     })
                     .catch(reason => {
                         document.getElementById("reaccom-message").innerText = "Connection to the backend timed out";
@@ -113,19 +110,23 @@ let handleLiAnchorClick = (uniqueId) => {
         });
 }
 
+function add1LineToVersionsList(row) {
+    document.querySelectorAll("[data-testid=\"versionsList\"]").forEach((ul) => {
+        let anchor = document.createElement("a");
+        let li = document.createElement("li");
+        let text = document.createTextNode(moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss"));
+        anchor.setAttribute("href", "");
+        anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.uniqueId + "'); return false");
+        anchor.appendChild(text);
+        li.appendChild(anchor);
+        ul.appendChild(li);
+    })
+}
+
 axios.get('/ben/queryAll')
     .then(response => {
         for (let row of response.data) {
-            document.querySelectorAll("[data-testid=\"versionsList\"]").forEach((ul) => {
-                let anchor = document.createElement("a");
-                let li = document.createElement("li");
-                let text = document.createTextNode(moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss"));
-                anchor.setAttribute("href", "");
-                anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.uniqueId + "'); return false");
-                anchor.appendChild(text);
-                li.appendChild(anchor);
-                ul.appendChild(li);
-            })
+            add1LineToVersionsList(row);
         }
     });
 
