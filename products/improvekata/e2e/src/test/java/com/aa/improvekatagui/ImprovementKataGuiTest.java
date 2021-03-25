@@ -1,9 +1,5 @@
 package com.aa.improvekatagui;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -35,6 +31,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = ImproveKataE2EApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -158,7 +156,6 @@ public class ImprovementKataGuiTest {
 
         // assertion
         assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
-
         assertTextEquals(driver, "[data-testid=message]", "Record deleted successfully");
 
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"));
@@ -168,9 +165,39 @@ public class ImprovementKataGuiTest {
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
 
+        assertEquals(1,driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
+
 
     }
 
+    @Test
+    void ensureEachLineOfTimestampsIsUniquelyIdentifiable(){
+
+        assignValue("[data-testid=title]", "test title 1");
+        assignValue("[data-testid=fieldAwesome]", "field awesome text 1");
+        assignValue("[data-testid=fieldNow]", "field now text 1");
+        assignValue("[data-testid=fieldNext]", "field next text 1");
+        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 1");
+        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+        assignValue("[data-testid=title]", "test title 2");
+        assignValue("[data-testid=fieldAwesome]", "field awesome text 2");
+        assignValue("[data-testid=fieldNow]", "field now text 2");
+        assignValue("[data-testid=fieldNext]", "field next text 2");
+        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 2");
+        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+        assignValue("[data-testid=title]", "test title 3");
+        assignValue("[data-testid=fieldAwesome]", "field awesome text 3");
+        assignValue("[data-testid=fieldNow]", "field now text 3");
+        assignValue("[data-testid=fieldNext]", "field next text 3");
+        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 3");
+        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+
+        List<WebElement> elements = driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li"));
+        for(WebElement element: elements){
+            assertNotNull(element.getAttribute("uniqueId"));
+        }
+
+    }
 
     //@Test
 
