@@ -193,9 +193,15 @@ public class ImprovementKataGuiTest {
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
 
         List<WebElement> elements = driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li"));
+        String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
+        Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
         for(WebElement element: elements){
-            assertNotNull(element.getAttribute("uniqueId"));
+            String uniqueId = element.getAttribute("uniqueId");
+            assertNotNull(uniqueId);
+            assertTrue(patternUniqueID.matcher(uniqueId).matches(), "Value [" + uniqueId + "] does not match " + patternUniqueIDTemplate);
         }
+
+
 
     }
 

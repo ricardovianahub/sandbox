@@ -15,7 +15,7 @@ X Add labels to text areas
     X Display an error message to the user that the deletion was not successful
     X Remove the deleted record from the screen
     X Add more than one record (2) then click on the first record after the second is inserted and delete the first record
-    - Refresh the list of timestamps on the right of page to eliminate the record that was deleted
+    X Refresh the list of timestamps on the right of page to eliminate the record that was deleted
       - Refresh the whole page or remove manually the timestamp that was eliminated? If so, how are we going to identify in the page,
          since it's technically possible to have 2 records created at the exact same second
     - When a error is received from the backend, show the message "Deletion failed" - and don't update the page in any way
