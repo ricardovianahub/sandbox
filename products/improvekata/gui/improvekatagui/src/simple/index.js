@@ -11,7 +11,56 @@ const assignValueById = (id, value) => {
     document.getElementById(id).value = value;
 }
 
+let handleLiAnchorClick = (uniqueId) => {
+    axios.get('/ben/queryByUniqueId/' + uniqueId)
+        .then(response => {
+            for (let row of response.data) {
+                assignValueById("title", row.title);
+                assignValueById("field1Awesome", row.field1Awesome);
+                assignValueById("field2Now", row.field2Now);
+                assignValueById("field3Next", row.field3Next);
+                assignValueById("field4Breakdown", row.field4Breakdown);
+                assignValueById("uniqueId", row.uniqueId);
+            }
+        });
+}
+
 const App = () => {
+    function add1LineToVersionsList(row) {
+        document.querySelectorAll("[id='versionsList']").forEach((ul) => {
+            let anchor = document.createElement("a");
+            let li = document.createElement("li");
+            li.setAttribute("uniqueId", row.uniqueId);
+            let text = document.createTextNode(moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss"));
+            anchor.setAttribute("href", "");
+            anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.uniqueId + "'); return false");
+            anchor.appendChild(text);
+            li.appendChild(anchor);
+            ul.appendChild(li);
+        })
+    }
+
+    let handleLiAnchorClick = (uniqueId) => {
+        axios.get('/ben/queryByUniqueId/' + uniqueId)
+            .then(response => {
+                for (let row of response.data) {
+                    assignValueById("title", row.title);
+                    assignValueById("field1Awesome", row.field1Awesome);
+                    assignValueById("field2Now", row.field2Now);
+                    assignValueById("field3Next", row.field3Next);
+                    assignValueById("field4Breakdown", row.field4Breakdown);
+                    assignValueById("uniqueId", row.uniqueId);
+                }
+            });
+    }
+
+    axios.get('/ben/queryAll')
+        .then(response => {
+            for (let row of response.data) {
+                add1LineToVersionsList(row);
+            }
+        });
+
     return (
         <div>
             <div className="centralize">
@@ -99,42 +148,6 @@ const App = () => {
             })
         ;
     }
-
-}
-
-let handleLiAnchorClick = (uniqueId) => {
-    axios.get('/ben/queryByUniqueId/' + uniqueId)
-        .then(response => {
-            for (let row of response.data) {
-                assignValueById("title", row.title);
-                assignValueById("field1Awesome", row.field1Awesome);
-                assignValueById("field2Now", row.field2Now);
-                assignValueById("field3Next", row.field3Next);
-                assignValueById("field4Breakdown", row.field4Breakdown);
-                assignValueById("uniqueId", row.uniqueId);
-            }
-        });
-}
-
-function add1LineToVersionsList(row) {
-    document.querySelectorAll("[id='versionsList']").forEach((ul) => {
-        let anchor = document.createElement("a");
-        let li = document.createElement("li");
-        li.setAttribute("uniqueId", row.uniqueId);
-        let text = document.createTextNode(moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss"));
-        anchor.setAttribute("href", "");
-        anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.uniqueId + "'); return false");
-        anchor.appendChild(text);
-        li.appendChild(anchor);
-        ul.appendChild(li);
-    })
 }
 
 ReactDOM.render(<App/>, document.getElementById("root"));
-
-axios.get('/ben/queryAll')
-    .then(response => {
-        for (let row of response.data) {
-            add1LineToVersionsList(row);
-        }
-    });
