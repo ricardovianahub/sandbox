@@ -1,5 +1,6 @@
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,7 @@ class WebdriverTest {
         driver.get("https://www.viana.ws/");
         assertThat(driver.getTitle(),
                 containsString("viana.ws"));
+        assertTrue(driver.getTitle().contains("viana.ws"));
     }
 
     @Test
@@ -29,15 +31,15 @@ class WebdriverTest {
         assertThat(div1Text, containsString("content of div1"));
     }
 
-    @Test
-    void compilationIssue() {
-        WebDriver driver = new HtmlUnitDriver();
-        {
-            WebDriverWait wait = new WebDriverWait(driver, 30);
-            wait.until(
-                    ExpectedConditions.presenceOfElementLocated(By.cssSelector("#ext-gen1565 > .x-grid-cell-inner")));
-        }
-    }
+//    @Test
+//    void compilationIssue() {
+//        WebDriver driver = new HtmlUnitDriver();
+//        {
+//            WebDriverWait wait = new WebDriverWait(driver, 30);
+//            wait.until(
+//                    ExpectedConditions.presenceOfElementLocated(By.cssSelector("#ext-gen1565 > .x-grid-cell-inner")));
+//        }
+//    }
 
 //    @Test
 //    void readTopMatchOnGoogleWithFirefox(FirefoxDriver driver) throws InterruptedException {

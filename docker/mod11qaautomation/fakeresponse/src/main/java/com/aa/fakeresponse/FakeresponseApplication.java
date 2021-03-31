@@ -22,6 +22,24 @@ public class FakeresponseApplication {
         return "root";
     }
 
+    @GetMapping(value = "/three", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Data3> three() {
+        List<Data3> data3List = new ArrayList<>();
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots", "555-1234"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots", "555-1234"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots", "555-1234"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots", "555-1234"));
+        data3List.add(new Data3("ORDDFW", "Tomatoes", "Mrs", "Carrots", "555-1234"));
+        data3List.add(new Data3("DFWLAX", "Carrots", "Mr", "", "555-1234"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", "", "555-1234"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", "    ", "555-1234"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", " ", "555-1234"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", "   ", "555-1234"));
+        data3List.add(new Data3("LAXYYZ", "Ice Cream", "Miss", "LAX", "555-1234"));
+
+        return data3List;
+    }
+
     @GetMapping(value = "/one", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Data1> one() {
         List<Data1> data1List = new ArrayList<>();
@@ -103,6 +121,67 @@ public class FakeresponseApplication {
 
         public Data1 setAge(int age) {
             this.age = age;
+            return this;
+        }
+    }
+
+    public static class Data3 {
+        private String itinerary;
+        private String origin;
+        private String date;
+        private String destination;
+        private String phone;
+
+        public Data3(String itinerary, String origin, String date, String destination, String phone) {
+            this.itinerary = itinerary;
+            this.origin = origin;
+            this.date = date;
+            this.destination = destination;
+            this.phone = phone;
+        }
+
+        public String getItinerary() {
+            return itinerary;
+        }
+
+        public Data3 setItinerary(String itinerary) {
+            this.itinerary = itinerary;
+            return this;
+        }
+
+        public String getOrigin() {
+            return origin;
+        }
+
+        public Data3 setOrigin(String origin) {
+            this.origin = origin;
+            return this;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public Data3 setDate(String date) {
+            this.date = date;
+            return this;
+        }
+
+        public String getDestination() {
+            return destination;
+        }
+
+        public Data3 setDestination(String destination) {
+            this.destination = destination;
+            return this;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public Data3 setPhone(String phone) {
+            this.phone = phone;
             return this;
         }
     }

@@ -1,0 +1,33 @@
+X Add labels to text areas
+  - Field1 = Definition of awesome = "Awesome"
+  - Field2 = Now = "Now"
+  - Field3 = Next Step = "Next"
+  - Field4 = Breakdown of steps = "Breakdown"
+  - Look / See
+
+> Delete function
+  X Create hidden field that will hold the unique-id from the database
+  X Save the latest loaded record from the database (unique id) to the frontend
+  > Create a Delete button
+    X Place the Delete button in the page
+    X When clicked, delete the record corresponding to the current screen in the database
+    X Display a message to the user that the record has been deleted
+    X Display an error message to the user that the deletion was not successful
+    X Remove the deleted record from the screen
+    X Add more than one record (2) then click on the first record after the second is inserted and delete the first record
+    X Refresh the list of timestamps on the right of page to eliminate the record that was deleted
+      - Refresh the whole page or remove manually the timestamp that was eliminated? If so, how are we going to identify in the page,
+         since it's technically possible to have 2 records created at the exact same second
+    - When a error is received from the backend, show the message "Deletion failed" - and don't update the page in any way
+      (clear the text areas, delete the timestamp from the list, etc)
+  - Add X links at each timestamp and allow them to be deleted directly
+  - Disable delete button when there is nothing to deleted
+    - Define "Nothing to delete" (not clicked on the timestamps? no records at all? nothing inserted in this session?)
+
+- Add logging mechanism
+  - Output to standard output
+
+- Screen reaction
+  - When the fields in the screen are empty, disable the insert button
+  - When the fields in the screen are empty, disable the delete button
+  - Change the color of a link that was clicked so we can easily glance at what is being shown in the screen

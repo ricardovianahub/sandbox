@@ -1,0 +1,4 @@
+Spring Boot default - call database
+- No JPA
+- Just write
+
