@@ -20,8 +20,7 @@ const App = () => {
                 document.getElementById("field2Now").value = "";
                 document.getElementById("field3Next").value = "";
                 document.getElementById("field4Breakdown").value = "";
-                document.querySelector("ul[id=versionsList] > li[uniqueId='"
-                    + document.getElementById("uniqueId").value + "']").remove();
+                document.querySelector("ul[id=versionsList] > li[uniqueId='" + uniqueId + "']").remove();
                 document.getElementById("uniqueId").value = "";
             });
     }
@@ -92,7 +91,7 @@ const App = () => {
                 <div className="float">
                     <ul id="versionsList" data-testid="versionsList"></ul>
                 </div>
-                <input id="uniqueId" type="hidden" data-testid="uniqueId" />
+                <input id="uniqueId" type="hidden" data-testid="uniqueId"/>
             </div>
         </div>
     )
