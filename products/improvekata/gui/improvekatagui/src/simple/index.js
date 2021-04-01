@@ -13,6 +13,13 @@ const assignValueById = (id, value) => {
     document.getElementById(id).value = value;
 }
 
+function queryAllVersionsList() {
+    axios.get('/ben/queryAll')
+        .then(response => {
+            this.setState({rows: response.data});
+        });
+}
+
 let handleLiAnchorClick = (uniqueId) => {
     axios.get('/ben/queryByUniqueId/' + uniqueId)
         .then(response => {
@@ -26,21 +33,6 @@ let handleLiAnchorClick = (uniqueId) => {
             }
         });
 }
-
-let add1LineToVersionsList = (row) => {
-    document.querySelectorAll("[id='versionsList']").forEach((ul) => {
-        let anchor = document.createElement("a");
-        let li = document.createElement("li");
-        li.setAttribute("uniqueId", row.uniqueId);
-        let text = document.createTextNode(moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss"));
-        anchor.setAttribute("href", "");
-        anchor.setAttribute("onclick", "handleLiAnchorClick('" + row.uniqueId + "'); return false");
-        anchor.appendChild(text);
-        li.appendChild(anchor);
-        ul.appendChild(li);
-    })
-}
-
 
 class App extends React.Component {
 
@@ -63,13 +55,6 @@ class App extends React.Component {
     }
 
     render() {
-        axios.get('/ben/queryAll')
-            .then(response => {
-                for (let row of response.data) {
-                    add1LineToVersionsList(row);
-                }
-            });
-
         return (
             <div>
                 <div className="centralize">
@@ -101,10 +86,10 @@ class App extends React.Component {
                         <br/>
                         <button data-testid="insertButton" onClick={this.handleInsertButtonClick}>Insert</button>
                         <button data-testid="deleteButton" onClick={this.handleDeleteButtonClick}>Delete</button>
-                        <div id="reaccom-message" data-testid="message"></div>
+                        <div id="reaccom-message" data-testid="message"/>
                     </div>
                     <div className="float">
-                        <ul id="versionsList" data-testid="versionsList"></ul>
+                        <VersionsList/>
                     </div>
                     <input id="uniqueId" type="hidden" data-testid="uniqueId"/>
                 </div>
@@ -123,7 +108,7 @@ class App extends React.Component {
                 assignValueById("field3Next", "");
                 assignValueById("field4Breakdown", "");
                 assignValueById("title", "");
-                document.querySelector("ul[id=versionsList] > li[uniqueId='" + uniqueId + "']").remove();
+                queryAllVersionsList();
                 assignValueById("uniqueId", "");
             });
     }
@@ -144,11 +129,54 @@ class App extends React.Component {
             .then(insertResponse => {
                 document.getElementById("reaccom-message").innerText = "Record inserted successfully";
                 document.getElementById("uniqueId").value = insertResponse.data.uniqueId;
-                add1LineToVersionsList(insertResponse.data);
+                queryAllVersionsList();
             })
             .catch(reason => {
                 document.getElementById("reaccom-message").innerText = "Connection to the backend timed out";
             });
+    }
+}
+
+class VersionsList extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {rows: []};
+        queryAllVersionsList = queryAllVersionsList.bind(this);
+    }
+
+    componentDidMount() {
+        queryAllVersionsList();
+    }
+
+    handleLiAnchorClick(uniqueId) {
+        axios.get('/ben/queryByUniqueId/' + uniqueId)
+            .then(response => {
+                for (let row of response.data) {
+                    assignValueById("title", row.title);
+                    assignValueById("field1Awesome", row.field1Awesome);
+                    assignValueById("field2Now", row.field2Now);
+                    assignValueById("field3Next", row.field3Next);
+                    assignValueById("field4Breakdown", row.field4Breakdown);
+                    assignValueById("uniqueId", row.uniqueId);
+                }
+            });
+    }
+
+    render() {
+        const list = [];
+        for (let row of this.state.rows) {
+            list.push(
+                <li key={row.uniqueId} uniqueid={row.uniqueId} onClick={() => this.handleLiAnchorClick(row.uniqueId)}>
+                    {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}
+                </li>
+            )
+        }
+        return (
+            <ul id="versionsList" data-testid="versionsList">
+                {list}
+            </ul>
+        );
     }
 }
 
