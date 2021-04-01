@@ -20,38 +20,10 @@ function queryAllVersionsList() {
         });
 }
 
-let handleLiAnchorClick = (uniqueId) => {
-    axios.get('/ben/queryByUniqueId/' + uniqueId)
-        .then(response => {
-            for (let row of response.data) {
-                assignValueById("title", row.title);
-                assignValueById("field1Awesome", row.field1Awesome);
-                assignValueById("field2Now", row.field2Now);
-                assignValueById("field3Next", row.field3Next);
-                assignValueById("field4Breakdown", row.field4Breakdown);
-                assignValueById("uniqueId", row.uniqueId);
-            }
-        });
-}
-
 class App extends React.Component {
 
     constructor() {
         super();
-    }
-
-    handleLiAnchorClick(uniqueId) {
-        axios.get('/ben/queryByUniqueId/' + uniqueId)
-            .then(response => {
-                for (let row of response.data) {
-                    assignValueById("title", row.title);
-                    assignValueById("field1Awesome", row.field1Awesome);
-                    assignValueById("field2Now", row.field2Now);
-                    assignValueById("field3Next", row.field3Next);
-                    assignValueById("field4Breakdown", row.field4Breakdown);
-                    assignValueById("uniqueId", row.uniqueId);
-                }
-            });
     }
 
     render() {
