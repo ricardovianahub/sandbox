@@ -61,7 +61,15 @@ public class ImprovementKataGuiTest {
         options.setHeadless(true);
         driver = new FirefoxDriver(options);
         driver.get(baseURL);
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        delay();
+    }
+
+    private void delay() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @AfterAll
@@ -112,12 +120,12 @@ public class ImprovementKataGuiTest {
         assignValue("[data-testid=fieldBreakdown]", "field breakdown text");
 
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        delay();
         String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
 
         // execution
         driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        delay();
         List uniqueIdDeleted = testRestTemplate.getForObject(baseURL + "/ben/queryByUniqueId/" + uniqueId, List.class);
 
         // assertion
@@ -151,7 +159,7 @@ public class ImprovementKataGuiTest {
 //        driver.findElement(By.xpath("//ul[data-testid=versionList]/li[0]/a")).click();
         String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
         driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        delay();
         List uniqueIdDeleted = testRestTemplate.getForObject(baseURL + "/ben/queryByUniqueId/" + uniqueId, List.class);
 
         // assertion
@@ -218,7 +226,7 @@ public class ImprovementKataGuiTest {
 
         // execution
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        delay();
 
         // assertion
         assertTextEquals(driver, "[data-testid=message]", "Record inserted successfully");
@@ -282,7 +290,7 @@ public class ImprovementKataGuiTest {
 
         // refresh page
         driver.navigate().refresh();
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        delay();
 
         // populate data 1
         assignValue("[data-testid=fieldAwesome]", "Awesome Data 2");
@@ -293,7 +301,7 @@ public class ImprovementKataGuiTest {
 
         // refresh page
         driver.navigate().refresh();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        delay();
 
         // Capture the list of links
         RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
@@ -301,7 +309,7 @@ public class ImprovementKataGuiTest {
 
         // Click on the second instance and verify it
         lis.get(1).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        delay();
 
         assertEquals("Awesome Data 2", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
         assertEquals("Now Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
@@ -311,7 +319,7 @@ public class ImprovementKataGuiTest {
 
         // Click on the first instance and verify it
         lis.get(0).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        delay();
 //        wait.until((Function<WebDriver, WebElement>) driver -> driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")));
 
         assertEquals("Awesome Data 1", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
