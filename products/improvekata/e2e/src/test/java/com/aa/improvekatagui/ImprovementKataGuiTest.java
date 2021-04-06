@@ -1,10 +1,15 @@
 package com.aa.improvekatagui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.AfterAll;
@@ -18,7 +23,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.Wait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -32,21 +36,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest(classes = ImproveKataE2EApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(SpringExtension.class)
 @ExtendWith(SeleniumJupiter.class)
 public class ImprovementKataGuiTest {
 
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-    private ObjectMapper mapper = new ObjectMapper();
-
     private WebDriver driver;
-    private Wait wait;
 
     private String baseURL;
 
@@ -112,15 +113,7 @@ public class ImprovementKataGuiTest {
     @Test
     void clickDeleteButtonVerifySuccessfulResponseImmediatelyAfterInserting() throws Exception {
         // setup
-        String testTitle = "test title " + Math.random();
-        assignValue("[data-testid=title]", testTitle);
-        assignValue("[data-testid=fieldAwesome]", "field awesome text");
-        assignValue("[data-testid=fieldNow]", "field now text");
-        assignValue("[data-testid=fieldNext]", "field next text");
-        assignValue("[data-testid=fieldBreakdown]", "field breakdown text");
-
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        delay();
+        insertRecordTimes(1);
         String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
 
         // execution
@@ -143,18 +136,8 @@ public class ImprovementKataGuiTest {
 
     @Test
     void insertTwoRecordsRetrieveFirstRecordEnsureFirstIsDeleted() throws Exception {
-        assignValue("[data-testid=title]", "test title 1");
-        assignValue("[data-testid=fieldAwesome]", "field awesome text 1");
-        assignValue("[data-testid=fieldNow]", "field now text 1");
-        assignValue("[data-testid=fieldNext]", "field next text 1");
-        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 1");
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        assignValue("[data-testid=title]", "test title 2");
-        assignValue("[data-testid=fieldAwesome]", "field awesome text 2");
-        assignValue("[data-testid=fieldNow]", "field now text 2");
-        assignValue("[data-testid=fieldNext]", "field next text 2");
-        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 2");
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+        insertRecordTimes(2);
+
         driver.findElement(By.cssSelector("ul[data-testid=versionsList] > li:first-child")).click();
         String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
         driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();
@@ -172,60 +155,33 @@ public class ImprovementKataGuiTest {
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
 
-        assertEquals(1,driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
+        assertEquals(1, driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
 
 
     }
 
     @Test
-    void ensureEachLineOfTimestampsIsUniquelyIdentifiable(){
-
-        assignValue("[data-testid=title]", "test title 1");
-        assignValue("[data-testid=fieldAwesome]", "field awesome text 1");
-        assignValue("[data-testid=fieldNow]", "field now text 1");
-        assignValue("[data-testid=fieldNext]", "field next text 1");
-        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 1");
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        assignValue("[data-testid=title]", "test title 2");
-        assignValue("[data-testid=fieldAwesome]", "field awesome text 2");
-        assignValue("[data-testid=fieldNow]", "field now text 2");
-        assignValue("[data-testid=fieldNext]", "field next text 2");
-        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 2");
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        assignValue("[data-testid=title]", "test title 3");
-        assignValue("[data-testid=fieldAwesome]", "field awesome text 3");
-        assignValue("[data-testid=fieldNow]", "field now text 3");
-        assignValue("[data-testid=fieldNext]", "field next text 3");
-        assignValue("[data-testid=fieldBreakdown]", "field breakdown text 3");
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+    void ensureEachLineOfTimestampsIsUniquelyIdentifiable() {
+        insertRecordTimes(5);
 
         List<WebElement> elements = driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li"));
         String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
         Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
-        for(WebElement element: elements){
+        for (WebElement element : elements) {
             String uniqueId = element.getAttribute("uniqueId");
             assertNotNull(uniqueId);
             assertTrue(patternUniqueID.matcher(uniqueId).matches(), "Value [" + uniqueId + "] does not match " + patternUniqueIDTemplate);
         }
-
-
-
     }
 
     //@Test
-
     void clickDeleteButtonVerifySuccessfulResponseWhenClickingOnATimestampLink() throws Exception {
-
     }
+
     @Test
     void clickInsertButtonVerifySuccessfulResponse() throws Exception {
-        // setup
-        String testTitle = "test title " + Math.random();
-        assignValue("[data-testid=title]", testTitle);
-
-        // execution
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-        delay();
+        // setup & execution
+        insertRecordTimes(1);
 
         // assertion
         assertTextEquals(driver, "[data-testid=message]", "Record inserted successfully");
@@ -264,6 +220,7 @@ public class ImprovementKataGuiTest {
                 dataLatest.get(dataLatest.size() - 1).get("title")
         );
     }
+
     @Test
     void clickInsertButtonVerifyTimeOutResponse() throws Exception {
         // setup
@@ -280,27 +237,8 @@ public class ImprovementKataGuiTest {
     @Test
     void savingAndRetrievingDifferentGrids() throws Exception {
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
-        // populate data 1
-        assignValue("[data-testid=fieldAwesome]", "Awesome Data 1");
-        assignValue("[data-testid=fieldNow]", "Now Data 1");
-        assignValue("[data-testid=fieldNext]", "Next Data 1");
-        assignValue("[data-testid=fieldBreakdown]", "Breakdown Data 1");
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-
-        // refresh page
-        driver.navigate().refresh();
-        delay();
-
-        // populate data 1
-        assignValue("[data-testid=fieldAwesome]", "Awesome Data 2");
-        assignValue("[data-testid=fieldNow]", "Now Data 2");
-        assignValue("[data-testid=fieldNext]", "Next Data 2");
-        assignValue("[data-testid=fieldBreakdown]", "Breakdown Data 2");
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
-
-        // refresh page
-        driver.navigate().refresh();
-        delay();
+        // populate data 1 & 2
+        insertRecordTimes(2);
 
         // Capture the list of links
         RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
@@ -310,22 +248,34 @@ public class ImprovementKataGuiTest {
         lis.get(1).click();
         delay();
 
-        assertEquals("Awesome Data 2", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
-        assertEquals("Now Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
-        assertEquals("Next Data 2", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
-        assertEquals("Breakdown Data 2", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
+        assertEquals("field awesome text 2", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
+        assertEquals("field now text 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
+        assertEquals("field next text 2", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
+        assertEquals("field breakdown text 2", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
         assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim()));
 
         // Click on the first instance and verify it
         lis.get(0).click();
         delay();
-//        wait.until((Function<WebDriver, WebElement>) driver -> driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")));
 
-        assertEquals("Awesome Data 1", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
-        assertEquals("Now Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
-        assertEquals("Next Data 1", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
-        assertEquals("Breakdown Data 1", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
+        assertEquals("field awesome text 1", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
+        assertEquals("field now text 1", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
+        assertEquals("field next text 1", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
+        assertEquals("field breakdown text 1", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
         assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim()));
+    }
+
+    private void insertRecordTimes(int numberOfRecords) {
+        for (int i = 1; i <= numberOfRecords; i++) {
+            String testTitle = "test title " + UUID.randomUUID().toString();
+            assignValue("[data-testid=title]", testTitle);
+            assignValue("[data-testid=fieldAwesome]", "field awesome text " + i);
+            assignValue("[data-testid=fieldNow]", "field now text " + i);
+            assignValue("[data-testid=fieldNext]", "field next text " + i);
+            assignValue("[data-testid=fieldBreakdown]", "field breakdown text " + i);
+            driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+            delay();
+        }
     }
 
     private void assertTagNameEquals(WebDriver driver, String selector, String tagName) {
@@ -339,6 +289,7 @@ public class ImprovementKataGuiTest {
     }
 
     private void assignValue(String selector, String value) {
+        driver.findElement(By.cssSelector(selector)).clear();
         driver.findElement(By.cssSelector(selector)).sendKeys(value);
     }
 }
