@@ -1,8 +1,8 @@
-package com.aa;
+package com.aa.targetendpoint;
 
 import java.io.IOException;
 
-public class TestUtils {
+public class EndPointResolver {
 
     public static String retrieveBaseURL() {
         Runtime run = Runtime.getRuntime();

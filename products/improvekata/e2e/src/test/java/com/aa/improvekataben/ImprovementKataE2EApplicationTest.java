@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.aa.TestUtils;
+import com.aa.targetendpoint.EndPointResolver;
 import com.aa.improvekataben.api.ben.BenResponse;
 import com.aa.improvekataben.data.ImprovementGrid;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -35,7 +35,7 @@ class ImprovementKataE2EApplicationTest {
 
     @BeforeAll
     void beforeAll() {
-        baseURL = TestUtils.retrieveBaseURL();
+        baseURL = EndPointResolver.retrieveBaseURL();
     }
 
     @Autowired
@@ -58,7 +58,7 @@ class ImprovementKataE2EApplicationTest {
     }
 
     @Test
-    void benResponseShouldBeValidAsExpected() throws Exception {
+    void benResponseShouldBeValidAsExpected() {
         BenResponse response = insertRecord("TEST", "Title");
         String patternUniqueIDTemplate = ImprovementGrid.PATTERN_UNIQUE_ID_TEMPLATE;
         Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
@@ -94,8 +94,7 @@ class ImprovementKataE2EApplicationTest {
 
     private String addAndRetrieveRecord(String teamName, String randomTitle) {
         insertRecord(teamName, randomTitle);
-        String queryAll = testRestTemplate.getForObject(String.format(baseURL + "/ben/queryByTeamName/%s", teamName), String.class);
-        return queryAll;
+        return testRestTemplate.getForObject(String.format(baseURL + "/ben/queryByTeamName/%s", teamName), String.class);
     }
 
     private BenResponse insertRecord(String teamName, String randomTitle) {

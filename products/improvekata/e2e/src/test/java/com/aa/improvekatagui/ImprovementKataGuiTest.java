@@ -28,9 +28,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.aa.TestUtils;
+import com.aa.targetendpoint.EndPointResolver;
 import com.aa.improvekataben.ImproveKataE2EApplication;
 import com.aa.improvekataben.data.ImprovementGrid;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -53,8 +54,8 @@ public class ImprovementKataGuiTest {
     private String baseURL;
 
     @BeforeAll
-    void beforeAll() throws Exception {
-        baseURL = TestUtils.retrieveBaseURL();
+    void beforeAll() {
+        baseURL = EndPointResolver.retrieveBaseURL();
         //
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         //
@@ -81,7 +82,7 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
-    void ensureNecessaryFieldsArePresent() throws Exception {
+    void ensureNecessaryFieldsArePresent() {
         assertTagNameEquals(driver, "[data-testid=title]", "input");
 
         assertTextEquals(driver, "div[data-testid=fieldAwesomeLabel]", "Awesome");
@@ -112,7 +113,7 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
-    void clickDeleteButtonVerifySuccessfulResponseImmediatelyAfterInserting() throws Exception {
+    void clickDeleteButtonVerifySuccessfulResponseImmediatelyAfterInserting() {
         // setup
         insertRecordTimes(1);
         String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
@@ -136,7 +137,7 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
-    void insertTwoRecordsRetrieveFirstRecordEnsureFirstIsDeleted() throws Exception {
+    void insertTwoRecordsRetrieveFirstRecordEnsureFirstIsDeleted() {
         insertRecordTimes(2);
 
         driver.findElement(By.cssSelector("ul[data-testid=versionsList] > li:first-child")).click();
@@ -180,11 +181,11 @@ public class ImprovementKataGuiTest {
     }
 
     //@Test
-    void clickDeleteButtonVerifySuccessfulResponseWhenClickingOnATimestampLink() throws Exception {
+    void clickDeleteButtonVerifySuccessfulResponseWhenClickingOnATimestampLink() {
     }
 
     @Test
-    void clickInsertButtonVerifySuccessfulResponse() throws Exception {
+    void clickInsertButtonVerifySuccessfulResponse() throws JsonProcessingException {
         // setup & execution
         insertRecordTimes(1);
 
@@ -206,7 +207,7 @@ public class ImprovementKataGuiTest {
                 uniqueIdElement.getAttribute("value")
         );
 
-        RemoteWebElement ul = (RemoteWebElement) driver.findElement(
+        RemoteWebElement ul = driver.findElement(
                 By.cssSelector("[data-testid=versionsList]")
         );
         Pattern patternDate = Pattern.compile(ImprovementGrid.PATTERN_DATE_TEMPLATE);
@@ -235,7 +236,7 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
-    void clickInsertButtonVerifyTimeOutResponse() throws Exception {
+    void clickInsertButtonVerifyTimeOutResponse() {
         // setup
         driver.get("javascript:setEndpointInsert('/nowhere');");
 
@@ -250,13 +251,13 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
-    void savingAndRetrievingDifferentGrids() throws Exception {
+    void savingAndRetrievingDifferentGrids() {
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         // populate data 1 & 2
         insertRecordTimes(2);
 
         // Capture the list of links
-        RemoteWebElement ul = (RemoteWebElement) driver.findElement(
+        RemoteWebElement ul = driver.findElement(
                 By.cssSelector("[data-testid=versionsList]")
         );
         List<WebElement> lis = ul.findElementsByTagName("li");
@@ -284,7 +285,7 @@ public class ImprovementKataGuiTest {
 
     private void insertRecordTimes(int numberOfRecords) {
         for (int i = 1; i <= numberOfRecords; i++) {
-            String testTitle = "test title " + UUID.randomUUID().toString();
+            String testTitle = "test title " + UUID.randomUUID();
             assignValue("[data-testid=title]", testTitle);
             assignValue("[data-testid=fieldAwesome]", "field awesome text " + i);
             assignValue("[data-testid=fieldNow]", "field now text " + i);
