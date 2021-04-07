@@ -30,6 +30,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ImprovementKataE2EApplicationTest {
 
+    public static final String BEN_CLEANUP_TEST = "/ben/deleteTeam/TEST";
+    public static final String BEN_QUERY_BY_TEST = "/ben/queryByTeamName/TEST";
     private final ObjectMapper mapper = new ObjectMapper();
     private String baseURL;
 
@@ -43,12 +45,12 @@ class ImprovementKataE2EApplicationTest {
 
     @BeforeEach
     void beforeEach() {
-        testRestTemplate.delete(baseURL + "/ben/deleteTeam/TEST");
+        testRestTemplate.delete(baseURL + BEN_CLEANUP_TEST);
     }
 
     @AfterEach
     void afterEach() {
-        testRestTemplate.delete(baseURL + "/ben/deleteTeam/TEST");
+        testRestTemplate.delete(baseURL + BEN_CLEANUP_TEST);
     }
 
     @Test
@@ -69,7 +71,7 @@ class ImprovementKataE2EApplicationTest {
     void insertReturnsInsertedObject() throws Exception {
         String randomTitle = UUID.randomUUID().toString();
         insertRecord("TEST", randomTitle);
-        String queryByTeamName = testRestTemplate.getForObject(baseURL + "/ben/queryByTeamName/TEST", String.class);
+        String queryByTeamName = testRestTemplate.getForObject(baseURL + BEN_QUERY_BY_TEST, String.class);
         List<Map<String, Object>> data = mapper.readValue(queryByTeamName, new TypeReference<>() {
         });
 
@@ -87,7 +89,7 @@ class ImprovementKataE2EApplicationTest {
         addAndRetrieveRecord("TEST", randomTitle);
         addAndRetrieveRecord("NOISE", randomTitle);
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/TEST");
-        String queryByTeamName = testRestTemplate.getForObject(baseURL + "/ben/queryByTeamName/TEST", String.class);
+        String queryByTeamName = testRestTemplate.getForObject(baseURL + BEN_QUERY_BY_TEST, String.class);
         assertEquals("[]", queryByTeamName);
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/NOISE");
     }
