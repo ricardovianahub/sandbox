@@ -1,7 +1,7 @@
 package com.aa.improvekatagui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -30,6 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.aa.TestUtils;
 import com.aa.improvekataben.ImproveKataE2EApplication;
+import com.aa.improvekataben.data.ImprovementGrid;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -164,13 +165,17 @@ public class ImprovementKataGuiTest {
     void ensureEachLineOfTimestampsIsUniquelyIdentifiable() {
         insertRecordTimes(5);
 
-        List<WebElement> elements = driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li"));
-        String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
-        Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
+        List<WebElement> elements = driver.findElements(
+                By.cssSelector("ul[data-testid=versionsList] > li")
+        );
+        Pattern patternUniqueID = Pattern.compile(ImprovementGrid.PATTERN_UNIQUE_ID_TEMPLATE);
         for (WebElement element : elements) {
             String uniqueId = element.getAttribute("uniqueId");
             assertNotNull(uniqueId);
-            assertTrue(patternUniqueID.matcher(uniqueId).matches(), "Value [" + uniqueId + "] does not match " + patternUniqueIDTemplate);
+            assertTrue(patternUniqueID.matcher(uniqueId).matches(),
+                    "Value [" + uniqueId + "] does not match "
+                            + ImprovementGrid.PATTERN_UNIQUE_ID_TEMPLATE
+            );
         }
     }
 
@@ -186,24 +191,32 @@ public class ImprovementKataGuiTest {
         // assertion
         assertTextEquals(driver, "[data-testid=message]", "Record inserted successfully");
 
-        String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
-        Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
+        Pattern patternUniqueID = Pattern.compile(ImprovementGrid.PATTERN_UNIQUE_ID_TEMPLATE);
 
         WebElement uniqueIdElement = driver.findElement(By.cssSelector("[data-testid=uniqueId]"));
-        String queryByTeamName = testRestTemplate.getForObject(baseURL + "/ben/queryByTeamName/DOD_REACCOM", String.class);
+        String queryByTeamName = testRestTemplate.getForObject(
+                baseURL + "/ben/queryByTeamName/DOD_REACCOM", String.class
+        );
         List<Map<String, Object>> dataInserted = mapper.readValue(queryByTeamName, new TypeReference<>() {
         });
-        assertTrue(patternUniqueID.matcher(uniqueIdElement.getAttribute("value")).matches(), "Value [" + uniqueIdElement.getAttribute("value") + "] does not match " + patternUniqueIDTemplate);
-        assertEquals(dataInserted.get(dataInserted.size() - 1).get("uniqueId"), uniqueIdElement.getAttribute("value"));
+        assertTrue(patternUniqueID.matcher(uniqueIdElement.getAttribute("value")).matches(),
+                "Value [" + uniqueIdElement.getAttribute("value") + "] does not match "
+                        + ImprovementGrid.PATTERN_UNIQUE_ID_TEMPLATE);
+        assertEquals(dataInserted.get(dataInserted.size() - 1).get("uniqueId"),
+                uniqueIdElement.getAttribute("value")
+        );
 
-        RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
-        String patternDateTemplate = "202\\d-[01]\\d-[0123]\\d [012]\\d:[012345]\\d:[012345]\\d"; // 2020-02-10 10:34:15 am
-        Pattern patternDate = Pattern.compile(patternDateTemplate);
+        RemoteWebElement ul = (RemoteWebElement) driver.findElement(
+                By.cssSelector("[data-testid=versionsList]")
+        );
+        Pattern patternDate = Pattern.compile(ImprovementGrid.PATTERN_DATE_TEMPLATE);
 
         List<WebElement> lis = ul.findElementsByTagName("li");
 
         for (WebElement li : lis) {
-            assertTrue(patternDate.matcher(li.getText()).matches(), "Does not match = " + li.getText() + " - tagName = " + li.getTagName());
+            assertTrue(patternDate.matcher(li.getText()).matches(),
+                    "Does not match = " + li.getText() + " - tagName = " + li.getTagName()
+            );
         }
 
         OffsetDateTime printedDateTime = OffsetDateTime.parse(
@@ -230,7 +243,9 @@ public class ImprovementKataGuiTest {
         driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
 
         // assertion
-        assertTextEquals(driver, "[data-testid=message]", "Connection to the backend timed out");
+        assertTextEquals(driver, "[data-testid=message]",
+                "Connection to the backend timed out"
+        );
         driver.navigate().refresh();
     }
 
@@ -241,7 +256,9 @@ public class ImprovementKataGuiTest {
         insertRecordTimes(2);
 
         // Capture the list of links
-        RemoteWebElement ul = (RemoteWebElement) driver.findElement(By.cssSelector("[data-testid=versionsList]"));
+        RemoteWebElement ul = (RemoteWebElement) driver.findElement(
+                By.cssSelector("[data-testid=versionsList]")
+        );
         List<WebElement> lis = ul.findElementsByTagName("li");
 
         // Click on the second instance and verify it
@@ -252,7 +269,7 @@ public class ImprovementKataGuiTest {
         assertEquals("field now text 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
         assertEquals("field next text 2", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
         assertEquals("field breakdown text 2", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
-        assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim()));
+        assertNotEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim());
 
         // Click on the first instance and verify it
         lis.get(0).click();
@@ -262,7 +279,7 @@ public class ImprovementKataGuiTest {
         assertEquals("field now text 1", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
         assertEquals("field next text 1", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
         assertEquals("field breakdown text 1", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
-        assertFalse("".equals(driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim()));
+        assertNotEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim());
     }
 
     private void insertRecordTimes(int numberOfRecords) {

@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ImprovementKataE2EApplicationTest {
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     private String baseURL;
 
     @BeforeAll
@@ -60,7 +60,7 @@ class ImprovementKataE2EApplicationTest {
     @Test
     void benResponseShouldBeValidAsExpected() throws Exception {
         BenResponse response = insertRecord("TEST", "Title");
-        String patternUniqueIDTemplate = "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}";
+        String patternUniqueIDTemplate = ImprovementGrid.PATTERN_UNIQUE_ID_TEMPLATE;
         Pattern patternUniqueID = Pattern.compile(patternUniqueIDTemplate);
         assertTrue(patternUniqueID.matcher(response.getUniqueId()).matches());
     }
