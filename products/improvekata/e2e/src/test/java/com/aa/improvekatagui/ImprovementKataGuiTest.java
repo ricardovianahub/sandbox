@@ -158,8 +158,6 @@ public class ImprovementKataGuiTest {
         assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
 
         assertEquals(1, driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
-
-
     }
 
     @Test
