@@ -116,7 +116,7 @@ public class ImprovementKataGuiTest {
     void clickDeleteButtonVerifySuccessfulResponseImmediatelyAfterInserting() {
         // setup
         insertRecordTimes(1);
-        String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
+        String uniqueId = elementValue("uniqueId");
 
         // execution
         driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();
@@ -128,12 +128,12 @@ public class ImprovementKataGuiTest {
 
         assertTextEquals(driver, "[data-testid=message]", "Record deleted successfully");
 
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
+        assertEquals("", elementValue("title"));
+        assertEquals("", elementValue("fieldAwesome"));
+        assertEquals("", elementValue("fieldNow"));
+        assertEquals("", elementValue("fieldNext"));
+        assertEquals("", elementValue("fieldBreakdown"));
+        assertEquals("", elementValue("uniqueId"));
     }
 
     @Test
@@ -141,7 +141,7 @@ public class ImprovementKataGuiTest {
         insertRecordTimes(2);
 
         driver.findElement(By.cssSelector("ul[data-testid=versionsList] > li:first-child")).click();
-        String uniqueId = driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value");
+        String uniqueId = elementValue("uniqueId");
         driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();
         delay();
         List uniqueIdDeleted = testRestTemplate.getForObject(baseURL + "/ben/queryByUniqueId/" + uniqueId, List.class);
@@ -150,12 +150,12 @@ public class ImprovementKataGuiTest {
         assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
         assertTextEquals(driver, "[data-testid=message]", "Record deleted successfully");
 
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
-        assertEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value"));
+        assertEquals("", elementValue("title"));
+        assertEquals("", elementValue("fieldAwesome"));
+        assertEquals("", elementValue("fieldNow"));
+        assertEquals("", elementValue("fieldNext"));
+        assertEquals("", elementValue("fieldBreakdown"));
+        assertEquals("", elementValue("uniqueId"));
 
         assertEquals(1, driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
     }
@@ -227,10 +227,7 @@ public class ImprovementKataGuiTest {
 
         List<Map<String, Object>> dataLatest = mapper.readValue(queryByTeamName, new TypeReference<>() {
         });
-        assertEquals(
-                driver.findElement(By.cssSelector("[data-testid=title]")).getAttribute("value"),
-                dataLatest.get(dataLatest.size() - 1).get("title")
-        );
+        assertEquals(elementValue("title"), dataLatest.get(dataLatest.size() - 1).get("title"));
     }
 
     @Test
@@ -255,30 +252,32 @@ public class ImprovementKataGuiTest {
         insertRecordTimes(2);
 
         // Capture the list of links
-        RemoteWebElement ul = driver.findElement(
-                By.cssSelector("[data-testid=versionsList]")
-        );
+        RemoteWebElement ul = driver.findElement(By.cssSelector("[data-testid=versionsList]"));
         List<WebElement> lis = ul.findElementsByTagName("li");
 
         // Click on the second instance and verify it
         lis.get(1).click();
         delay();
 
-        assertEquals("field awesome text 2", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
-        assertEquals("field now text 2", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
-        assertEquals("field next text 2", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
-        assertEquals("field breakdown text 2", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
-        assertNotEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim());
+        assertEquals("field awesome text 2", elementValue("fieldAwesome"));
+        assertEquals("field now text 2", elementValue("fieldNow"));
+        assertEquals("field next text 2", elementValue("fieldNext"));
+        assertEquals("field breakdown text 2", elementValue("fieldBreakdown"));
+        assertNotEquals("", elementValue("uniqueId").trim());
 
         // Click on the first instance and verify it
         lis.get(0).click();
         delay();
 
-        assertEquals("field awesome text 1", driver.findElement(By.cssSelector("[data-testid=fieldAwesome]")).getAttribute("value"));
-        assertEquals("field now text 1", driver.findElement(By.cssSelector("[data-testid=fieldNow]")).getAttribute("value"));
-        assertEquals("field next text 1", driver.findElement(By.cssSelector("[data-testid=fieldNext]")).getAttribute("value"));
-        assertEquals("field breakdown text 1", driver.findElement(By.cssSelector("[data-testid=fieldBreakdown]")).getAttribute("value"));
-        assertNotEquals("", driver.findElement(By.cssSelector("[data-testid=uniqueId]")).getAttribute("value").trim());
+        assertEquals("field awesome text 1", elementValue("fieldAwesome"));
+        assertEquals("field now text 1", elementValue("fieldNow"));
+        assertEquals("field next text 1", elementValue("fieldNext"));
+        assertEquals("field breakdown text 1", elementValue("fieldBreakdown"));
+        assertNotEquals("", elementValue("uniqueId"));
+    }
+
+    private String elementValue(String dataTestId) {
+        return driver.findElement(By.cssSelector("[data-testid=" + dataTestId + "]")).getAttribute("value");
     }
 
     private void insertRecordTimes(int numberOfRecords) {
