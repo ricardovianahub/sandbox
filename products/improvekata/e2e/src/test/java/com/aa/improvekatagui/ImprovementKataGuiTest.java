@@ -5,10 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -69,7 +73,7 @@ public class ImprovementKataGuiTest {
 
     private void delay() {
         try {
-            Thread.sleep(100);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -218,12 +222,19 @@ public class ImprovementKataGuiTest {
             );
         }
 
+
+
+       // String timeZone = "-0" +(TimeZone.getDefault().getRawOffset()/(1000*60*60)) +":00";
+
         OffsetDateTime printedDateTime = OffsetDateTime.parse(
-                lis.get(lis.size() - 1).getText() + " -06:00",
+                lis.get(lis.size() - 1).getText() + " Z",
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
         );
 
-        //assertTrue(OffsetDateTime.now().isAfter(printedDateTime), "The printed time on the screen is after the current server time");
+
+        assertTrue(OffsetDateTime.now(ZoneOffset.UTC).isAfter(printedDateTime),
+                "The printed time on the screen is after the current server time"
+        );
 
         List<Map<String, Object>> dataLatest = mapper.readValue(queryByTeamName, new TypeReference<>() {
         });
