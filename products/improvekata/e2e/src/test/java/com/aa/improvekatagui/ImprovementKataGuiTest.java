@@ -222,15 +222,10 @@ public class ImprovementKataGuiTest {
             );
         }
 
-
-
-       // String timeZone = "-0" +(TimeZone.getDefault().getRawOffset()/(1000*60*60)) +":00";
-
         OffsetDateTime printedDateTime = OffsetDateTime.parse(
                 lis.get(lis.size() - 1).getText() + " Z",
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
         );
-
 
         assertTrue(OffsetDateTime.now(ZoneOffset.UTC).isAfter(printedDateTime),
                 "The printed time on the screen is after the current server time"
