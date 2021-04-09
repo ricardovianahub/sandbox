@@ -132,12 +132,7 @@ public class ImprovementKataGuiTest {
 
         assertTextEquals(driver, "[data-testid=message]", "Record deleted successfully");
 
-        assertEquals("", elementValue("title"));
-        assertEquals("", elementValue("fieldAwesome"));
-        assertEquals("", elementValue("fieldNow"));
-        assertEquals("", elementValue("fieldNext"));
-        assertEquals("", elementValue("fieldBreakdown"));
-        assertEquals("", elementValue("uniqueId"));
+        assertFormIsEmpty();
     }
 
     @Test
@@ -154,12 +149,7 @@ public class ImprovementKataGuiTest {
         assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
         assertTextEquals(driver, "[data-testid=message]", "Record deleted successfully");
 
-        assertEquals("", elementValue("title"));
-        assertEquals("", elementValue("fieldAwesome"));
-        assertEquals("", elementValue("fieldNow"));
-        assertEquals("", elementValue("fieldNext"));
-        assertEquals("", elementValue("fieldBreakdown"));
-        assertEquals("", elementValue("uniqueId"));
+        assertFormIsEmpty();
 
         assertEquals(1, driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
     }
@@ -183,6 +173,7 @@ public class ImprovementKataGuiTest {
     }
 
     //@Test
+
     void clickDeleteButtonVerifySuccessfulResponseWhenClickingOnATimestampLink() {
     }
 
@@ -299,6 +290,11 @@ public class ImprovementKataGuiTest {
         }
     }
 
+    private void assignValue(String selector, String value) {
+        driver.findElement(By.cssSelector(selector)).clear();
+        driver.findElement(By.cssSelector(selector)).sendKeys(value);
+    }
+
     private void assertTagNameEquals(WebDriver driver, String selector, String tagName) {
         WebElement element = driver.findElement(By.cssSelector(selector));
         assertEquals(tagName, element.getTagName());
@@ -309,8 +305,12 @@ public class ImprovementKataGuiTest {
         assertEquals(text, element.getText());
     }
 
-    private void assignValue(String selector, String value) {
-        driver.findElement(By.cssSelector(selector)).clear();
-        driver.findElement(By.cssSelector(selector)).sendKeys(value);
+    private void assertFormIsEmpty() {
+        assertEquals("", elementValue("title"));
+        assertEquals("", elementValue("fieldAwesome"));
+        assertEquals("", elementValue("fieldNow"));
+        assertEquals("", elementValue("fieldNext"));
+        assertEquals("", elementValue("fieldBreakdown"));
+        assertEquals("", elementValue("uniqueId"));
     }
 }

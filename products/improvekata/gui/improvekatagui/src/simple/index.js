@@ -141,7 +141,9 @@ class VersionsList extends React.Component {
             list.push(
                 <li key={row.uniqueId} uniqueid={row.uniqueId} onClick={() => this.handleLiAnchorClick(row.uniqueId)}>
                     {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}
+                     &nbsp;X
                 </li>
+
             )
         }
         return (
