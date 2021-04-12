@@ -139,8 +139,9 @@ class VersionsList extends React.Component {
         const list = [];
         for (let row of this.state.rows) {
             list.push(
-                <li key={row.uniqueId} uniqueid={row.uniqueId} onClick={() => this.handleLiAnchorClick(row.uniqueId)}>
-                    {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}
+                <li key={row.uniqueId} uniqueid={row.uniqueId}>
+                    <span onClick={() => this.handleLiAnchorClick(row.uniqueId)}> {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}</span>
+                    <span>X</span>
                 </li>
 
             )
