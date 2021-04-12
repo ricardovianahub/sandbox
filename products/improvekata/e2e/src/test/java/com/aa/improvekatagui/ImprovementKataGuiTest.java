@@ -209,7 +209,7 @@ public class ImprovementKataGuiTest {
 
         for (WebElement li : lis) {
             assertTrue(patternDate.matcher(li.getText()).matches(),
-                    "Does not match = " + li.getText() + " - tagName = " + li.getTagName()
+                    "[" + li.getText() + "] does not match Pattern " + ImprovementGrid.PATTERN_DATE_TEMPLATE + " - tagName = " + li.getTagName()
             );
         }
 
