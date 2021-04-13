@@ -140,8 +140,8 @@ class VersionsList extends React.Component {
         for (let row of this.state.rows) {
             list.push(
                 <li key={row.uniqueId} uniqueid={row.uniqueId}>
-                    <span onClick={() => this.handleLiAnchorClick(row.uniqueId)}> {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}</span>
-                    <span>X</span>
+                    <span class="blueButton" onClick={() => this.handleLiAnchorClick(row.uniqueId)}> {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}</span>
+                    <span class="redX">X</span>
                 </li>
 
             )

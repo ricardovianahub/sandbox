@@ -208,13 +208,13 @@ public class ImprovementKataGuiTest {
         List<WebElement> lis = ul.findElementsByTagName("li");
 
         for (WebElement li : lis) {
-            assertTrue(patternDate.matcher(li.getText()).matches(),
-                    "[" + li.getText() + "] does not match Pattern " + ImprovementGrid.PATTERN_DATE_TEMPLATE + " - tagName = " + li.getTagName()
+            assertTrue(patternDate.matcher(li.findElement(By.className("blueButton")).getText()).matches(),
+                    "[" + li.findElement(By.className("blueButton")).getText() + "] does not match Pattern " + ImprovementGrid.PATTERN_DATE_TEMPLATE + " - tagName = " + li.getTagName()
             );
         }
 
         OffsetDateTime printedDateTime = OffsetDateTime.parse(
-                lis.get(lis.size() - 1).getText() + " Z",
+                lis.get(lis.size() - 1).findElement(By.className("blueButton")).getText() + " Z",
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
         );
 

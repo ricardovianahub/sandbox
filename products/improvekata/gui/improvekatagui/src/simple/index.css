@@ -32,7 +32,7 @@ textarea {
     margin: 5px;
 }
 
-li {
+.blueButton {
     background-color: #5555AA;
     font-family: sans-serif;
     font-size: 15px;
@@ -48,9 +48,14 @@ li {
     font-style: normal;
 }
 
-li:hover {
+.blueButton:hover {
     border-color: #CCCCAA;
     background-color: #8888AA;
+}
+
+.redX {
+    color: red;
+    font-weight: bold;
 }
 
 a:link, a:visited {
