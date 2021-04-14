@@ -139,19 +139,18 @@ public class ImprovementKataGuiTest {
     void clickLittleXVerifySuccessfulResponseImmediatelyAfterInserting() {
         // setup
         insertRecordTimes(3);
-        String uniqueId = elementValue("uniqueId");
+        WebElement li = driver.findElement(By.cssSelector("ul[data-testid=versionsList] > li:nth-child(2)"));
+        String uniqueId = li.getAttribute("uniqueId");
 
         // execution
-        driver.findElement(By.cssSelector("button[data-testid=deleteButton]")).click();
+        WebElement spanX = li.findElement(By.cssSelector("span:last-child"));
+        spanX.click();
         delay();
         List uniqueIdDeleted = testRestTemplate.getForObject(baseURL + "/ben/queryByUniqueId/" + uniqueId, List.class);
 
         // assertion
         assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
-
-        assertTextEquals(driver, "[data-testid=message]", "Record deleted successfully");
-
-        assertFormIsEmpty();
+        assertEquals(2, driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
     }
 
 

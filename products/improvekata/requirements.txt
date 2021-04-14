@@ -20,7 +20,9 @@ X Add labels to text areas
          since it's technically possible to have 2 records created at the exact same second
     X When a error is received from the backend, show the message "Deletion failed" - and don't update the page in any way
       (clear the text areas, delete the timestamp from the list, etc)
-  - Add X links at each timestamp and allow them to be deleted directly
+  X Add X links at each timestamp and allow them to be deleted directly
+  - When an X is clicked, the elements of the form should not be deleted
+    UNLESS the X that was clicked corresponds to the record loaded in the page
   - Disable delete button when there is nothing to deleted
     - Define "Nothing to delete" (not clicked on the timestamps? no records at all? nothing inserted in this session?)
 

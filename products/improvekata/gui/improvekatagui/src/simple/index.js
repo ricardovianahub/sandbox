@@ -135,13 +135,28 @@ class VersionsList extends React.Component {
             });
     }
 
+    handleXClick(uniqueId) {
+        axios.delete('/ben/deleteByUniqueId/' + uniqueId)
+            .then(deleteResponse => {
+                document.getElementById("reaccom-message").innerText = "Record deleted successfully";
+                assignValueById("title", "");
+                assignValueById("field1Awesome", "");
+                assignValueById("field2Now", "");
+                assignValueById("field3Next", "");
+                assignValueById("field4Breakdown", "");
+                assignValueById("title", "");
+                queryAllVersionsList();
+                assignValueById("uniqueId", "");
+            });
+    }
+
     render() {
         const list = [];
         for (let row of this.state.rows) {
             list.push(
                 <li key={row.uniqueId} uniqueid={row.uniqueId}>
                     <span class="blueButton" onClick={() => this.handleLiAnchorClick(row.uniqueId)}> {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}</span>
-                    <span class="redX">X</span>
+                    <span class="redX" onClick={() => this.handleXClick(row.uniqueId)}>X</span>
                 </li>
 
             )
