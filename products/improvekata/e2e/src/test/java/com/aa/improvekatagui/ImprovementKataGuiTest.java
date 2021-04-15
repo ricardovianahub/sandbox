@@ -16,10 +16,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -79,9 +76,13 @@ public class ImprovementKataGuiTest {
         }
     }
 
-    @AfterAll
-    void afterAll() {
+    @AfterEach
+    void afterEach() {
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
+    }
+
+    @AfterAll
+    void afterAll(){
         driver.close();
     }
 

@@ -1,4 +1,4 @@
-FROM openjdk:14
+FROM openjdk:15
 COPY . /src
 WORKDIR /src
 RUN awk '{ sub("\r$", ""); print }' gradlew > gradlewconverted
