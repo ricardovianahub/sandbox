@@ -137,7 +137,7 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
-    void clickLittleXVerifySuccessfulResponseImmediatelyAfterInserting() {
+    void clickDeleteDoesNotWipeTheFormWhenADifferentRecordIsClicked() {
         // setup
         insertRecordTimes(3);
         WebElement li = driver.findElement(By.cssSelector("ul[data-testid=versionsList] > li:nth-child(2)"));
@@ -152,6 +152,31 @@ public class ImprovementKataGuiTest {
         // assertion
         assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
         assertEquals(2, driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
+        assertNotEquals("", elementValue("title"));
+        assertNotEquals("", elementValue("fieldAwesome"));
+        assertNotEquals("", elementValue("fieldNow"));
+        assertNotEquals("", elementValue("fieldNext"));
+        assertNotEquals("", elementValue("fieldBreakdown"));
+        assertNotEquals("", elementValue("uniqueId"));
+    }
+
+    @Test
+    void clickDeleteWipesTheFormWhenTheSameRecordIsClicked() {
+        // setup
+        insertRecordTimes(3);
+        WebElement li = driver.findElement(By.cssSelector("ul[data-testid=versionsList] > li:nth-child(3)"));
+        String uniqueId = li.getAttribute("uniqueId");
+
+        // execution
+        WebElement spanX = li.findElement(By.cssSelector("span:last-child"));
+        spanX.click();
+        delay();
+        List uniqueIdDeleted = testRestTemplate.getForObject(baseURL + "/ben/queryByUniqueId/" + uniqueId, List.class);
+
+        // assertion
+        assertTrue(uniqueIdDeleted.isEmpty(), "uniqueIdDeleted list was expected to empty but got: " + uniqueIdDeleted.size());
+        assertEquals(2, driver.findElements(By.cssSelector("ul[data-testid=versionsList] > li")).size());
+        assertFormIsEmpty();
     }
 
 
