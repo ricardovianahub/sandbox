@@ -57,7 +57,7 @@ class App extends React.Component {
                         </div>
                         <br/>
                         <button data-testid="insertButton" onClick={this.handleInsertButtonClick}>Insert</button>
-                        <button data-testid="deleteButton" onClick={this.handleDeleteButtonClick}>Delete</button>
+                        <button data-testid="deleteButton" id="deleteButton" onClick={this.handleDeleteButtonClick} disabled="true">Delete</button>
                         <div id="reaccom-message" data-testid="message"/>
                     </div>
                     <div className="float">
@@ -102,6 +102,7 @@ class App extends React.Component {
                 document.getElementById("reaccom-message").innerText = "Record inserted successfully";
                 document.getElementById("uniqueId").value = insertResponse.data.uniqueId;
                 queryAllVersionsList();
+                document.getElementById("deleteButton").disabled=false;
             })
             .catch(reason => {
                 document.getElementById("reaccom-message").innerText = "Connection to the backend timed out";
@@ -119,6 +120,10 @@ class VersionsList extends React.Component {
 
     componentDidMount() {
         queryAllVersionsList();
+    }
+    componentDidUpdate() {
+        if (this.state.rows.size===0)
+            document.getElementById("deleteButton").disabled=true;
     }
 
     handleLiAnchorClick(uniqueId) {

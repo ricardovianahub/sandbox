@@ -94,6 +94,24 @@ public class ImprovementKataGuiTest {
     }
 
     @Test
+    void disableDeleteButtonUntilRecordInserted() {
+        insertRecordTimes(1);
+        WebElement deleteButton = driver.findElement(By.cssSelector("button[data-testid=deleteButton]"));
+        assertTrue(deleteButton.isEnabled(), "Delete button expected to be enabled but it is NOT");
+    }
+
+    @Test
+    void disableDeleteButtonWhenThereAreNoRecords() {
+        insertRecordTimes(1);
+
+        // execution
+        WebElement deleteButton = driver.findElement(By.cssSelector("button[data-testid=deleteButton]"));
+        deleteButton.click();
+        delay();
+        assertFalse(deleteButton.isEnabled(), "Delete button expected to be disabled but it is NOT");
+    }
+
+    @Test
     void ensureNecessaryFieldsArePresent() {
         assertTagNameEquals(driver, "[data-testid=title]", "input");
 
