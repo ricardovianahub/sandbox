@@ -94,6 +94,7 @@ button {
     text-align: center;
     width: 200px;
     padding: 10px;
+    cursor: pointer;
 }
 
 button:hover {

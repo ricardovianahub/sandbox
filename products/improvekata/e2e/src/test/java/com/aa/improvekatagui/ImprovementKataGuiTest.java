@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
@@ -84,6 +85,12 @@ public class ImprovementKataGuiTest {
     @AfterAll
     void afterAll(){
         driver.close();
+    }
+
+    @Test
+    void disableDeleteButtonWhenMandatoryFieldsAreEmpty() {
+        WebElement deleteButton = driver.findElement(By.cssSelector("button[data-testid=deleteButton]"));
+        assertFalse(deleteButton.isEnabled(), "Delete button expected to be disabled but it is NOT");
     }
 
     @Test

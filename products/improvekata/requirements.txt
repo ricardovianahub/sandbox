@@ -23,13 +23,20 @@ X Add labels to text areas
   X Add X links at each timestamp and allow them to be deleted directly
   X When an X is clicked, the elements of the form should not be deleted
     UNLESS the X that was clicked corresponds to the record loaded in the page
-  - Disable delete button when there is nothing to deleted
-    - Define "Nothing to delete" (not clicked on the timestamps? no records at all? nothing inserted in this session?)
+
+- Screen reaction
+  - When the Mandatory fields in the screen are empty, disable the delete button
+  - When the Mandatory fields in the screen are empty, disable the insert button
+    - Mandatory fields: Title* / Ideal* / Now / Next / Breakdown
+  - Update button
+  - Create filters to show which katas are missing the following fields:
+    - Now
+    - Next
+    - Breakdown
+  - Change the color of a link that was clicked and loaded so we can easily glance at what is being shown in the screen
+
+- Disable delete button when there is nothing to deleted
+  - Define "Nothing to delete" (not clicked on the timestamps? no records at all? nothing inserted in this session?)
 
 - Add logging mechanism
   - Output to standard output
-
-- Screen reaction
-  - When the fields in the screen are empty, disable the insert button
-  - When the fields in the screen are empty, disable the delete button
-  - Change the color of a link that was clicked so we can easily glance at what is being shown in the screen
