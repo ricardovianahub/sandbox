@@ -57,7 +57,7 @@ class App extends React.Component {
                         </div>
                         <br/>
                         <button data-testid="insertButton" onClick={this.handleInsertButtonClick}>Insert</button>
-                        <button data-testid="deleteButton" id="deleteButton" onClick={this.handleDeleteButtonClick} disabled="true">Delete</button>
+                        <button data-testid="deleteButton" id="deleteButton" onClick={this.handleDeleteButtonClick}>Delete</button>
                         <div id="reaccom-message" data-testid="message"/>
                     </div>
                     <div className="float">
@@ -122,8 +122,12 @@ class VersionsList extends React.Component {
         queryAllVersionsList();
     }
     componentDidUpdate() {
-        if (this.state.rows.size===0)
+        if (this.state.rows.length===0){
             document.getElementById("deleteButton").disabled=true;
+        }
+        else{
+            document.getElementById("deleteButton").disabled=false;
+        }
     }
 
     handleLiAnchorClick(uniqueId) {
@@ -161,9 +165,9 @@ class VersionsList extends React.Component {
         for (let row of this.state.rows) {
             list.push(
                 <li key={row.uniqueId} uniqueid={row.uniqueId}>
-                    <span class="blueButton" onClick={() => this.handleLiAnchorClick(row.uniqueId)}> {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}</span>
+                    <span className="blueButton" onClick={() => this.handleLiAnchorClick(row.uniqueId)}> {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}</span>
                     &nbsp;
-                    <span class="redX" onClick={() => this.handleXClick(row.uniqueId)}>X</span>
+                    <span className="redX" onClick={() => this.handleXClick(row.uniqueId)}>X</span>
                 </li>
 
             )

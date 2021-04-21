@@ -108,6 +108,7 @@ public class ImprovementKataGuiTest {
         WebElement deleteButton = driver.findElement(By.cssSelector("button[data-testid=deleteButton]"));
         deleteButton.click();
         delay();
+
         assertFalse(deleteButton.isEnabled(), "Delete button expected to be disabled but it is NOT");
     }
 
