@@ -24,10 +24,10 @@ X Add labels to text areas
   X When an X is clicked, the elements of the form should not be deleted
     UNLESS the X that was clicked corresponds to the record loaded in the page
 
-- Screen reaction
+> Screen reaction
   X When the Mandatory fields in the screen are empty, disable the delete button
   - When the Mandatory fields in the screen are empty, disable the insert button
-    - Mandatory fields: Title* / Ideal* / Now / Next / Breakdown
+    - Mandatory fields: Title* / Awesome* / Now / Next / Breakdown
   - Update button
   - Create filters to show which katas are missing the following fields:
     - Now

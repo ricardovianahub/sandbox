@@ -1,23 +1,24 @@
 package com.aa.improvekatagui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -30,9 +31,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.aa.targetendpoint.EndPointResolver;
 import com.aa.improvekataben.ImproveKataE2EApplication;
 import com.aa.improvekataben.data.ImprovementGrid;
+import com.aa.targetendpoint.EndPointResolver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -80,11 +81,20 @@ public class ImprovementKataGuiTest {
     @AfterEach
     void afterEach() {
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
+        driver.get("javascript:disableButton('insertButton');");
+        driver.get("javascript:disableButton('deleteButton');");
+        delay();
     }
 
     @AfterAll
     void afterAll(){
         driver.close();
+    }
+
+    @Test
+    void disableInsertButtonWhenMandatoryFieldsAreEmpty() {
+        WebElement insertButton = driver.findElement(By.cssSelector("button[data-testid=insertButton]"));
+        assertFalse(insertButton.isEnabled(), "insert button expected to be disabled but it is NOT");
     }
 
     @Test
@@ -243,11 +253,6 @@ public class ImprovementKataGuiTest {
         }
     }
 
-    //@Test
-
-    void clickDeleteButtonVerifySuccessfulResponseWhenClickingOnATimestampLink() {
-    }
-
     @Test
     void clickInsertButtonVerifySuccessfulResponse() throws JsonProcessingException {
         // setup & execution
@@ -304,7 +309,9 @@ public class ImprovementKataGuiTest {
         driver.get("javascript:setEndpointInsert('/nowhere');");
 
         // execution
-        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
+        WebElement element = driver.findElement(By.cssSelector("button[data-testid=insertButton]"));
+        System.out.println("Insert button is " + (element.isEnabled() ? "ENABLED" : "DISABLED"));
+        element.click();
 
         // assertion
         assertTextEquals(driver, "[data-testid=message]",

@@ -13,6 +13,18 @@ const assignValueById = (id, value) => {
     document.getElementById(id).value = value;
 }
 
+const retrieveValueById = (id) => {
+    return document.getElementById(id).value;
+}
+
+const enableButton = (id) => {
+    document.getElementById(id).disabled = false;
+}
+
+const disableButton = (id) => {
+    document.getElementById(id).disabled = true;
+}
+
 function queryAllVersionsList() {
     axios.get('/ben/queryAll')
         .then(response => {
@@ -33,14 +45,15 @@ class App extends React.Component {
                     <h1 data-testid="headerTitle">
                         Improvement Kata
                     </h1>
-                    <input type="text" id="title" data-testid="title"/>
+                    <input type="text" id="title" data-testid="title" onChange={this.handleMandatoryFieldChange} />
                 </div>
                 <hr/>
                 <div className="wrapper">
                     <div className="float">
                         <div className="float">
-                            <div data-testid="fieldAwesomeLabel">Awesome</div>
-                            <textarea id="field1Awesome" data-testid="fieldAwesome"/>
+                            <div data-testid="fieldAwesomeLabel">Awesome
+                            </div>
+                            <textarea id="field1Awesome" data-testid="fieldAwesome" onChange={this.handleMandatoryFieldChange} />
                         </div>
                         <div className="float">
                             <div data-testid="fieldNowLabel">Now</div>
@@ -56,8 +69,12 @@ class App extends React.Component {
                             <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
                         </div>
                         <br/>
-                        <button data-testid="insertButton" onClick={this.handleInsertButtonClick}>Insert</button>
-                        <button data-testid="deleteButton" id="deleteButton" onClick={this.handleDeleteButtonClick}>Delete</button>
+                        <button data-testid="insertButton" id="insertButton"
+                                onClick={this.handleInsertButtonClick}>Insert
+                        </button>
+                        <button data-testid="deleteButton" id="deleteButton"
+                                onClick={this.handleDeleteButtonClick}>Delete
+                        </button>
                         <div id="reaccom-message" data-testid="message"/>
                     </div>
                     <div className="float">
@@ -67,6 +84,15 @@ class App extends React.Component {
                 </div>
             </div>
         )
+    }
+
+
+    handleMandatoryFieldChange() {
+        if (retrieveValueById("title").trim() === "" || retrieveValueById("field1Awesome").trim() === "") {
+            disableButton("insertButton");
+        } else {
+            enableButton("insertButton");
+        }
     }
 
     handleDeleteButtonClick() {
@@ -82,6 +108,8 @@ class App extends React.Component {
                 assignValueById("title", "");
                 queryAllVersionsList();
                 assignValueById("uniqueId", "");
+
+                document.getElementById("insertButton").disabled = true;
             });
     }
 
@@ -102,7 +130,7 @@ class App extends React.Component {
                 document.getElementById("reaccom-message").innerText = "Record inserted successfully";
                 document.getElementById("uniqueId").value = insertResponse.data.uniqueId;
                 queryAllVersionsList();
-                document.getElementById("deleteButton").disabled=false;
+                document.getElementById("deleteButton").disabled = false;
             })
             .catch(reason => {
                 document.getElementById("reaccom-message").innerText = "Connection to the backend timed out";
@@ -121,12 +149,13 @@ class VersionsList extends React.Component {
     componentDidMount() {
         queryAllVersionsList();
     }
+
     componentDidUpdate() {
-        if (this.state.rows.length===0){
-            document.getElementById("deleteButton").disabled=true;
-        }
-        else{
-            document.getElementById("deleteButton").disabled=false;
+        if (this.state.rows.length === 0) {
+            document.getElementById("deleteButton").disabled = true;
+            document.getElementById("insertButton").disabled = true;
+        } else {
+            document.getElementById("deleteButton").disabled = false;
         }
     }
 
@@ -165,11 +194,11 @@ class VersionsList extends React.Component {
         for (let row of this.state.rows) {
             list.push(
                 <li key={row.uniqueId} uniqueid={row.uniqueId}>
-                    <span className="blueButton" onClick={() => this.handleLiAnchorClick(row.uniqueId)}> {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}</span>
+                    <span className="blueButton"
+                          onClick={() => this.handleLiAnchorClick(row.uniqueId)}> {moment(row.createdAt).format("YYYY-MM-DD hh:mm:ss")}</span>
                     &nbsp;
                     <span className="redX" onClick={() => this.handleXClick(row.uniqueId)}>X</span>
                 </li>
-
             )
         }
         return (
