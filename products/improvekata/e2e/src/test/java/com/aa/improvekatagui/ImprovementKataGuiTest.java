@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -307,11 +308,11 @@ public class ImprovementKataGuiTest {
     void clickInsertButtonVerifyTimeOutResponse() {
         // setup
         driver.get("javascript:setEndpointInsert('/nowhere');");
+        assignValueBySelector("[id=title]", "title");
+        assignValueBySelector("[id=field1Awesome]", "awesome");
 
         // execution
-        WebElement element = driver.findElement(By.cssSelector("button[data-testid=insertButton]"));
-        System.out.println("Insert button is " + (element.isEnabled() ? "ENABLED" : "DISABLED"));
-        element.click();
+        driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
 
         // assertion
         assertTextEquals(driver, "[data-testid=message]",
@@ -322,7 +323,6 @@ public class ImprovementKataGuiTest {
 
     @Test
     void savingAndRetrievingDifferentGrids() {
-        testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         // populate data 1 & 2
         insertRecordTimes(2);
 
@@ -358,17 +358,17 @@ public class ImprovementKataGuiTest {
     private void insertRecordTimes(int numberOfRecords) {
         for (int i = 1; i <= numberOfRecords; i++) {
             String testTitle = "test title " + UUID.randomUUID();
-            assignValue("[data-testid=title]", testTitle);
-            assignValue("[data-testid=fieldAwesome]", "field awesome text " + i);
-            assignValue("[data-testid=fieldNow]", "field now text " + i);
-            assignValue("[data-testid=fieldNext]", "field next text " + i);
-            assignValue("[data-testid=fieldBreakdown]", "field breakdown text " + i);
+            assignValueBySelector("[data-testid=title]", testTitle);
+            assignValueBySelector("[data-testid=fieldAwesome]", "field awesome text " + i);
+            assignValueBySelector("[data-testid=fieldNow]", "field now text " + i);
+            assignValueBySelector("[data-testid=fieldNext]", "field next text " + i);
+            assignValueBySelector("[data-testid=fieldBreakdown]", "field breakdown text " + i);
             driver.findElement(By.cssSelector("button[data-testid=insertButton]")).click();
             delay();
         }
     }
 
-    private void assignValue(String selector, String value) {
+    private void assignValueBySelector(String selector, String value) {
         driver.findElement(By.cssSelector(selector)).clear();
         driver.findElement(By.cssSelector(selector)).sendKeys(value);
     }
