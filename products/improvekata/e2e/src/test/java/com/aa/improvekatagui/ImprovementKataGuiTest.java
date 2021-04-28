@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -79,36 +80,50 @@ public class ImprovementKataGuiTest {
         }
     }
 
-    @AfterEach
-    void afterEach() {
+    @BeforeEach
+    void beforeEach() {
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
-        driver.get("javascript:disableButton('insertButton');");
-        driver.get("javascript:disableButton('deleteButton');");
+        driver.navigate().refresh();
         delay();
     }
 
     @AfterAll
     void afterAll(){
+        testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         driver.close();
+    }
+
+    @Test
+    void enableInsertButtonWhenMandatoryFieldsArePopulated() {
+        WebElement insertButton = driver.findElement(By.cssSelector("button[data-testid=insertButton]"));
+
+        assignValueBySelector("[id=title]", "title");
+        assignValueBySelector("[id=field1Awesome]", "awesome");
+
+        assertTrue(insertButton.isEnabled(), "insert button expected to be enabled but it is NOT");
+        assertEquals("enabledButton", insertButton.getAttribute("class"));
     }
 
     @Test
     void disableInsertButtonWhenMandatoryFieldsAreEmpty() {
         WebElement insertButton = driver.findElement(By.cssSelector("button[data-testid=insertButton]"));
         assertFalse(insertButton.isEnabled(), "insert button expected to be disabled but it is NOT");
+        assertEquals("disabledButton", insertButton.getAttribute("class"));
     }
 
     @Test
     void disableDeleteButtonWhenMandatoryFieldsAreEmpty() {
         WebElement deleteButton = driver.findElement(By.cssSelector("button[data-testid=deleteButton]"));
         assertFalse(deleteButton.isEnabled(), "Delete button expected to be disabled but it is NOT");
+        assertEquals("disabledButton", deleteButton.getAttribute("class"));
     }
 
     @Test
-    void disableDeleteButtonUntilRecordInserted() {
+    void enableDeleteButtonAfterRecordInserted() {
         insertRecordTimes(1);
         WebElement deleteButton = driver.findElement(By.cssSelector("button[data-testid=deleteButton]"));
         assertTrue(deleteButton.isEnabled(), "Delete button expected to be enabled but it is NOT");
+        assertEquals("enabledButton", deleteButton.getAttribute("class"));
     }
 
     @Test
