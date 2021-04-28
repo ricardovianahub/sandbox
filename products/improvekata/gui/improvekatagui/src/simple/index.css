@@ -82,7 +82,21 @@ a:hover {
     justify-content: center;
 }
 
-button {
+.disabledButton {
+    background-color: #555555;
+    font-family: sans-serif;
+    font-size: 30px;
+    color: white;
+    border-style: outset;
+    border-width: 5px;
+    border-color: white;
+    border-radius: 40px;
+    text-align: center;
+    width: 200px;
+    padding: 10px;
+}
+
+.enabledButton {
     background-color: #5555AA;
     font-family: sans-serif;
     font-size: 30px;
@@ -97,14 +111,16 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.enabledButton:hover {
     background-color: #2222AA;
 }
 
-button:active {
+.enabledButton:active {
     color: #2222AA;
     background-color: white;
 }
+
+
 
 hr {
     border: 1px #7777FF dashed;

@@ -26,9 +26,16 @@ X Add labels to text areas
 
 > Screen reaction
   X When the Mandatory fields in the screen are empty, disable the delete button
-  - When the Mandatory fields in the screen are empty, disable the insert button
+  X When the Mandatory fields in the screen are empty, disable the insert button
     - Mandatory fields: Title* / Awesome* / Now / Next / Breakdown
+  X Gray-out disabled buttons - insert
+  X Gray-out disabled buttons - delete
+  - Clear All/Reset button (to start a new record)
   - Update button
+  - Gray-out disabled buttons - update
+  - Gray-out disabled buttons - clear all
+  - Add "title field" to VersionsList
+     - Discuss if title should be a field in the list, a drop down, a search box, etc (either/or or when)
   - Create filters to show which katas are missing the following fields:
     - Now
     - Next

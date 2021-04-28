@@ -18,11 +18,15 @@ const retrieveValueById = (id) => {
 }
 
 const enableButton = (id) => {
-    document.getElementById(id).disabled = false;
+    const button = document.getElementById(id);
+    button.disabled = false;
+    button.setAttribute("class", "enabledButton");
 }
 
 const disableButton = (id) => {
-    document.getElementById(id).disabled = true;
+    const button = document.getElementById(id);
+    button.disabled = true;
+    button.setAttribute("class", "disabledButton");
 }
 
 function queryAllVersionsList() {
@@ -69,11 +73,13 @@ class App extends React.Component {
                             <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
                         </div>
                         <br/>
-                        <button data-testid="insertButton" id="insertButton"
+                        <button data-testid="insertButton" id="insertButton" class="disabledButton"
                                 onClick={this.handleInsertButtonClick}>Insert
                         </button>
                         <button data-testid="deleteButton" id="deleteButton"
                                 onClick={this.handleDeleteButtonClick}>Delete
+                        </button>
+                        <button data-testid="resetButton">Reset
                         </button>
                         <div id="reaccom-message" data-testid="message"/>
                     </div>
@@ -109,7 +115,7 @@ class App extends React.Component {
                 queryAllVersionsList();
                 assignValueById("uniqueId", "");
 
-                document.getElementById("insertButton").disabled = true;
+                disableButton("insertButton");
             });
     }
 
@@ -130,7 +136,7 @@ class App extends React.Component {
                 document.getElementById("reaccom-message").innerText = "Record inserted successfully";
                 document.getElementById("uniqueId").value = insertResponse.data.uniqueId;
                 queryAllVersionsList();
-                document.getElementById("deleteButton").disabled = false;
+                enableButton("deleteButton")
             })
             .catch(reason => {
                 document.getElementById("reaccom-message").innerText = "Connection to the backend timed out";
@@ -152,10 +158,10 @@ class VersionsList extends React.Component {
 
     componentDidUpdate() {
         if (this.state.rows.length === 0) {
-            document.getElementById("deleteButton").disabled = true;
-            document.getElementById("insertButton").disabled = true;
+            disableButton("deleteButton")
+            disableButton("insertButton");
         } else {
-            document.getElementById("deleteButton").disabled = false;
+            enableButton("deleteButton");
         }
     }
 

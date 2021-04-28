@@ -366,6 +366,12 @@ public class ImprovementKataGuiTest {
         assertNotEquals("", elementValue("uniqueId"));
     }
 
+    @Test
+    void ensureResetButtonIsPresent() {
+        assertTagNameEquals(driver, "[data-testid=resetButton]", "button");
+        assertTextEquals(driver, "[data-testid=resetButton]", "Reset");
+    }
+
     private String elementValue(String dataTestId) {
         return driver.findElement(By.cssSelector("[data-testid=" + dataTestId + "]")).getAttribute("value");
     }
