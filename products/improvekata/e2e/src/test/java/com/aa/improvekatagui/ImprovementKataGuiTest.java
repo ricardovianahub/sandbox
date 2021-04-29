@@ -370,7 +370,26 @@ public class ImprovementKataGuiTest {
     void ensureResetButtonIsPresent() {
         assertTagNameEquals(driver, "[data-testid=resetButton]", "button");
         assertTextEquals(driver, "[data-testid=resetButton]", "Reset");
+        WebElement resetButton = driver.findElement(By.cssSelector("[data-testid=resetButton]"));
+        assertFalse(resetButton.isEnabled(), "reset button expected to be disabled but it is NOT");
+        assertEquals("disabledButton", resetButton.getAttribute("class"));
     }
+
+    @Test
+    void ensureResetButtonIsEnabledWhen() {
+        WebElement resetButton = driver.findElement(By.cssSelector("[data-testid=resetButton]"));
+
+        assignValueBySelector("[data-testid=title]", "title");
+        assertTrue(resetButton.isEnabled(), "reset button expected to be enabled but it is NOT");
+        assertEquals("enabledButton", resetButton.getAttribute("class"));
+
+//        assignValueBySelector("[data-testid=fieldAwesome]", "field awesome text");
+//        assignValueBySelector("[data-testid=fieldNow]", "field now text");
+//        assignValueBySelector("[data-testid=fieldNext]", "field next text");
+//        assignValueBySelector("[data-testid=fieldBreakdown]", "field breakdown text");
+
+    }
+
 
     private String elementValue(String dataTestId) {
         return driver.findElement(By.cssSelector("[data-testid=" + dataTestId + "]")).getAttribute("value");

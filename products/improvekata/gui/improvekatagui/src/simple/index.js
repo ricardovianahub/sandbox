@@ -49,7 +49,7 @@ class App extends React.Component {
                     <h1 data-testid="headerTitle">
                         Improvement Kata
                     </h1>
-                    <input type="text" id="title" data-testid="title" onChange={this.handleMandatoryFieldChange} />
+                    <input type="text" id="title" data-testid="title" onChange={this.handleButtonStatus} />
                 </div>
                 <hr/>
                 <div className="wrapper">
@@ -57,7 +57,7 @@ class App extends React.Component {
                         <div className="float">
                             <div data-testid="fieldAwesomeLabel">Awesome
                             </div>
-                            <textarea id="field1Awesome" data-testid="fieldAwesome" onChange={this.handleMandatoryFieldChange} />
+                            <textarea id="field1Awesome" data-testid="fieldAwesome" onChange={this.handleButtonStatus} />
                         </div>
                         <div className="float">
                             <div data-testid="fieldNowLabel">Now</div>
@@ -79,7 +79,7 @@ class App extends React.Component {
                         <button data-testid="deleteButton" id="deleteButton"
                                 onClick={this.handleDeleteButtonClick}>Delete
                         </button>
-                        <button data-testid="resetButton">Reset
+                        <button data-testid="resetButton" id="resetButton" disabled class="disabledButton">Reset
                         </button>
                         <div id="reaccom-message" data-testid="message"/>
                     </div>
@@ -93,11 +93,17 @@ class App extends React.Component {
     }
 
 
-    handleMandatoryFieldChange() {
+    handleButtonStatus() {
+        // insert button
         if (retrieveValueById("title").trim() === "" || retrieveValueById("field1Awesome").trim() === "") {
             disableButton("insertButton");
         } else {
             enableButton("insertButton");
+        }
+
+        // reset button
+        if (retrieveValueById("title").trim() != "") {
+            enableButton("resetButton");
         }
     }
 
