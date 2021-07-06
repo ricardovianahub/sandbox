@@ -1,0 +1,53 @@
+Wrist watch
+
+Please create a backend class that will serve a wrist-watch application
+The watch will present the hour numbers in roman numerals
+
+Notes: 
+- Use Test Driven Development - "Driven" as in "Tests First"
+- Consider this a pairing exercise. Please talk out loud the steps you are taking and especially why
+- For this exercise, simply create public methods. No need to write web services logic and syntax
+- No need to persist any values (if/when appropriate, saving a value to a variable is considered enough)
+- Always find the simplest solution to take the next step
+
+The API features are represented by the following user stories
+
+1 - method convertToRomans 
+	- receives a number
+	- returns the corresponding roman numeral as a String
+	- example: 1 returns "I", 9 returns "IX", and so on
+2 - method currentSeconds 
+	- no parameters
+	- returns the current seconds of the server clock
+		- formatted as a String that should always be exactly 2 characters long
+		- if the number of seconds is less than or equal to 9, pad a leading "0"
+	- example: 1 should be "01", 9 should be "09", 14 should be "14" and so on
+3 - setAlarm
+	- receives 2 numbers and saves them : hour (in 24h format) and minute
+	- no value returned
+4 - readAlarm
+	- no parameters
+	- returns 4 character String with the alarm time that has been setAlarm in 24h format
+		- example: if the alarm is set for 9:05pm return "2105"
+5 - resetAlarm
+	- no parameters
+		- If an alarm was previously set, remove it
+		- If not, do nothing
+	- no value returned
+	
+			
+------------------------------------------------------------------------------------------------------------------
+
+Roman numerals reference:
+	Values:
+		- 1 = I 
+		- 5 = V 
+		- 10 = X 
+		- 50 = L 
+		- 100 = C 
+		- 500 = D 
+		- 1000 = M
+	- Concatenated numerals (ordered from higher to lower value) have their values added. Only numerals that are powers of 10 can be repeated, to a maximum of 3 times
+		- Example: 6 = VI - 53 = LIII - 105 = CV - 208 = CCVIII
+	- The value of numerals that are powers of 10 is substracted when they are placed behind the 2 numeral of immediately higher value
+		- Example: 4 = IV - 9 = IX - 40 = XL - 900 = CM
