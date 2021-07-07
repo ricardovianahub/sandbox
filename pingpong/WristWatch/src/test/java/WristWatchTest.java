@@ -11,6 +11,21 @@ public class WristWatchTest {
     }
 
     @Test
+    public void convertToRomansReturnsIIfor2() {
+        testMatchingValues("II", 2);
+    }
+
+    @Test
+    public void convertToRomansReturnsIIIfor3() {
+        testMatchingValues("III", 3);
+    }
+
+    @Test
+    public void convertToRomansReturnsIVfor4() {
+        testMatchingValues("IV", 4);
+    }
+
+    @Test
     public void covertToRomansReturnsVfor5(){
         testMatchingValues("V", 5);
     }
@@ -33,15 +48,15 @@ public class WristWatchTest {
     private void testRanges(int i, int maxValue) {
         WristWatch wristWatch = new WristWatch();
 
-        assertNull(wristWatch.convertToRomans(i));
-        assertNull(wristWatch.convertToRomans(maxValue));
+        assertNull(wristWatch.convertToRomansMap(i));
+        assertNull(wristWatch.convertToRomansMap(maxValue));
     }
 
     private void testMatchingValues(String i, int i2) {
         WristWatch wristWatch = new WristWatch();
 
         String expected = i;
-        String actual = wristWatch.convertToRomans(i2);
+        String actual = wristWatch.convertToRomansMap(i2);
 
         assertEquals(expected, actual);
     }
