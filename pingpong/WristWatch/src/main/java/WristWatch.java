@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class WristWatch {
 
-    private OfficialTime officialTime;
+    private final OfficialTime officialTime;
 
     public WristWatch(OfficialTime officialTime) {
         this.officialTime = officialTime;
