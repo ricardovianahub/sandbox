@@ -2,7 +2,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class WristWatchTest {
         testMatchingValues("XII", 12);
     }
     private void testMatchingValues(String i, int i2) {
-        WristWatch wristWatch = new WristWatch();
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
 
         String expected = i;
         String actual = wristWatch.convertToRomans(i2);
@@ -42,7 +41,7 @@ public class WristWatchTest {
         testRanges(0, Integer.MIN_VALUE);
     }
     private void testRanges(int i, int maxValue) {
-        WristWatch wristWatch = new WristWatch();
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
 
         assertNull(wristWatch.convertToRomans(i));
         assertNull(wristWatch.convertToRomans(maxValue));
@@ -50,7 +49,19 @@ public class WristWatchTest {
 
     @Test
     public void currentSecondsReturnsFormattedString() {
-        WristWatch wristWatch = new WristWatch();
+        final int expectedSeconds = 32;
+        WristWatch wristWatch = new WristWatch(
+                new OfficialTime() {
+                    @Override
+                    public LocalDateTime current() {
+                        return LocalDateTime.of(
+                                2021, 7, 9,
+                                9, 51, expectedSeconds,
+                                0
+                        );
+                    }
+                }
+        );
         int seconds = LocalDateTime.now().getSecond();
         String expected;
         if (seconds <= 9) {
@@ -66,5 +77,6 @@ public class WristWatchTest {
                 Integer.parseInt(actual) >= 0
                         && Integer.parseInt(actual) <= 59
         );
+        assertEquals(expectedSeconds, Integer.parseInt(actual));
     }
 }

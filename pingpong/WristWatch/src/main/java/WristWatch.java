@@ -4,7 +4,13 @@ import java.util.Map;
 
 public class WristWatch {
 
-    private final static Map<Integer, String> numberToRomansMap = new HashMap<>(){
+    private OfficialTime officialTime;
+
+    public WristWatch(OfficialTime officialTime) {
+        this.officialTime = officialTime;
+    }
+
+    private final static Map<Integer, String> numberToRomansMap = new HashMap<>() {
         {
             put(1, "I");
             put(2, "II");
@@ -21,7 +27,7 @@ public class WristWatch {
         }
     };
 
-    public String convertToRomans(int number){
+    public String convertToRomans(int number) {
         if (number < 1 || number > 12) {
             return null;
         }
@@ -30,9 +36,9 @@ public class WristWatch {
     }
 
     public String currentSeconds() {
-        int seconds = LocalDateTime.now().plusSeconds(99).getSecond();
+        int seconds = officialTime.current().getSecond();
         if (seconds <= 9) {
-           return "0" + seconds;
+            return "0" + seconds;
         }
         return String.valueOf(seconds);
     }
