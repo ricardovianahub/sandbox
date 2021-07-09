@@ -1,63 +1,70 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 import org.junit.Test;
 
 public class WristWatchTest {
 
     @Test
-    public void convertToRomansReturnsIfor1() {
+    public void convertToRomans() {
         testMatchingValues("I", 1);
-    }
-
-    @Test
-    public void convertToRomansReturnsIIfor2() {
         testMatchingValues("II", 2);
-    }
-
-    @Test
-    public void convertToRomansReturnsIIIfor3() {
         testMatchingValues("III", 3);
-    }
-
-    @Test
-    public void convertToRomansReturnsIVfor4() {
         testMatchingValues("IV", 4);
-    }
-
-    @Test
-    public void covertToRomansReturnsVfor5(){
         testMatchingValues("V", 5);
-    }
-
-    @Test
-    public void covertToRomansReturnsXfor10(){
+        testMatchingValues("VI", 6);
+        testMatchingValues("VII", 7);
+        testMatchingValues("VIII", 8);
+        testMatchingValues("IX", 9);
         testMatchingValues("X", 10);
+        testMatchingValues("XI", 11);
+        testMatchingValues("XII", 12);
+    }
+    private void testMatchingValues(String i, int i2) {
+        WristWatch wristWatch = new WristWatch();
+
+        String expected = i;
+        String actual = wristWatch.convertToRomans(i2);
+
+        assertEquals(expected, actual);
     }
 
     @Test
     public void covertToRomansReturnsNullForAnythingGreater12(){
         testRanges(13, Integer.MAX_VALUE);
     }
-
     @Test
     public void covertToRomansReturnsNullForAnythingLessThan1(){
         testRanges(0, Integer.MIN_VALUE);
     }
-
     private void testRanges(int i, int maxValue) {
         WristWatch wristWatch = new WristWatch();
 
-        assertNull(wristWatch.convertToRomansMap(i));
-        assertNull(wristWatch.convertToRomansMap(maxValue));
+        assertNull(wristWatch.convertToRomans(i));
+        assertNull(wristWatch.convertToRomans(maxValue));
     }
 
-    private void testMatchingValues(String i, int i2) {
+    @Test
+    public void currentSecondsReturnsFormattedString() {
         WristWatch wristWatch = new WristWatch();
+        int seconds = LocalDateTime.now().getSecond();
+        String expected;
+        if (seconds <= 9) {
+            expected = "0" + seconds;
+        } else {
+            expected = String.valueOf(seconds);
+        }
 
-        String expected = i;
-        String actual = wristWatch.convertToRomansMap(i2);
-
-        assertEquals(expected, actual);
+        String actual = wristWatch.currentSeconds();
+//        assertEquals(expected, wristWatch.currentSeconds());
+        assertEquals(2, actual.length());
+        assertTrue(
+                Integer.parseInt(actual) >= 0
+                        && Integer.parseInt(actual) <= 59
+        );
     }
 }

@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,33 +21,19 @@ public class WristWatch {
         }
     };
 
-    public String convertToRomans(int number) {
-
-        if (number == 4) {
-            return "IV";
-        }
-
-        if (number == 5) {
-            return "V";
-        }
-
-        if (number == 10) {
-            return "X";
-        }
-
-        if (number >= 13 || number <= 0) {
-            return null;
-        }
-
-        return "I".repeat(number);
-    }
-
-    public String convertToRomansMap(int number){
-
-        if (number >= 13 || number <= 0) {
+    public String convertToRomans(int number){
+        if (number < 1 || number > 12) {
             return null;
         }
 
         return numberToRomansMap.get(number);
+    }
+
+    public String currentSeconds() {
+        int seconds = LocalDateTime.now().plusSeconds(99).getSecond();
+        if (seconds <= 9) {
+           return "0" + seconds;
+        }
+        return String.valueOf(seconds);
     }
 }
