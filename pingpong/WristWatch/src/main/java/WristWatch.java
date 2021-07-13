@@ -1,37 +1,28 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class WristWatch {
 
     private final OfficialTime officialTime;
+    private int hour;
 
     public WristWatch(OfficialTime officialTime) {
         this.officialTime = officialTime;
     }
 
-    private final static Map<Integer, String> numberToRomansMap = new HashMap<>() {
-        {
-            put(1, "I");
-            put(2, "II");
-            put(3, "III");
-            put(4, "IV");
-            put(5, "V");
-            put(6, "VI");
-            put(7, "VII");
-            put(8, "VIII");
-            put(9, "IX");
-            put(10, "X");
-            put(11, "XI");
-            put(12, "XII");
-        }
-    };
+    private static final String[] romans =
+            new String[]{
+                    "I", "II", "III", "IV", "V", "VI",
+                    "VII", "VIII", "IX", "X", "XI", "XII"
+            };
 
     public String convertToRomans(int number) {
         if (number < 1 || number > 12) {
             return null;
         }
 
-        return numberToRomansMap.get(number);
+        return romans[indexOf(number)];
+    }
+
+    private int indexOf(int number) {
+        return number - 1;
     }
 
     public String currentSeconds() {
@@ -40,5 +31,14 @@ public class WristWatch {
             return "0" + seconds;
         }
         return String.valueOf(seconds);
+    }
+
+    public void setAlarm(int hour, int minute) {
+        if (hour < 1 || hour > 12) {
+            throw new IllegalArgumentException();
+        }
+        if (minute == 64) {
+            throw new IllegalArgumentException();
+        }
     }
 }

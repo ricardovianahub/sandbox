@@ -23,7 +23,7 @@ The API features are represented by the following user stories
 		- if the number of seconds is less than or equal to 9, pad a leading "0"
 	- example: 1 should be "01", 9 should be "09", 14 should be "14" and so on
 3 - setAlarm
-	- receives 2 numbers and saves them : hour (in 24h format) and minute
+	- receives 2 numbers and saves them : hour (12h format) and minute
 	- no value returned
 4 - readAlarm
 	- no parameters
