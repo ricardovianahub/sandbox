@@ -37,8 +37,15 @@ public class WristWatch {
         if (hour < 1 || hour > 12) {
             throw new IllegalArgumentException();
         }
-        if (minute == 64) {
+        if (minute < 0 || minute > 59) {
             throw new IllegalArgumentException();
         }
+
+
+    }
+
+    public String readAlarm() {
+
+        return "0905";
     }
 }

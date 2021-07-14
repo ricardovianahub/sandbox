@@ -27,8 +27,8 @@ The API features are represented by the following user stories
 	- no value returned
 4 - readAlarm
 	- no parameters
-	- returns 4 character String with the alarm time that has been setAlarm in 24h format
-		- example: if the alarm is set for 9:05pm return "2105"
+	- returns 4 character String with the alarm time that has been setAlarm in 12h format
+		- example: if the alarm is set for 9:05 return "0905"
 5 - resetAlarm
 	- no parameters
 		- If an alarm was previously set, remove it

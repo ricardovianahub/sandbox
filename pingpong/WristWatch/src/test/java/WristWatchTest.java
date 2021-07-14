@@ -89,15 +89,44 @@ public class WristWatchTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void setAlarmThrowExceptionWhenNumberIsOutOfRange2() {
-        setAlarmCall(7, 64);
+    public void setAlarmThrowExceptionWhenNumberIsOutOfRange3() {
+        setAlarmCall(12, -1);
+
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void setAlarmThrowExceptionWhenNumberIsOutOfRange4() {
+        setAlarmCall(7, 64);
+     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setAlarmThrowExceptionWhenNumberIsOutOfRange2() {
+        setAlarmCall(7, 60);
+    }
     @Test
-    public void setAlarmWhenNumberIsInOfRange() {
+    public void setAlarmWhenNumberIsInRange() {
         setAlarmCall(12, 59);
         setAlarmCall(1, 0);
         setAlarmCall(7, 34);
+
+    }
+    @Test
+    public void readAlarmWhenSetAlarm() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(9, 5);
+        String actual = wristWatch.readAlarm();
+
+        assertEquals("0905", actual);
+
+    }
+
+    @Test
+    public void readAlarmWhenSetAlarmToGreaterThan10HrAndMinutes() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(10, 10);
+        String actual = wristWatch.readAlarm();
+
+        assertEquals("1010", actual);
 
     }
 
@@ -105,5 +134,7 @@ public class WristWatchTest {
         WristWatch wristWatch = new WristWatch(new LocalServerTime());
         wristWatch.setAlarm(hour, minute);
     }
+
+
 
 }
