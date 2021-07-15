@@ -130,6 +130,55 @@ public class WristWatchTest {
 
     }
 
+    @Test
+    public void readAlarmWhenSetAlarmToGreaterThan10HrAndMinutes2() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(10, 50);
+        String actual = wristWatch.readAlarm();
+
+        assertEquals("1050", actual);
+
+    }
+    @Test
+    public void readAlarmWhenSetAlarmToGreaterThan10HrAndMinutes3() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(12, 50);
+        String actual = wristWatch.readAlarm();
+
+        assertEquals("1250", actual);
+
+    }
+
+    @Test
+    public void readAlarmWhenSetAlarm11HrAndMinutes00() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(11, 00);
+        String actual = wristWatch.readAlarm();
+
+        assertEquals("1100", actual);
+
+    }
+
+    @Test
+    public void readAlarmWhenSetAlarmGreaterThan10HrAndLessThan10Minutes() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(12, 5);
+        String actual = wristWatch.readAlarm();
+
+        assertEquals("1205", actual);
+
+    }
+
+    @Test
+    public void readAlarmWhenSetAlarmLessThan10HrAndGreaterThan10Minutes() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(6, 25);
+        String actual = wristWatch.readAlarm();
+
+        assertEquals("0625", actual);
+
+    }
+
     private void setAlarmCall(int hour, int minute) {
         WristWatch wristWatch = new WristWatch(new LocalServerTime());
         wristWatch.setAlarm(hour, minute);

@@ -2,6 +2,7 @@ public class WristWatch {
 
     private final OfficialTime officialTime;
     private int hour;
+    private int minute;
 
     public WristWatch(OfficialTime officialTime) {
         this.officialTime = officialTime;
@@ -41,11 +42,31 @@ public class WristWatch {
             throw new IllegalArgumentException();
         }
 
+        this.hour = hour;
+        this.minute = minute;
+
+
 
     }
 
     public String readAlarm() {
 
-        return "0905";
+        String hourStr;
+        String minuteStr;
+
+        hourStr = String.valueOf(this.hour);
+
+        if (this.hour < 10) {
+            hourStr = "0" + this.hour;
+        }
+
+        minuteStr = String.valueOf(this.minute);
+
+        if (this.minute < 10) {
+            minuteStr = "0" + this.minute;
+        }
+
+        return hourStr + minuteStr;
+
     }
 }
