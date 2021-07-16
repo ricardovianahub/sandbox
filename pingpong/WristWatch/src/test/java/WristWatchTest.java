@@ -1,12 +1,26 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.time.LocalDateTime;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class WristWatchTest {
+
+    @Test
+    public void resetAlarmReturnsNothingWhenNoAlarmIsSet() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        String beforeResetAlarm = wristWatch.readAlarm();
+        wristWatch.resetAlarm();
+        assertEquals(beforeResetAlarm, wristWatch.readAlarm());
+    }
+
+    @Test
+    public void resetAlarmResetsValueTo0_00WhenAlarmIsSet(){
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(1,23);
+        wristWatch.resetAlarm();
+        assertNull(wristWatch.readAlarm());
+    }
 
     @Test
     public void convertToRomans() {
@@ -34,20 +48,13 @@ public class WristWatchTest {
     }
 
     @Test
-    public void covertToRomansReturnsNullForAnythingGreater12() {
+    public void convertToRomansReturnsNullForAnythingGreater12() {
         testRanges(13, Integer.MAX_VALUE);
     }
 
     @Test
-    public void covertToRomansReturnsNullForAnythingLessThan1() {
+    public void convertToRomansReturnsNullForAnythingLessThan1() {
         testRanges(0, Integer.MIN_VALUE);
-    }
-
-    private void testRanges(int i, int maxValue) {
-        WristWatch wristWatch = new WristWatch(new LocalServerTime());
-
-        assertNull(wristWatch.convertToRomans(i));
-        assertNull(wristWatch.convertToRomans(maxValue));
     }
 
     @Test
@@ -97,12 +104,13 @@ public class WristWatchTest {
     @Test(expected = IllegalArgumentException.class)
     public void setAlarmThrowExceptionWhenNumberIsOutOfRange4() {
         setAlarmCall(7, 64);
-     }
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void setAlarmThrowExceptionWhenNumberIsOutOfRange2() {
         setAlarmCall(7, 60);
     }
+
     @Test
     public void setAlarmWhenNumberIsInRange() {
         setAlarmCall(12, 59);
@@ -110,6 +118,7 @@ public class WristWatchTest {
         setAlarmCall(7, 34);
 
     }
+
     @Test
     public void readAlarmWhenSetAlarm() {
         WristWatch wristWatch = new WristWatch(new LocalServerTime());
@@ -118,6 +127,14 @@ public class WristWatchTest {
 
         assertEquals("0905", actual);
 
+    }
+
+    @Test
+    public void readAlarmWhenAlarmIsNotSet(){
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        String actual = wristWatch.readAlarm();
+
+        assertNull(actual);
     }
 
     @Test
@@ -139,6 +156,7 @@ public class WristWatchTest {
         assertEquals("1050", actual);
 
     }
+
     @Test
     public void readAlarmWhenSetAlarmToGreaterThan10HrAndMinutes3() {
         WristWatch wristWatch = new WristWatch(new LocalServerTime());
@@ -150,9 +168,19 @@ public class WristWatchTest {
     }
 
     @Test
+    public void readAlarmWhenSetAlarm9HrAndMinutes00() {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+        wristWatch.setAlarm(9, 0);
+        String actual = wristWatch.readAlarm();
+
+        assertEquals("0900", actual);
+
+    }
+
+    @Test
     public void readAlarmWhenSetAlarm11HrAndMinutes00() {
         WristWatch wristWatch = new WristWatch(new LocalServerTime());
-        wristWatch.setAlarm(11, 00);
+        wristWatch.setAlarm(11, 0);
         String actual = wristWatch.readAlarm();
 
         assertEquals("1100", actual);
@@ -179,11 +207,16 @@ public class WristWatchTest {
 
     }
 
+    private void testRanges(int i, int maxValue) {
+        WristWatch wristWatch = new WristWatch(new LocalServerTime());
+
+        assertNull(wristWatch.convertToRomans(i));
+        assertNull(wristWatch.convertToRomans(maxValue));
+    }
+
     private void setAlarmCall(int hour, int minute) {
         WristWatch wristWatch = new WristWatch(new LocalServerTime());
         wristWatch.setAlarm(hour, minute);
     }
-
-
 
 }

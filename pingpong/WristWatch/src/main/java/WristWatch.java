@@ -35,6 +35,7 @@ public class WristWatch {
     }
 
     public void setAlarm(int hour, int minute) {
+
         if (hour < 1 || hour > 12) {
             throw new IllegalArgumentException();
         }
@@ -45,28 +46,17 @@ public class WristWatch {
         this.hour = hour;
         this.minute = minute;
 
-
-
     }
 
     public String readAlarm() {
-
-        String hourStr;
-        String minuteStr;
-
-        hourStr = String.valueOf(this.hour);
-
-        if (this.hour < 10) {
-            hourStr = "0" + this.hour;
+        if (this.hour==0 && this.minute==0){
+            return null;
         }
+        return String.format("%02d%02d", this.hour, this.minute);
+    }
 
-        minuteStr = String.valueOf(this.minute);
-
-        if (this.minute < 10) {
-            minuteStr = "0" + this.minute;
-        }
-
-        return hourStr + minuteStr;
-
+    public void resetAlarm() {
+        this.hour = 0;
+        this.minute = 0;
     }
 }
