@@ -1,0 +1,53 @@
+Drivegood Driving School
+
+Business expectations
+- This is the *backend* of a system that will organize the schedules for instructors and students
+at Drivegood Driving School
+- There should be no conflicts between instructors, students, and class time slots
+- In every story that has an option to be chosen (student, instructor, time slot), all possible
+options should be presented to the user for a selection. 
+
+TDD instructions
+- Each story should be implemented in one 30-minute Workshop session
+- If the next story seems too big (all of the original ones will be) discuss as a group a way to 
+break the story down into smaller deployable pieces until they fit in the Workshop session
+- As Domain objects are created and discussed, they may become their own classes without necessarily
+requiring new tests for those classes at that time. They can be created later as more granular
+functionality is required by future stories
+- Each class should only have enough attributes and code to address the failing tests (yep, the old rule)
+- Data persistance should be planned via interfaces that will represent all persistance actions. Initially
+only concrete implementations that save to memory should be created. However, the last pass of this exercise
+will be to save the data in 2 different data persistance solutions. This should be designed based on the "O"
+in SOLID
+
+
+Initial User Stories
+- Instructors should have access to a printable schedule sheet with work between 9am and 4pm, with lunch between 12pm-1pm,
+in 50 minute classes with 10 minute intervals between them that covers the next 2 calendar weeks. Saturdays and Sundays
+are not workdays
+	X Return a sheet with static weekd days
+- When a new student is added, they should be assigned to one instructor at the instructor's earliest available times, 
+one class per week, for 5 weeks
+- Instructors can't teach more than 4 students at a time
+- A student can leave a course at any time. No refunds will be offered. Their slots will then be available for the instructor
+to receive new students
+- Students should be between the ages of 15 and 79
+
+- A test will be scheduled for each student after they complete their course
+- The test should be scheduled for the week following the conclusion of the course
+- If a student misses a test, that will be considered a fail
+
+- If a student is being admitted for an additional round of classes (for any reason), they should be assigned an instructor that
+hasn't taught them before. If there are no more instructors available, the student will not be accepted
+- The system should now accept holidays as non-working days
+- Students can select any number of preferred weekdays for their classes. We should try to accommodate them,
+but if that is not possible, they will be assigned to the next earliest slot available
+- Instructors have vacation days that can be entered in the system as they are selected
+- If an instructor is late at least 2 of the 5 classes of each course per student, they should receive a warning.
+If it happens again (with the same or another student) then the instructor will be terminated and the student
+will start another course with a different instructor
+- If an instructor misses one class, they should receive a warning and the student should be assigned a replacement time slot in the same week. 
+If it happens again (with the same or another student) then the instructor will be terminated and the student will start another course with a different instructor
+- If a student fails a test, they can be admitted for a new round of classes after
+- If a student has a birthday during their allocated course time, their instructor should be reminded to
+wish them a Happy Birthday
