@@ -1,12 +1,15 @@
 package com.aa.drivingschool;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class ClassDay {
     private final String weekDay;
+    private final int[] startHours;
 
-    public ClassDay(String weekDay) {
+    public ClassDay(String weekDay, int[] startHours) {
         this.weekDay = weekDay;
+        this.startHours = startHours;
     }
 
     public String getWeekDay() {
@@ -18,11 +21,13 @@ public class ClassDay {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClassDay classDay = (ClassDay) o;
-        return Objects.equals(weekDay, classDay.weekDay);
+        return Objects.equals(weekDay, classDay.weekDay) && Arrays.equals(startHours, classDay.startHours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(weekDay);
+        int result = Objects.hash(weekDay);
+        result = 31 * result + Arrays.hashCode(startHours);
+        return result;
     }
 }

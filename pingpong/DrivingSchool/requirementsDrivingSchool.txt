@@ -22,12 +22,15 @@ in SOLID
 
 
 Initial User Stories
-- Instructors should have access to a printable schedule sheet with work between 9am and 4pm, with lunch between 12pm-1pm,
-in 50 minute classes with 10 minute intervals between them that covers the next 2 calendar weeks. Saturdays and Sundays
-are not workdays
-	X Return a sheet with static weekd days
+X Instructors should have access to a printable schedule sheet with work between 9am and 4pm, with lunch between 12pm-1pm,
+in 50 minute classes with 10 minute intervals between them that
+	X Return a sheet with static weekday names - Saturdays and Sundays are not workdays - covers the next 2 calendar weeks
+	X Add slots from 9am - 4pm skipping 12-1
+	    - Notes: 9-10, 10-11, 11-12 --- 1-2, 2-3, 3-4. Implied 6 slots per day per instructor
+	- Add instructors
+	- When a schedule sheet is created, receive an instructor identification as a parameter
 - When a new student is added, they should be assigned to one instructor at the instructor's earliest available times, 
-one class per week, for 5 weeks
+one class per week, for 5 weeks. Each student should be made aware that classes are 50 minutes long
 - Instructors can't teach more than 4 students at a time
 - A student can leave a course at any time. No refunds will be offered. Their slots will then be available for the instructor
 to receive new students
