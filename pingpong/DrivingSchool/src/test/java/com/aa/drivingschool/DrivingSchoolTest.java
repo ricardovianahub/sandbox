@@ -41,4 +41,25 @@ public class DrivingSchoolTest {
         assertEquals(1, instructorId);
     }
 
+    @Test
+    void addSecondInstructorAndReceive2() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        String firstName = "John";
+        String lastName = "Doe";
+        drivingSchool.addInstructor(firstName, lastName);
+        firstName = "BillyBob";
+        lastName = "Smith";
+        int instructorId2 = drivingSchool.addInstructor(firstName, lastName);
+        assertEquals(2, instructorId2);
+    }
+
+    @Test
+    void addThirdInstructorWithSameLastNameRecievesDifferentId() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        drivingSchool.addInstructor("John", "Doe");
+        drivingSchool.addInstructor("Bill", "Smith");
+        int instructorId3 = drivingSchool.addInstructor("John", "Smith");
+        assertEquals(3, instructorId3);
+    }
+
 }

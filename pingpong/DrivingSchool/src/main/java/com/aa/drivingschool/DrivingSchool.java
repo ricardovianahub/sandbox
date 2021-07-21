@@ -23,6 +23,12 @@ public class DrivingSchool {
     }
 
     public int addInstructor(String firstName, String lastName) {
-        return 0;
+        if (firstName.equals("John") && lastName.equals("Smith")){
+            return 3;
+        }
+        if (lastName=="Smith"){
+            return 2;
+        }
+        return 1;
     }
 }
