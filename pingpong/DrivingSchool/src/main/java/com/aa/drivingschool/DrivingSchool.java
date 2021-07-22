@@ -6,6 +6,7 @@ import java.util.List;
 
 public class DrivingSchool {
     static final int[] DEFAULT_START_HOURS = {9, 10, 11, 1, 2, 3};
+    private int instructorCounter = 0;
 
     public List<ClassDay> retrieveCalendar() {
         return Arrays.asList(
@@ -23,12 +24,6 @@ public class DrivingSchool {
     }
 
     public int addInstructor(String firstName, String lastName) {
-        if (firstName.equals("John") && lastName.equals("Smith")){
-            return 3;
-        }
-        if (lastName=="Smith"){
-            return 2;
-        }
-        return 1;
+        return ++instructorCounter;
     }
 }

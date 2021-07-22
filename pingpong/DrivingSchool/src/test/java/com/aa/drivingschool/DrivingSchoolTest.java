@@ -1,8 +1,7 @@
 package com.aa.drivingschool;
 
 import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ public class DrivingSchoolTest {
     }
 
     @Test
-    void addThirdInstructorWithSameLastNameRecievesDifferentId() {
+    void addThirdInstructorWithSameLastNameReceivesDifferentId() {
         DrivingSchool drivingSchool = new DrivingSchool();
         drivingSchool.addInstructor("John", "Doe");
         drivingSchool.addInstructor("Bill", "Smith");
@@ -62,4 +61,10 @@ public class DrivingSchoolTest {
         assertEquals(3, instructorId3);
     }
 
+    @Test
+    void addInstructorWithSameLastAndFirstNameThroughException() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        drivingSchool.addInstructor("John", "Doe");
+        assertThrows(IllegalStateException.class, () -> drivingSchool.addInstructor("John", "Doe"));
+    }
 }
