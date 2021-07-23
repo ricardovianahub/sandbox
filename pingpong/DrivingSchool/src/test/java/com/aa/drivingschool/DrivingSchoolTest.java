@@ -62,9 +62,19 @@ public class DrivingSchoolTest {
     }
 
     @Test
-    void addInstructorWithSameLastAndFirstNameThroughException() {
+    void addInstructorWithSameLastAndFirstNameThrowException() {
         DrivingSchool drivingSchool = new DrivingSchool();
         drivingSchool.addInstructor("John", "Doe");
         assertThrows(IllegalStateException.class, () -> drivingSchool.addInstructor("John", "Doe"));
     }
+
+    @Test
+    void addMultipleInstructorWithSameLastAndFirstNameThrowException() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        drivingSchool.addInstructor("John", "Doe");
+        drivingSchool.addInstructor("John", "Smith");
+        assertThrows(IllegalStateException.class, () -> drivingSchool.addInstructor("John", "Doe"));
+    }
+
+
 }

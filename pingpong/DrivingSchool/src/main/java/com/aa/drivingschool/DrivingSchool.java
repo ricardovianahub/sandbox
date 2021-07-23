@@ -1,12 +1,13 @@
 package com.aa.drivingschool;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class DrivingSchool {
     static final int[] DEFAULT_START_HOURS = {9, 10, 11, 1, 2, 3};
     private int instructorCounter = 0;
+
+    List<Instructor> instructorList = new ArrayList<>();
 
     public List<ClassDay> retrieveCalendar() {
         return Arrays.asList(
@@ -24,6 +25,13 @@ public class DrivingSchool {
     }
 
     public int addInstructor(String firstName, String lastName) {
+
+        Instructor instructor = new Instructor(firstName,lastName);
+        if(instructorList.contains(instructor)){
+            throw new IllegalStateException();
+        }
+        instructorList.add(instructor);
+
         return ++instructorCounter;
     }
 }
