@@ -76,5 +76,38 @@ public class DrivingSchoolTest {
         assertThrows(IllegalStateException.class, () -> drivingSchool.addInstructor("John", "Doe"));
     }
 
+    @Test
+    void createScheduleSheet() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        int instructorID = drivingSchool.addInstructor("John", "Doe");
+
+        drivingSchool.createScheduleSheet(instructorID);
+        int actual = drivingSchool.amountOfScheduleSheets();
+
+        assertEquals(1, actual);
+    }
+    @Test
+    void create0ScheduleSheets() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        int actual = drivingSchool.amountOfScheduleSheets();
+
+        assertEquals(0, actual);
+    }
+
+    @Test
+    void create0ScheduleSheets2() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        int instructorID = drivingSchool.addInstructor("John", "Doe");
+
+
+        int actual = drivingSchool.amountOfScheduleSheets();
+
+        assertEquals(0, actual);
+    }
+
+
+
+
+
 
 }

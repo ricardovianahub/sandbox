@@ -6,6 +6,7 @@ import java.util.*;
 public class DrivingSchool {
     static final int[] DEFAULT_START_HOURS = {9, 10, 11, 1, 2, 3};
     private int instructorCounter = 0;
+    private int scheduleSheetCounter = 0;
 
     List<Instructor> instructorList = new ArrayList<>();
 
@@ -33,5 +34,13 @@ public class DrivingSchool {
         instructorList.add(instructor);
 
         return ++instructorCounter;
+    }
+
+    public void createScheduleSheet(int instructorID) {
+        ++scheduleSheetCounter;
+    }
+
+    public int amountOfScheduleSheets() {
+        return scheduleSheetCounter;
     }
 }

@@ -28,7 +28,7 @@ in 50 minute classes with 10 minute intervals between them that
 	X Add slots from 9am - 4pm skipping 12-1
 	    - Notes: 9-10, 10-11, 11-12 --- 1-2, 2-3, 3-4. Implied 6 slots per day per instructor
 	X Add instructors
-	- If same first and last name from another instructor are added throw exception.
+	X If same first and last name from another instructor are added throw exception.
 	- When a schedule sheet is created, receive an instructor identification as a parameter
 - When a new student is added, they should be assigned to one instructor at the instructor's earliest available times, 
 one class per week, for 5 weeks. Each student should be made aware that classes are 50 minutes long
