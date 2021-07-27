@@ -97,17 +97,51 @@ public class DrivingSchoolTest {
     @Test
     void create0ScheduleSheets2() {
         DrivingSchool drivingSchool = new DrivingSchool();
-        int instructorID = drivingSchool.addInstructor("John", "Doe");
-
+        drivingSchool.addInstructor("John", "Doe");
 
         int actual = drivingSchool.amountOfScheduleSheets();
 
         assertEquals(0, actual);
     }
 
+    @Test
+    void addStudent() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        int studentID = drivingSchool.addStudent("Tom", "Jerry");
 
+        assertEquals(1, studentID);
+    }
 
+    @Test
+    void addTwoStudents() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        drivingSchool.addStudent("Tom", "Jerry");
+        int studentID = drivingSchool.addStudent("Tom", "Jerry");
 
+        assertEquals(2, studentID);
+    }
 
+    @Test
+    void addStudentWithInvalidArgumentsThrowsException() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+
+        assertThrows(
+                IllegalArgumentException.class
+                ,() -> drivingSchool.addStudent("", "second")
+        );
+        assertThrows(
+                IllegalArgumentException.class
+                ,() -> drivingSchool.addStudent("first", "")
+        );
+        assertThrows(
+                IllegalArgumentException.class
+                ,() -> drivingSchool.addStudent(null, "second")
+        );
+        assertThrows(
+                IllegalArgumentException.class
+                ,() -> drivingSchool.addStudent("first", null)
+        );
+
+    }
 
 }

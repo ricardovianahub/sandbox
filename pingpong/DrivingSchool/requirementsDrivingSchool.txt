@@ -29,9 +29,16 @@ in 50 minute classes with 10 minute intervals between them that
 	    - Notes: 9-10, 10-11, 11-12 --- 1-2, 2-3, 3-4. Implied 6 slots per day per instructor
 	X Add instructors
 	X If same first and last name from another instructor are added throw exception.
-	- When a schedule sheet is created, receive an instructor identification as a parameter
-- When a new student is added, they should be assigned to one instructor at the instructor's earliest available times, 
+	X When a schedule sheet is created, receive an instructor identification as a parameter
+X When a new student is added, they should be assigned to one instructor at the instructor's earliest available times,
 one class per week, for 5 weeks. Each student should be made aware that classes are 50 minutes long
+    X Add student first, last name, and student ID
+        X Notes: Repeat names are allowed
+    - Retrieve instructor's earliest available times
+    - Assign student to 1 instructor
+         - Retrieve instructor's earliest available time and ensure it's not the same
+    - Make sure the same student can't be assigned twice (or to a second instructor)
+
 - Instructors can't teach more than 4 students at a time
 - A student can leave a course at any time. No refunds will be offered. Their slots will then be available for the instructor
 to receive new students
