@@ -1,12 +1,12 @@
 package com.aa.drivingschool;
 
-import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DrivingSchoolTest {
 
@@ -16,19 +16,19 @@ public class DrivingSchoolTest {
         DrivingSchool drivingSchool = new DrivingSchool();
 
         List<ClassDay> expectedClassDays = new ArrayList<>() {{
-           add(new ClassDay("MON", DEFAULT_START_HOURS));
-           add(new ClassDay("TUE", DEFAULT_START_HOURS));
-           add(new ClassDay("WED", DEFAULT_START_HOURS));
-           add(new ClassDay("THU", DEFAULT_START_HOURS));
-           add(new ClassDay("FRI", DEFAULT_START_HOURS));
-           add(new ClassDay("MON", DEFAULT_START_HOURS));
-           add(new ClassDay("TUE", DEFAULT_START_HOURS));
-           add(new ClassDay("WED", DEFAULT_START_HOURS));
-           add(new ClassDay("THU", DEFAULT_START_HOURS));
-           add(new ClassDay("FRI", DEFAULT_START_HOURS));
+            add(new ClassDay("MON", DEFAULT_START_HOURS));
+            add(new ClassDay("TUE", DEFAULT_START_HOURS));
+            add(new ClassDay("WED", DEFAULT_START_HOURS));
+            add(new ClassDay("THU", DEFAULT_START_HOURS));
+            add(new ClassDay("FRI", DEFAULT_START_HOURS));
+            add(new ClassDay("MON", DEFAULT_START_HOURS));
+            add(new ClassDay("TUE", DEFAULT_START_HOURS));
+            add(new ClassDay("WED", DEFAULT_START_HOURS));
+            add(new ClassDay("THU", DEFAULT_START_HOURS));
+            add(new ClassDay("FRI", DEFAULT_START_HOURS));
         }};
 
-        assertArrayEquals(expectedClassDays.toArray(), drivingSchool.retrieveCalendar().toArray());
+        assertArrayEquals(expectedClassDays.toArray(), drivingSchool.retrieveScheduleSheet().toArray());
     }
 
     @Test
@@ -86,6 +86,7 @@ public class DrivingSchoolTest {
 
         assertEquals(1, actual);
     }
+
     @Test
     void create0ScheduleSheets() {
         DrivingSchool drivingSchool = new DrivingSchool();
@@ -127,21 +128,30 @@ public class DrivingSchoolTest {
 
         assertThrows(
                 IllegalArgumentException.class
-                ,() -> drivingSchool.addStudent("", "second")
+                , () -> drivingSchool.addStudent("", "second")
         );
         assertThrows(
                 IllegalArgumentException.class
-                ,() -> drivingSchool.addStudent("first", "")
+                , () -> drivingSchool.addStudent("first", "")
         );
         assertThrows(
                 IllegalArgumentException.class
-                ,() -> drivingSchool.addStudent(null, "second")
+                , () -> drivingSchool.addStudent(null, "second")
         );
         assertThrows(
                 IllegalArgumentException.class
-                ,() -> drivingSchool.addStudent("first", null)
+                , () -> drivingSchool.addStudent("first", null)
         );
 
     }
+
+    @Test
+    void retrieveScheduleSheetWithInstructorParam() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+
+        assertThrows(IllegalArgumentException.class
+                , () -> drivingSchool.retrieveScheduleSheetByInstructor(1));
+    }
+
 
 }

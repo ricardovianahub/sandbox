@@ -11,7 +11,7 @@ public class DrivingSchool {
 
     List<Instructor> instructorList = new ArrayList<>();
 
-    public List<ClassDay> retrieveCalendar() {
+    public List<ClassDay> retrieveScheduleSheet() {
         return Arrays.asList(
                 new ClassDay("MON", DEFAULT_START_HOURS),
                 new ClassDay("TUE", DEFAULT_START_HOURS),
@@ -54,5 +54,9 @@ public class DrivingSchool {
         if (first == null || last == null || "".equals(last) || "".equals(first)) {
             throw new IllegalArgumentException();
         }
+    }
+
+    public Object retrieveScheduleSheetByInstructor(int i) {
+        throw new IllegalArgumentException();
     }
 }
