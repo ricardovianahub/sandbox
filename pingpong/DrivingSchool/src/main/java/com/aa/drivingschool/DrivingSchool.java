@@ -56,7 +56,10 @@ public class DrivingSchool {
         }
     }
 
-    public Object retrieveScheduleSheetByInstructor(int i) {
+    public List<ClassDay> retrieveScheduleSheetByInstructor(int instructorId) {
+        if (instructorId == instructorCounter) {
+            return retrieveScheduleSheet();
+        }
         throw new IllegalArgumentException();
     }
 }

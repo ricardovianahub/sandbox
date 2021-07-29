@@ -153,5 +153,33 @@ public class DrivingSchoolTest {
                 , () -> drivingSchool.retrieveScheduleSheetByInstructor(1));
     }
 
+    @Test
+    void retrieveScheduleSheetWithInstructorParamWhenPresent() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+
+        int instructorID = drivingSchool.addInstructor("John", "Doe");
+
+        List<ClassDay> actual = drivingSchool.retrieveScheduleSheetByInstructor(instructorID);
+
+        assertEquals(10, actual.size());
+        for (ClassDay classDay : actual) {
+            assertEquals(instructorID, classDay.getInstructorID());
+        }
+    }
+
+    @Test
+    void retrieveScheduleSheetWithInstructorParamWhen2InstructorsPresent() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+
+        int instructorID = drivingSchool.addInstructor("John", "Doe");
+        drivingSchool.addInstructor("Jane", "Doe");
+
+        List<ClassDay> actual = drivingSchool.retrieveScheduleSheetByInstructor(instructorID);
+
+        assertEquals(10, actual.size());
+        for (ClassDay classDay : actual) {
+            assertEquals(instructorID, classDay.getInstructorID());
+        }
+    }
 
 }

@@ -6,6 +6,7 @@ import java.util.Objects;
 public class ClassDay {
     private final String weekDay;
     private final int[] startHours;
+    private int instructorID;
 
     public ClassDay(String weekDay, int[] startHours) {
         this.weekDay = weekDay;
@@ -29,5 +30,13 @@ public class ClassDay {
         int result = Objects.hash(weekDay);
         result = 31 * result + Arrays.hashCode(startHours);
         return result;
+    }
+
+    public int getInstructorID() {
+        return 1;
+    }
+
+    public void setInstructorID(int instructorID) {
+        this.instructorID = instructorID;
     }
 }
