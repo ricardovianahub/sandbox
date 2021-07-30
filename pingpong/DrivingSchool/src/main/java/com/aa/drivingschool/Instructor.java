@@ -13,6 +13,12 @@ public class Instructor {
         this.lastName = lastName;
     }
 
+    public Instructor(String firstName, String lastName, int id) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }

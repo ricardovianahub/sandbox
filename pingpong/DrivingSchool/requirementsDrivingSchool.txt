@@ -34,8 +34,8 @@ X When a new student is added, they should be assigned to one instructor at the 
 one class per week, for 5 weeks. Each student should be made aware that classes are 50 minutes long
     X Add student first, last name, and student ID
         X Notes: Repeat names are allowed
-    - Retrieve instructor's earliest available times
-        - create template for sheet
+    > Retrieve instructor's earliest available times
+        X Retrieve instructor's schedule sheet
     - Assign student to 1 instructor
          - Retrieve instructor's earliest available time and ensure it's not the same
     - Make sure the same student can't be assigned twice (or to a second instructor)

@@ -28,13 +28,13 @@ public class DrivingSchool {
 
     public int addInstructor(String firstName, String lastName) {
 
-        Instructor instructor = new Instructor(firstName,lastName);
-        if(instructorList.contains(instructor)){
+        Instructor instructor = new Instructor(firstName, lastName, ++instructorCounter);
+        if (instructorList.contains(instructor)) {
             throw new IllegalStateException();
         }
         instructorList.add(instructor);
 
-        return ++instructorCounter;
+        return instructor.getId();
     }
 
     public void createScheduleSheet(int instructorID) {
@@ -57,9 +57,26 @@ public class DrivingSchool {
     }
 
     public List<ClassDay> retrieveScheduleSheetByInstructor(int instructorId) {
-        if (instructorId == instructorCounter) {
-            return retrieveScheduleSheet();
+        for (Instructor instructor : instructorList) {
+            if (instructor.getId() == instructorId) {
+                return retrieveScheduleSheet(instructorId);
+            }
         }
         throw new IllegalArgumentException();
+    }
+
+    private List<ClassDay> retrieveScheduleSheet(int instructorId) {
+        return Arrays.asList(
+                new ClassDay("MON", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("TUE", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("WED", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("THU", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("FRI", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("MON", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("TUE", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("WED", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("THU", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("FRI", DEFAULT_START_HOURS, instructorId)
+        );
     }
 }

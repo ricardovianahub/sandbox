@@ -13,6 +13,12 @@ public class ClassDay {
         this.startHours = startHours;
     }
 
+    public ClassDay(String weekDay, int[] startHours, int instructorID) {
+        this.weekDay = weekDay;
+        this.startHours = startHours;
+        this.instructorID = instructorID;
+    }
+
     public String getWeekDay() {
         return weekDay;
     }
@@ -33,7 +39,7 @@ public class ClassDay {
     }
 
     public int getInstructorID() {
-        return 1;
+        return instructorID;
     }
 
     public void setInstructorID(int instructorID) {
