@@ -1,7 +1,8 @@
 package com.aa.drivingschool;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DrivingSchool {
     static final int[] DEFAULT_START_HOURS = {9, 10, 11, 1, 2, 3};
@@ -11,30 +12,35 @@ public class DrivingSchool {
 
     List<Instructor> instructorList = new ArrayList<>();
 
-    public List<ClassDay> retrieveScheduleSheet() {
-        return Arrays.asList(
-                new ClassDay("MON", DEFAULT_START_HOURS),
-                new ClassDay("TUE", DEFAULT_START_HOURS),
-                new ClassDay("WED", DEFAULT_START_HOURS),
-                new ClassDay("THU", DEFAULT_START_HOURS),
-                new ClassDay("FRI", DEFAULT_START_HOURS),
-                new ClassDay("MON", DEFAULT_START_HOURS),
-                new ClassDay("TUE", DEFAULT_START_HOURS),
-                new ClassDay("WED", DEFAULT_START_HOURS),
-                new ClassDay("THU", DEFAULT_START_HOURS),
-                new ClassDay("FRI", DEFAULT_START_HOURS)
-        );
+    public ScheduleGrid retrieveDefaultScheduleGrid() {
+        ScheduleGrid scheduleGrid = new ScheduleGrid();
+        scheduleGrid.add("MON", DEFAULT_START_HOURS);
+        scheduleGrid.add("TUE", DEFAULT_START_HOURS);
+        scheduleGrid.add("WED", DEFAULT_START_HOURS);
+        scheduleGrid.add("THU", DEFAULT_START_HOURS);
+        scheduleGrid.add("FRI", DEFAULT_START_HOURS);
+        scheduleGrid.add("MON", DEFAULT_START_HOURS);
+        scheduleGrid.add("TUE", DEFAULT_START_HOURS);
+        scheduleGrid.add("WED", DEFAULT_START_HOURS);
+        scheduleGrid.add("THU", DEFAULT_START_HOURS);
+        scheduleGrid.add("FRI", DEFAULT_START_HOURS);
+
+        return scheduleGrid;
     }
 
-    public int addInstructor(String firstName, String lastName) {
-
-        Instructor instructor = new Instructor(firstName, lastName, ++instructorCounter);
-        if (instructorList.contains(instructor)) {
-            throw new IllegalStateException();
-        }
-        instructorList.add(instructor);
-
-        return instructor.getId();
+    private List<ClassDay> retrieveDefaultScheduleGrid(int instructorId) {
+        return Arrays.asList(
+                new ClassDay("MON", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("TUE", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("WED", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("THU", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("FRI", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("MON", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("TUE", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("WED", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("THU", DEFAULT_START_HOURS, instructorId),
+                new ClassDay("FRI", DEFAULT_START_HOURS, instructorId)
+        );
     }
 
     public void createScheduleSheet(int instructorID) {
@@ -56,27 +62,23 @@ public class DrivingSchool {
         }
     }
 
+    public int addInstructor(String firstName, String lastName) {
+
+        Instructor instructor = new Instructor(firstName, lastName, ++instructorCounter);
+        if (instructorList.contains(instructor)) {
+            throw new IllegalStateException();
+        }
+        instructorList.add(instructor);
+
+        return instructor.getId();
+    }
+
     public List<ClassDay> retrieveScheduleSheetByInstructor(int instructorId) {
         for (Instructor instructor : instructorList) {
             if (instructor.getId() == instructorId) {
-                return retrieveScheduleSheet(instructorId);
+                return retrieveDefaultScheduleGrid(instructorId);
             }
         }
         throw new IllegalArgumentException();
-    }
-
-    private List<ClassDay> retrieveScheduleSheet(int instructorId) {
-        return Arrays.asList(
-                new ClassDay("MON", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("TUE", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("WED", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("THU", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("FRI", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("MON", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("TUE", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("WED", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("THU", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("FRI", DEFAULT_START_HOURS, instructorId)
-        );
     }
 }

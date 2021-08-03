@@ -2,7 +2,6 @@ package com.aa.drivingschool;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
@@ -15,20 +14,28 @@ public class DrivingSchoolTest {
     void retrieveCalendarContainsStaticWeekdaysAndTimeSlots() {
         DrivingSchool drivingSchool = new DrivingSchool();
 
-        List<ClassDay> expectedClassDays = new ArrayList<>() {{
-            add(new ClassDay("MON", DEFAULT_START_HOURS));
-            add(new ClassDay("TUE", DEFAULT_START_HOURS));
-            add(new ClassDay("WED", DEFAULT_START_HOURS));
-            add(new ClassDay("THU", DEFAULT_START_HOURS));
-            add(new ClassDay("FRI", DEFAULT_START_HOURS));
-            add(new ClassDay("MON", DEFAULT_START_HOURS));
-            add(new ClassDay("TUE", DEFAULT_START_HOURS));
-            add(new ClassDay("WED", DEFAULT_START_HOURS));
-            add(new ClassDay("THU", DEFAULT_START_HOURS));
-            add(new ClassDay("FRI", DEFAULT_START_HOURS));
-        }};
+        ScheduleGrid expectedScheduleGrid = new ScheduleGrid();
 
-        assertArrayEquals(expectedClassDays.toArray(), drivingSchool.retrieveScheduleSheet().toArray());
+        expectedScheduleGrid.add("MON", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("TUE", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("WED", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("THU", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("FRI", DEFAULT_START_HOURS);
+
+        assertEquals(5, expectedScheduleGrid.numberOfClassDays());
+
+        expectedScheduleGrid.add("MON", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("TUE", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("WED", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("THU", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("FRI", DEFAULT_START_HOURS);
+
+        assertEquals(10, expectedScheduleGrid.numberOfClassDays());
+
+        assertEquals(
+                expectedScheduleGrid,
+                drivingSchool.retrieveDefaultScheduleGrid()
+        );
     }
 
     @Test
