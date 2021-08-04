@@ -88,10 +88,27 @@ public class DrivingSchoolTest {
         DrivingSchool drivingSchool = new DrivingSchool();
         int instructorID = drivingSchool.addInstructor("John", "Doe");
 
-        drivingSchool.createScheduleSheet(instructorID);
+        ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
         int actual = drivingSchool.amountOfScheduleSheets();
 
         assertEquals(1, actual);
+        assertEquals(instructorID, scheduleSheet.getInstructorId());
+        assertEquals(10, scheduleSheet.getNumberAvailableDays());
+    }
+
+    @Test
+    void createMultipleScheduleSheetWithTwoInstructors() {
+        DrivingSchool drivingSchool = new DrivingSchool();
+        int instructorID = drivingSchool.addInstructor("John", "Doe");
+        int instructor2ID = drivingSchool.addInstructor("Jane", "Doe");
+
+        ScheduleSheet scheduleSheetInstructor1 = drivingSchool.createScheduleSheet(instructorID);
+        ScheduleSheet scheduleSheetInstructor2 = drivingSchool.createScheduleSheet(instructor2ID);
+        int actual = drivingSchool.amountOfScheduleSheets();
+
+        assertEquals(2, actual);
+        assertEquals(instructorID, scheduleSheetInstructor1.getInstructorId());
+        assertEquals(instructor2ID, scheduleSheetInstructor2.getInstructorId());
     }
 
     @Test

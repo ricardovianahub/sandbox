@@ -43,8 +43,9 @@ public class DrivingSchool {
         );
     }
 
-    public void createScheduleSheet(int instructorID) {
+    public ScheduleSheet createScheduleSheet(int instructorID) {
         ++scheduleSheetCounter;
+        return new ScheduleSheet(instructorID);
     }
 
     public int amountOfScheduleSheets() {
