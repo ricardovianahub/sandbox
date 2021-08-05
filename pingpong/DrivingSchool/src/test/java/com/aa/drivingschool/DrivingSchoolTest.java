@@ -1,7 +1,10 @@
 package com.aa.drivingschool;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
@@ -9,10 +12,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DrivingSchoolTest {
 
+    private DrivingSchool drivingSchool;
+
+    @BeforeEach
+    void beforeEach() {
+        drivingSchool = new DrivingSchool();
+    }
 
     @Test
     void retrieveCalendarContainsStaticWeekdaysAndTimeSlots() {
-        DrivingSchool drivingSchool = new DrivingSchool();
 
         ScheduleGrid expectedScheduleGrid = new ScheduleGrid();
 
@@ -40,7 +48,6 @@ public class DrivingSchoolTest {
 
     @Test
     void addInstructor() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         String firstName = "John";
         String lastName = "Doe";
         int instructorId = drivingSchool.addInstructor(firstName, lastName);
@@ -49,7 +56,6 @@ public class DrivingSchoolTest {
 
     @Test
     void addSecondInstructorAndReceive2() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         String firstName = "John";
         String lastName = "Doe";
         drivingSchool.addInstructor(firstName, lastName);
@@ -61,7 +67,6 @@ public class DrivingSchoolTest {
 
     @Test
     void addThirdInstructorWithSameLastNameReceivesDifferentId() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         drivingSchool.addInstructor("John", "Doe");
         drivingSchool.addInstructor("Bill", "Smith");
         int instructorId3 = drivingSchool.addInstructor("John", "Smith");
@@ -70,14 +75,12 @@ public class DrivingSchoolTest {
 
     @Test
     void addInstructorWithSameLastAndFirstNameThrowException() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         drivingSchool.addInstructor("John", "Doe");
         assertThrows(IllegalStateException.class, () -> drivingSchool.addInstructor("John", "Doe"));
     }
 
     @Test
     void addMultipleInstructorWithSameLastAndFirstNameThrowException() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         drivingSchool.addInstructor("John", "Doe");
         drivingSchool.addInstructor("John", "Smith");
         assertThrows(IllegalStateException.class, () -> drivingSchool.addInstructor("John", "Doe"));
@@ -85,7 +88,6 @@ public class DrivingSchoolTest {
 
     @Test
     void createScheduleSheet() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         int instructorID = drivingSchool.addInstructor("John", "Doe");
 
         ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
@@ -98,7 +100,6 @@ public class DrivingSchoolTest {
 
     @Test
     void createMultipleScheduleSheetWithTwoInstructors() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         int instructorID = drivingSchool.addInstructor("John", "Doe");
         int instructor2ID = drivingSchool.addInstructor("Jane", "Doe");
 
@@ -113,7 +114,6 @@ public class DrivingSchoolTest {
 
     @Test
     void create0ScheduleSheets() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         int actual = drivingSchool.amountOfScheduleSheets();
 
         assertEquals(0, actual);
@@ -121,7 +121,6 @@ public class DrivingSchoolTest {
 
     @Test
     void create0ScheduleSheets2() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         drivingSchool.addInstructor("John", "Doe");
 
         int actual = drivingSchool.amountOfScheduleSheets();
@@ -131,7 +130,6 @@ public class DrivingSchoolTest {
 
     @Test
     void addStudent() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         int studentID = drivingSchool.addStudent("Tom", "Jerry");
 
         assertEquals(1, studentID);
@@ -139,7 +137,6 @@ public class DrivingSchoolTest {
 
     @Test
     void addTwoStudents() {
-        DrivingSchool drivingSchool = new DrivingSchool();
         drivingSchool.addStudent("Tom", "Jerry");
         int studentID = drivingSchool.addStudent("Tom", "Jerry");
 
@@ -148,7 +145,6 @@ public class DrivingSchoolTest {
 
     @Test
     void addStudentWithInvalidArgumentsThrowsException() {
-        DrivingSchool drivingSchool = new DrivingSchool();
 
         assertThrows(
                 IllegalArgumentException.class
@@ -171,7 +167,6 @@ public class DrivingSchoolTest {
 
     @Test
     void retrieveScheduleSheetWithInstructorParam() {
-        DrivingSchool drivingSchool = new DrivingSchool();
 
         assertThrows(IllegalArgumentException.class
                 , () -> drivingSchool.retrieveScheduleSheetByInstructor(1));
@@ -179,7 +174,6 @@ public class DrivingSchoolTest {
 
     @Test
     void retrieveScheduleSheetWithInstructorParamWhenPresent() {
-        DrivingSchool drivingSchool = new DrivingSchool();
 
         int instructorID = drivingSchool.addInstructor("John", "Doe");
 
@@ -193,7 +187,6 @@ public class DrivingSchoolTest {
 
     @Test
     void retrieveScheduleSheetWithInstructorParamWhen2InstructorsPresent() {
-        DrivingSchool drivingSchool = new DrivingSchool();
 
         int instructorID = drivingSchool.addInstructor("John", "Doe");
         drivingSchool.addInstructor("Jane", "Doe");
@@ -206,4 +199,22 @@ public class DrivingSchoolTest {
         }
     }
 
+    @Test
+    void retrieveInstructorsEarliestTime() {
+        // setup
+        drivingSchool.addInstructor("John", "Doe");
+        int instructorID = drivingSchool.addInstructor("Jane", "Doe");
+        drivingSchool.addInstructor("Alan", "Smithee");
+        ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
+
+        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+                2021, 8, 4, 12, 0, 0, 0 // Wednesday
+        ));
+
+        // execution
+        LocalDateTime earliestAvailableTime = scheduleSheet.earliestAvailableTime();
+
+        // Assert
+        assertEquals(DayOfWeek.THURSDAY, earliestAvailableTime.getDayOfWeek());
+    }
 }
