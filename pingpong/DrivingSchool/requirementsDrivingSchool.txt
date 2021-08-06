@@ -15,9 +15,9 @@ break the story down into smaller deployable pieces until they fit in the Worksh
 requiring new tests for those classes at that time. They can be created later as more granular
 functionality is required by future stories
 - Each class should only have enough attributes and code to address the failing tests (yep, the old rule)
-- Data persistance should be planned via interfaces that will represent all persistance actions. Initially
+- Data persistence should be planned via interfaces that will represent all persistance actions. Initially
 only concrete implementations that save to memory should be created. However, the last pass of this exercise
-will be to save the data in 2 different data persistance solutions. This should be designed based on the "O"
+will be to save the data in 2 different data persistence solutions. This should be designed based on the "O"
 in SOLID
 
 
