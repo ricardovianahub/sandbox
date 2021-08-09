@@ -2,11 +2,14 @@ package com.aa.drivingschool;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
+import java.util.Locale;
 
 import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -200,8 +203,17 @@ public class DrivingSchoolTest {
         }
     }
 
-    @Test
-    void retrieveInstructorsEarliestTimeThisThursday() {
+    @ParameterizedTest
+    @CsvSource({
+            "4,THURSDAY,5",
+            "6,MONDAY,9",
+            "7,MONDAY,9",
+            "12,FRIDAY,13",
+            "26,FRIDAY,27",
+    })
+    void retrieveInstructorsEarliestTime(
+            int dayOfMonth, DayOfWeek expectedDayOfWeek, int expectedDayOfMonth
+    ) {
         // setup
         drivingSchool.addInstructor("John", "Doe");
         int instructorID = drivingSchool.addInstructor("Jane", "Doe");
@@ -209,79 +221,37 @@ public class DrivingSchoolTest {
         ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
 
         scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 4, 12, 0, 0, 0 // Wednesday
+                2021, 8, dayOfMonth, 12, 0, 0, 0 // Friday
         ));
 
         // execution
         LocalDateTime earliestAvailableTime = scheduleSheet.earliestAvailableTime();
 
         // Assert
-        assertEquals(DayOfWeek.THURSDAY, earliestAvailableTime.getDayOfWeek());
-        assertEquals(5, earliestAvailableTime.getDayOfMonth());
+        assertEquals(expectedDayOfWeek, earliestAvailableTime.getDayOfWeek());
+        assertEquals(expectedDayOfMonth, earliestAvailableTime.getDayOfMonth());
         assertEquals(Month.AUGUST, earliestAvailableTime.getMonth());
     }
 
     @Test
-    void retrieveInstructorsEarliestTimeDayBeforeWeekend() {
+    void assignStudent() {
         // setup
-        drivingSchool.addInstructor("John", "Doe");
-        int instructorID = drivingSchool.addInstructor("Jane", "Doe");
-        drivingSchool.addInstructor("Alan", "Smithee");
-        ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
-
-        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 6, 12, 0, 0, 0 // Friday
+        int studentID = drivingSchool.addStudent("Alan", "Jones");
+        int instructorID = drivingSchool.addInstructor("James", "Doe");
+        ScheduleSheet beforeScheduleSheet = drivingSchool.createScheduleSheet(instructorID);
+        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+                2021, 8, 5, 12, 0, 0, 0 // Friday
         ));
 
         // execution
-        LocalDateTime earliestAvailableTime = scheduleSheet.earliestAvailableTime();
-
-        // Assert
-        assertEquals(DayOfWeek.MONDAY, earliestAvailableTime.getDayOfWeek());
-        assertEquals(9, earliestAvailableTime.getDayOfMonth());
-        assertEquals(Month.AUGUST, earliestAvailableTime.getMonth());
-    }
-
-    @Test
-    void retrieveInstructorsEarliestTimeOnSaturday() {
-        // setup
-        drivingSchool.addInstructor("John", "Doe");
-        int instructorID = drivingSchool.addInstructor("Jane", "Doe");
-        drivingSchool.addInstructor("Alan", "Smithee");
-        ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
-
-        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 7, 12, 0, 0, 0 // Friday
+        drivingSchool.assignInstructor(instructorID, studentID);
+        ScheduleSheet afterScheduleSheet = drivingSchool.createScheduleSheet(instructorID);
+        afterScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+                2021, 8, 5, 12, 0, 0, 0 // Friday
         ));
 
-        // execution
-        LocalDateTime earliestAvailableTime = scheduleSheet.earliestAvailableTime();
-
-        // Assert
-        assertEquals(DayOfWeek.MONDAY, earliestAvailableTime.getDayOfWeek());
-        assertEquals(9, earliestAvailableTime.getDayOfMonth());
-        assertEquals(Month.AUGUST, earliestAvailableTime.getMonth());
-    }
-
-    @Test
-    void retrieveInstructorsEarliestTimeNextThursday() {
-        // setup
-        drivingSchool.addInstructor("John", "Doe");
-        int instructorID = drivingSchool.addInstructor("Jane", "Doe");
-        drivingSchool.addInstructor("Alan", "Smithee");
-        ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
-
-        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 12, 12, 0, 0, 0 // Friday
-        ));
-
-        // execution
-        LocalDateTime earliestAvailableTime = scheduleSheet.earliestAvailableTime();
-
-        // Assert
-        assertEquals(DayOfWeek.FRIDAY, earliestAvailableTime.getDayOfWeek());
-        assertEquals(13, earliestAvailableTime.getDayOfMonth());
-        assertEquals(Month.AUGUST, earliestAvailableTime.getMonth());
+        // assertion
+        assertNotEquals(beforeScheduleSheet.earliestAvailableTime(), afterScheduleSheet.earliestAvailableTime());
     }
 
 

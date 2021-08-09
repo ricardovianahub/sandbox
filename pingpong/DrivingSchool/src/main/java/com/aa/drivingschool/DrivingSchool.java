@@ -83,4 +83,7 @@ public class DrivingSchool {
         throw new IllegalArgumentException();
     }
 
+    public void assignInstructor(int instructorID, int studentID) {
+
+    }
 }

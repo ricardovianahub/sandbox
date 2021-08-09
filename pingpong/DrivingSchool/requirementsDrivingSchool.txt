@@ -37,11 +37,14 @@ one class per week, for 5 weeks. Each student should be made aware that classes 
     X Retrieve instructor's earliest available time
         X Retrieve instructor's schedule sheet
         X Refactoring
-    > Assign student to 1 instructor
-         - Retrieve instructor's earliest available time and ensure it's not the same
+    > Assign 1 student to 1 instructor for each time slot
+         X Retrieve instructor's earliest available time and ensure it's not the same
+         - Assign
+         - Retrieve Student ID based on Instructor ID and day
     - Make sure the same student can't be assigned twice (or to a second instructor)
 
-- Instructors can't teach more than 4 students at a time
+- Instructors can't have more than 4 students assigned to them at any given time
+- Students will have daily classes
 - A student can leave a course at any time. No refunds will be offered. Their slots will then be available for the instructor
 to receive new students
 - Students should be between the ages of 15 and 79
