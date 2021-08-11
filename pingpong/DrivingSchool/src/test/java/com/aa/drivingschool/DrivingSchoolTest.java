@@ -9,7 +9,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
-import java.util.Locale;
 
 import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -94,7 +93,7 @@ public class DrivingSchoolTest {
     void createScheduleSheet() {
         int instructorID = drivingSchool.addInstructor("John", "Doe");
 
-        ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
+        ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
         int actual = drivingSchool.amountOfScheduleSheets();
 
         assertEquals(1, actual);
@@ -107,8 +106,8 @@ public class DrivingSchoolTest {
         int instructorID = drivingSchool.addInstructor("John", "Doe");
         int instructor2ID = drivingSchool.addInstructor("Jane", "Doe");
 
-        ScheduleSheet scheduleSheetInstructor1 = drivingSchool.createScheduleSheet(instructorID);
-        ScheduleSheet scheduleSheetInstructor2 = drivingSchool.createScheduleSheet(instructor2ID);
+        ScheduleSheet scheduleSheetInstructor1 = drivingSchool.retrieveScheduleSheet(instructorID);
+        ScheduleSheet scheduleSheetInstructor2 = drivingSchool.retrieveScheduleSheet(instructor2ID);
         int actual = drivingSchool.amountOfScheduleSheets();
 
         assertEquals(2, actual);
@@ -218,7 +217,7 @@ public class DrivingSchoolTest {
         drivingSchool.addInstructor("John", "Doe");
         int instructorID = drivingSchool.addInstructor("Jane", "Doe");
         drivingSchool.addInstructor("Alan", "Smithee");
-        ScheduleSheet scheduleSheet = drivingSchool.createScheduleSheet(instructorID);
+        ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
 
         scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, dayOfMonth, 12, 0, 0, 0 // Friday
@@ -238,21 +237,43 @@ public class DrivingSchoolTest {
         // setup
         int studentID = drivingSchool.addStudent("Alan", "Jones");
         int instructorID = drivingSchool.addInstructor("James", "Doe");
-        ScheduleSheet beforeScheduleSheet = drivingSchool.createScheduleSheet(instructorID);
-        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 5, 12, 0, 0, 0 // Friday
-        ));
+        ScheduleSheet beforeScheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
+//        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+//                2021, 8, 5, 12, 0, 0, 0 // Friday
+//        ));
 
         // execution
         drivingSchool.assignInstructor(instructorID, studentID);
-        ScheduleSheet afterScheduleSheet = drivingSchool.createScheduleSheet(instructorID);
-        afterScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 5, 12, 0, 0, 0 // Friday
-        ));
+        ScheduleSheet afterScheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
+//        afterScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+//                2021, 8, 5, 12, 0, 0, 0 // Friday
+//        ));
 
         // assertion
         assertNotEquals(beforeScheduleSheet.earliestAvailableTime(), afterScheduleSheet.earliestAvailableTime());
     }
 
+//    @Test
+//    void assignMoreThan4StudentsPerInstructorFails() {
+//        // setup
+//        int instructorID = drivingSchool.addInstructor("James", "Doe");
+//        ScheduleSheet beforeScheduleSheet = drivingSchool.createScheduleSheet(instructorID);
+//        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+//                2021, 8, 5, 12, 0, 0, 0 // Friday
+//        ));
+//
+//        int studentID1 = drivingSchool.addStudent("Alan", "Jones");
+//        int studentID2 = drivingSchool.addStudent("Ellen", "Jones");
+//        int studentID3 = drivingSchool.addStudent("Janet", "Jones");
+//        int studentID4 = drivingSchool.addStudent("Alexander", "Jones");
+//        int studentID5 = drivingSchool.addStudent("Douglas", "Jones");
+//
+//        // execution & assertion
+//        assertTrue(drivingSchool.assignInstructor(instructorID, studentID1));
+//        assertTrue(drivingSchool.assignInstructor(instructorID, studentID2));
+//        assertTrue(drivingSchool.assignInstructor(instructorID, studentID3));
+//        assertTrue(drivingSchool.assignInstructor(instructorID, studentID4));
+//        assertFalse(drivingSchool.assignInstructor(instructorID, studentID5));
+//    }
 
 }

@@ -12,6 +12,8 @@ public class DrivingSchool {
 
     List<Instructor> instructorList = new ArrayList<>();
 
+    private ScheduleSheet scheduleSheet;
+
     public ScheduleGrid retrieveDefaultScheduleGrid() {
         ScheduleGrid scheduleGrid = new ScheduleGrid();
         scheduleGrid.add("MON", DEFAULT_START_HOURS);
@@ -43,9 +45,13 @@ public class DrivingSchool {
         );
     }
 
-    public ScheduleSheet createScheduleSheet(int instructorID) {
+    public ScheduleSheet retrieveScheduleSheet(int instructorID) {
         ++scheduleSheetCounter;
-        return new ScheduleSheet(instructorID);
+        if (scheduleSheet == null) {
+            this.scheduleSheet = new ScheduleSheet(instructorID);
+        }
+
+        return scheduleSheet;
     }
 
     public int amountOfScheduleSheets() {
@@ -84,6 +90,7 @@ public class DrivingSchool {
     }
 
     public void assignInstructor(int instructorID, int studentID) {
-
+        this.scheduleSheet = new ScheduleSheet(instructorID);
+        this.scheduleSheet.assignStudentID(studentID);
     }
 }
