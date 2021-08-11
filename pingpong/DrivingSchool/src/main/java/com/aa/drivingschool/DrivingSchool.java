@@ -1,8 +1,6 @@
 package com.aa.drivingschool;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DrivingSchool {
     static final int[] DEFAULT_START_HOURS = {9, 10, 11, 1, 2, 3};
@@ -12,7 +10,7 @@ public class DrivingSchool {
 
     List<Instructor> instructorList = new ArrayList<>();
 
-    private ScheduleSheet scheduleSheet;
+    private Map<Integer, ScheduleSheet> scheduleSheets = new HashMap<>();
 
     public ScheduleGrid retrieveDefaultScheduleGrid() {
         ScheduleGrid scheduleGrid = new ScheduleGrid();
@@ -47,11 +45,13 @@ public class DrivingSchool {
 
     public ScheduleSheet retrieveScheduleSheet(int instructorID) {
         ++scheduleSheetCounter;
-        if (scheduleSheet == null) {
-            this.scheduleSheet = new ScheduleSheet(instructorID);
+
+        if (!scheduleSheets.containsKey(instructorID)) {
+            ScheduleSheet scheduleSheet = new ScheduleSheet(instructorID);
+            scheduleSheets.put(instructorID, scheduleSheet);
         }
 
-        return scheduleSheet;
+        return scheduleSheets.get(instructorID);
     }
 
     public int amountOfScheduleSheets() {
@@ -76,6 +76,7 @@ public class DrivingSchool {
             throw new IllegalStateException();
         }
         instructorList.add(instructor);
+        scheduleSheets.put(instructor.getId(), new ScheduleSheet(instructor.getId()));
 
         return instructor.getId();
     }
@@ -90,7 +91,11 @@ public class DrivingSchool {
     }
 
     public void assignInstructor(int instructorID, int studentID) {
-        this.scheduleSheet = new ScheduleSheet(instructorID);
-        this.scheduleSheet.assignStudentID(studentID);
+
+        if(!scheduleSheets.containsKey(instructorID)){
+            scheduleSheets.put(instructorID, new ScheduleSheet(instructorID));
+        }
+        ScheduleSheet scheduleSheet = scheduleSheets.get(instructorID);
+        scheduleSheet.assignStudentID(studentID);
     }
 }
