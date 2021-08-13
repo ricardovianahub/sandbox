@@ -3,7 +3,7 @@ package com.aa.drivingschool;
 import java.util.*;
 
 public class DrivingSchool {
-    static final int[] DEFAULT_START_HOURS = {9, 10, 11, 1, 2, 3};
+    static final int[] DEFAULT_START_HOURS = {9, 10, 11, 13, 14, 15};
     private int instructorCounter = 0;
     private int studentCounter = 0;
     private int scheduleSheetCounter = 0;
@@ -44,9 +44,9 @@ public class DrivingSchool {
     }
 
     public ScheduleSheet retrieveScheduleSheet(int instructorID) {
-        ++scheduleSheetCounter;
 
         if (!scheduleSheets.containsKey(instructorID)) {
+            ++scheduleSheetCounter;
             ScheduleSheet scheduleSheet = new ScheduleSheet(instructorID);
             scheduleSheets.put(instructorID, scheduleSheet);
         }
@@ -76,7 +76,6 @@ public class DrivingSchool {
             throw new IllegalStateException();
         }
         instructorList.add(instructor);
-        scheduleSheets.put(instructor.getId(), new ScheduleSheet(instructor.getId()));
 
         return instructor.getId();
     }
@@ -90,12 +89,11 @@ public class DrivingSchool {
         throw new IllegalArgumentException();
     }
 
-    public void assignInstructor(int instructorID, int studentID) {
-
-        if(!scheduleSheets.containsKey(instructorID)){
+    public boolean assignInstructor(int instructorID, int studentID) {
+        if (!scheduleSheets.containsKey(instructorID)) {
             scheduleSheets.put(instructorID, new ScheduleSheet(instructorID));
         }
         ScheduleSheet scheduleSheet = scheduleSheets.get(instructorID);
-        scheduleSheet.assignStudentID(studentID);
+        return scheduleSheet.assignStudentID(studentID);
     }
 }

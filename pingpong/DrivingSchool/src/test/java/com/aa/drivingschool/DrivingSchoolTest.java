@@ -1,17 +1,22 @@
 package com.aa.drivingschool;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class DrivingSchoolTest {
 
@@ -232,48 +237,83 @@ public class DrivingSchoolTest {
         assertEquals(Month.AUGUST, earliestAvailableTime.getMonth());
     }
 
-    @Test
-    void assignStudent() {
+    @ParameterizedTest
+    @CsvSource({
+            "12", // Thursday
+            "13", // Friday
+            "14", // Saturday
+    })
+    void assignStudent(int dayOfMonth) {
         // setup
         int studentID = drivingSchool.addStudent("Alan", "Jones");
         int instructorID = drivingSchool.addInstructor("James", "Doe");
-        ScheduleSheet beforeScheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
-//        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-//                2021, 8, 5, 12, 0, 0, 0 // Friday
-//        ));
+        ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
+        LocalDateTime before = LocalDateTime.from(scheduleSheet.earliestAvailableTime());
+
+        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+                2021, 8, dayOfMonth, 12, 0, 0, 0 // Friday
+        ));
 
         // execution
         drivingSchool.assignInstructor(instructorID, studentID);
-        ScheduleSheet afterScheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
-//        afterScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-//                2021, 8, 5, 12, 0, 0, 0 // Friday
-//        ));
+        LocalDateTime after = LocalDateTime.from(scheduleSheet.earliestAvailableTime());
 
         // assertion
-        assertNotEquals(beforeScheduleSheet.earliestAvailableTime(), afterScheduleSheet.earliestAvailableTime());
+        assertNotEquals(before, after);
+        assertEquals(DEFAULT_START_HOURS[0], before.getHour());
+        assertEquals(DEFAULT_START_HOURS[1], after.getHour());
     }
 
-//    @Test
-//    void assignMoreThan4StudentsPerInstructorFails() {
-//        // setup
-//        int instructorID = drivingSchool.addInstructor("James", "Doe");
-//        ScheduleSheet beforeScheduleSheet = drivingSchool.createScheduleSheet(instructorID);
-//        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
-//                2021, 8, 5, 12, 0, 0, 0 // Friday
-//        ));
-//
-//        int studentID1 = drivingSchool.addStudent("Alan", "Jones");
-//        int studentID2 = drivingSchool.addStudent("Ellen", "Jones");
-//        int studentID3 = drivingSchool.addStudent("Janet", "Jones");
-//        int studentID4 = drivingSchool.addStudent("Alexander", "Jones");
-//        int studentID5 = drivingSchool.addStudent("Douglas", "Jones");
-//
-//        // execution & assertion
-//        assertTrue(drivingSchool.assignInstructor(instructorID, studentID1));
-//        assertTrue(drivingSchool.assignInstructor(instructorID, studentID2));
-//        assertTrue(drivingSchool.assignInstructor(instructorID, studentID3));
-//        assertTrue(drivingSchool.assignInstructor(instructorID, studentID4));
-//        assertFalse(drivingSchool.assignInstructor(instructorID, studentID5));
-//    }
+    @Test
+    void assignMoreThan4StudentsPerInstructorFails() {
+        // setup
+        int instructorID = drivingSchool.addInstructor("James", "Doe");
+        ScheduleSheet beforeScheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
+        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+                2021, 8, 5, 12, 0, 0, 0 // Friday
+        ));
+
+        int studentID1 = drivingSchool.addStudent("Alan", "Jones");
+        int studentID2 = drivingSchool.addStudent("Ellen", "Jones");
+        int studentID3 = drivingSchool.addStudent("Janet", "Jones");
+        int studentID4 = drivingSchool.addStudent("Alexander", "Jones");
+        int studentID5 = drivingSchool.addStudent("Douglas", "Jones");
+
+        // execution & assertion
+        assertTrue(drivingSchool.assignInstructor(instructorID, studentID1));
+        assertTrue(drivingSchool.assignInstructor(instructorID, studentID2));
+        assertTrue(drivingSchool.assignInstructor(instructorID, studentID3));
+        assertTrue(drivingSchool.assignInstructor(instructorID, studentID4));
+        assertFalse(drivingSchool.assignInstructor(instructorID, studentID5));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"3"})
+    void assignMoreThan4StudentsPerInstructorFailsForMultipleInstructors(
+        int numberOfInstructors
+    ) {
+        // setup
+        List<Integer> instructorIDs = new ArrayList<>();
+        for (int i = 0; i < numberOfInstructors; i++) {
+            instructorIDs.add(drivingSchool.addInstructor("James" + i, "Doe"));
+        }
+        ScheduleSheet beforeScheduleSheet = drivingSchool.retrieveScheduleSheet(instructorIDs.get(0));
+        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+                2021, 8, 5, 12, 0, 0, 0 // Friday
+        ));
+
+        int studentID1 = drivingSchool.addStudent("Alan", "Jones");
+        int studentID2 = drivingSchool.addStudent("Ellen", "Jones");
+        int studentID3 = drivingSchool.addStudent("Janet", "Jones");
+        int studentID4 = drivingSchool.addStudent("Alexander", "Jones");
+        int studentID5 = drivingSchool.addStudent("Douglas", "Jones");
+
+        // execution & assertion
+        assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID1));
+        assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID2));
+        assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID3));
+        assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID4));
+        assertFalse(drivingSchool.assignInstructor(instructorIDs.get(0), studentID5));
+    }
 
 }

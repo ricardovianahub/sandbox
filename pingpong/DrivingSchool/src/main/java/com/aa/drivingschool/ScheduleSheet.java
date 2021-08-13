@@ -3,10 +3,11 @@ package com.aa.drivingschool;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
-public class ScheduleSheet {
-    private int instructorID;
+public class ScheduleSheet implements Cloneable {
+    private final int instructorID;
     private CurrentTime currentTime;
     private int studentID;
+    private int studentsCounter = 0;
 
     public ScheduleSheet(int instructorID) {
         this.instructorID = instructorID;
@@ -22,19 +23,20 @@ public class ScheduleSheet {
     }
 
     public LocalDateTime earliestAvailableTime() {
-        if (DayOfWeek.FRIDAY.equals(this.currentTime.now().getDayOfWeek())) {
-            return this.currentTime.now().plusDays(3);
-        }
-        if (DayOfWeek.SATURDAY.equals(this.currentTime.now().getDayOfWeek())) {
-            return this.currentTime.now().plusDays(2);
-        }
-
-        return this.currentTime.now().plusDays(1);
-
+        return this.currentTime.now()
+                .plusDays(
+                        addDaysPerWeekday(this.currentTime.now().getDayOfWeek())
+                )
+                .withHour(9)
+                .plusHours(this.studentsCounter);
     }
 
-    public void setCurrentTime(CurrentTime currentTime) {
-        this.currentTime = currentTime;
+    private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
+        switch(dayOfWeek) {
+            case FRIDAY: return 3;
+            case SATURDAY: return 2;
+            default: return 1;
+        }
     }
 
     public void setStudentID(int studentID) {
@@ -45,7 +47,12 @@ public class ScheduleSheet {
         return studentID;
     }
 
-    public void assignStudentID(int studentID) {
+    public boolean assignStudentID(int studentID) {
+        this.studentsCounter++;
+        return this.studentsCounter <= 4;
+    }
 
+    void setCurrentTime(CurrentTime currentTime) {
+        this.currentTime = currentTime;
     }
 }
