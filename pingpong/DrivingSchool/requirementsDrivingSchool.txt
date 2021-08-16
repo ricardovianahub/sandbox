@@ -40,7 +40,7 @@ one class per week, for 5 weeks. Each student should be made aware that classes 
     > Assign 1 student to 1 instructor for each time slot
          X Retrieve instructor's earliest available time and ensure it's not the same
          X Ensure that no classes are scheduled for weekends
-         - Assign
+         X Assign
          - Retrieve Student ID based on Instructor ID and day
     - Make sure the same student can't be assigned twice (or to a second instructor)
 

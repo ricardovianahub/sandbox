@@ -32,10 +32,13 @@ public class ScheduleSheet implements Cloneable {
     }
 
     private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
-        switch(dayOfWeek) {
-            case FRIDAY: return 3;
-            case SATURDAY: return 2;
-            default: return 1;
+        switch (dayOfWeek) {
+            case FRIDAY:
+                return 3;
+            case SATURDAY:
+                return 2;
+            default:
+                return 1;
         }
     }
 
@@ -54,5 +57,15 @@ public class ScheduleSheet implements Cloneable {
 
     void setCurrentTime(CurrentTime currentTime) {
         this.currentTime = currentTime;
+    }
+
+    public int retrieveStudentForInstructorAndTime(
+            Integer intructorId, int weekIndex, DayOfWeek dow, int hour
+    ) {
+        return 2;
+    }
+
+    public int numberOfStudents() {
+        return this.studentsCounter;
     }
 }

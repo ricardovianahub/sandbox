@@ -288,9 +288,9 @@ public class DrivingSchoolTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"3"})
+    @CsvSource({"3", "1"})
     void assignMoreThan4StudentsPerInstructorFailsForMultipleInstructors(
-        int numberOfInstructors
+            int numberOfInstructors
     ) {
         // setup
         List<Integer> instructorIDs = new ArrayList<>();
@@ -314,6 +314,37 @@ public class DrivingSchoolTest {
         assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID3));
         assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID4));
         assertFalse(drivingSchool.assignInstructor(instructorIDs.get(0), studentID5));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"2"})
+    void retrieveStudentIDBasedOnInstructorIDAndDate(
+            int numberOfStudents
+    ) {
+        // setup
+        List<Integer> instructorIDs = new ArrayList<>();
+        int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
+        ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
+        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+                2021, 8, 5, 12, 0, 0, 0 // Friday
+        ));
+
+        int studentID = 0;
+        for (int i = 0; i < numberOfStudents; i++) {
+            studentID = drivingSchool.addStudent("Student" + i, "Smith");
+            scheduleSheet.assignStudentID(studentID);
+        }
+
+        // execution
+        int weekIndex = 2;
+        DayOfWeek dow = DayOfWeek.MONDAY;
+        int hour = 9 + scheduleSheet.numberOfStudents() - 1;
+        int studentActual = scheduleSheet.retrieveStudentForInstructorAndTime(
+                instructorID, weekIndex, dow, hour
+        );
+
+        // execution & assertion
+        assertEquals(studentID, studentActual);
     }
 
 }
