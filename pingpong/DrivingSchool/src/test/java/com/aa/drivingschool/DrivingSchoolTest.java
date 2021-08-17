@@ -322,7 +322,7 @@ public class DrivingSchoolTest {
             int numberOfStudents
     ) {
         // setup
-        List<Integer> instructorIDs = new ArrayList<>();
+        List<Integer> studentIDs = new ArrayList<>();
         int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
         ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
         scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
@@ -332,19 +332,22 @@ public class DrivingSchoolTest {
         int studentID = 0;
         for (int i = 0; i < numberOfStudents; i++) {
             studentID = drivingSchool.addStudent("Student" + i, "Smith");
+            studentIDs.add(studentID);
             scheduleSheet.assignStudentID(studentID);
         }
 
         // execution
         int weekIndex = 2;
         DayOfWeek dow = DayOfWeek.MONDAY;
-        int hour = 9 + scheduleSheet.numberOfStudents() - 1;
-        int studentActual = scheduleSheet.retrieveStudentForInstructorAndTime(
-                instructorID, weekIndex, dow, hour
-        );
+        for(int i=0; i < numberOfStudents; i++) {
+            int hour = 9 + i;
+            int studentActual = scheduleSheet.retrieveStudentForInstructorAndTime(
+                    instructorID, weekIndex, dow, hour
+            );
 
-        // execution & assertion
-        assertEquals(studentID, studentActual);
+            // execution & assertion
+            assertEquals(studentIDs.get(i), studentActual,"studentIDs index " + i);
+        }
     }
 
 }
