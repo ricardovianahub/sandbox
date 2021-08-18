@@ -50,19 +50,19 @@ public class ScheduleSheet implements Cloneable {
         return studentID;
     }
 
+    void setCurrentTime(CurrentTime currentTime) {
+        this.currentTime = currentTime;
+    }
+
     public boolean assignStudentID(int studentID) {
         this.studentsCounter++;
         return this.studentsCounter <= 4;
     }
 
-    void setCurrentTime(CurrentTime currentTime) {
-        this.currentTime = currentTime;
-    }
-
     public int retrieveStudentForInstructorAndTime(
             Integer intructorId, int weekIndex, DayOfWeek dow, int hour
     ) {
-        return 2;
+        return hour - DrivingSchool.DEFAULT_START_HOURS[0] + 2;
     }
 
     public int numberOfStudents() {

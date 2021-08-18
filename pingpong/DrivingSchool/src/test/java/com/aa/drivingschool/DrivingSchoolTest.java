@@ -317,7 +317,10 @@ public class DrivingSchoolTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"2"})
+    @CsvSource({
+            "2",
+            "4",
+    })
     void retrieveStudentIDBasedOnInstructorIDAndDate(
             int numberOfStudents
     ) {
@@ -329,24 +332,27 @@ public class DrivingSchoolTest {
                 2021, 8, 5, 12, 0, 0, 0 // Friday
         ));
 
-        int studentID = 0;
+        int studentID;
+        drivingSchool.addStudent("Buffer", "Bufferson");
+        drivingSchool.addStudent("Buffer", "Bufferson Jr");
         for (int i = 0; i < numberOfStudents; i++) {
             studentID = drivingSchool.addStudent("Student" + i, "Smith");
             studentIDs.add(studentID);
-            scheduleSheet.assignStudentID(studentID);
+            assertTrue(scheduleSheet.assignStudentID(studentID));
         }
 
         // execution
         int weekIndex = 2;
         DayOfWeek dow = DayOfWeek.MONDAY;
-        for(int i=0; i < numberOfStudents; i++) {
-            int hour = 9 + i;
+        int[] hours = {15, 10, 9, 11, 14, 13};
+        for (int i = 0; i < numberOfStudents; i++) {
+            int hour = hours[i];
             int studentActual = scheduleSheet.retrieveStudentForInstructorAndTime(
                     instructorID, weekIndex, dow, hour
             );
 
             // execution & assertion
-            assertEquals(studentIDs.get(i), studentActual,"studentIDs index " + i);
+            assertEquals(studentIDs.get(i), studentActual, "studentIDs index " + i);
         }
     }
 
