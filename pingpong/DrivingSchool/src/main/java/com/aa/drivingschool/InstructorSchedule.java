@@ -2,14 +2,18 @@ package com.aa.drivingschool;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ScheduleSheet implements Cloneable {
+public class InstructorSchedule implements Cloneable {
     private final int instructorID;
     private CurrentTime currentTime;
     private int studentID;
     private int studentsCounter = 0;
 
-    public ScheduleSheet(int instructorID) {
+    Map<Integer, Integer> assignedHours = new HashMap<>();
+
+    public InstructorSchedule(int instructorID) {
         this.instructorID = instructorID;
         this.currentTime = new CurrentServerTime();
     }
@@ -55,17 +59,18 @@ public class ScheduleSheet implements Cloneable {
     }
 
     public boolean assignStudentID(int studentID) {
+        assignedHours.put(earliestAvailableTime().getHour(), studentID);
         this.studentsCounter++;
         return this.studentsCounter <= 4;
     }
 
     public int retrieveStudentForInstructorAndTime(
-            Integer intructorId, int weekIndex, DayOfWeek dow, int hour
+            int weekIndex, DayOfWeek dow, int hour
     ) {
         if (hour - DrivingSchool.DEFAULT_START_HOURS[0] + 1 > studentsCounter) {
             return 0;
         }
-        return hour - DrivingSchool.DEFAULT_START_HOURS[0] + 2;
+        return assignedHours.get(hour);
     }
 
     public int numberOfStudents() {

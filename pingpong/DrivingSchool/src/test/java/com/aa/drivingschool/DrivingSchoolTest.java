@@ -12,11 +12,14 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class DrivingSchoolTest {
 
@@ -98,12 +101,12 @@ public class DrivingSchoolTest {
     void createScheduleSheet() {
         int instructorID = drivingSchool.addInstructor("John", "Doe");
 
-        ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
         int actual = drivingSchool.amountOfScheduleSheets();
 
         assertEquals(1, actual);
-        assertEquals(instructorID, scheduleSheet.getInstructorId());
-        assertEquals(10, scheduleSheet.getNumberAvailableDays());
+        assertEquals(instructorID, instructorSchedule.getInstructorId());
+        assertEquals(10, instructorSchedule.getNumberAvailableDays());
     }
 
     @Test
@@ -111,13 +114,13 @@ public class DrivingSchoolTest {
         int instructorID = drivingSchool.addInstructor("John", "Doe");
         int instructor2ID = drivingSchool.addInstructor("Jane", "Doe");
 
-        ScheduleSheet scheduleSheetInstructor1 = drivingSchool.retrieveScheduleSheet(instructorID);
-        ScheduleSheet scheduleSheetInstructor2 = drivingSchool.retrieveScheduleSheet(instructor2ID);
+        InstructorSchedule instructorScheduleInstructor1 = drivingSchool.retrieveScheduleSheet(instructorID);
+        InstructorSchedule instructorScheduleInstructor2 = drivingSchool.retrieveScheduleSheet(instructor2ID);
         int actual = drivingSchool.amountOfScheduleSheets();
 
         assertEquals(2, actual);
-        assertEquals(instructorID, scheduleSheetInstructor1.getInstructorId());
-        assertEquals(instructor2ID, scheduleSheetInstructor2.getInstructorId());
+        assertEquals(instructorID, instructorScheduleInstructor1.getInstructorId());
+        assertEquals(instructor2ID, instructorScheduleInstructor2.getInstructorId());
     }
 
     @Test
@@ -222,14 +225,14 @@ public class DrivingSchoolTest {
         drivingSchool.addInstructor("John", "Doe");
         int instructorID = drivingSchool.addInstructor("Jane", "Doe");
         drivingSchool.addInstructor("Alan", "Smithee");
-        ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
 
-        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+        instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, dayOfMonth, 12, 0, 0, 0 // Friday
         ));
 
         // execution
-        LocalDateTime earliestAvailableTime = scheduleSheet.earliestAvailableTime();
+        LocalDateTime earliestAvailableTime = instructorSchedule.earliestAvailableTime();
 
         // Assert
         assertEquals(expectedDayOfWeek, earliestAvailableTime.getDayOfWeek());
@@ -247,16 +250,16 @@ public class DrivingSchoolTest {
         // setup
         int studentID = drivingSchool.addStudent("Alan", "Jones");
         int instructorID = drivingSchool.addInstructor("James", "Doe");
-        ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
-        LocalDateTime before = LocalDateTime.from(scheduleSheet.earliestAvailableTime());
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
+        LocalDateTime before = LocalDateTime.from(instructorSchedule.earliestAvailableTime());
 
-        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+        instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, dayOfMonth, 12, 0, 0, 0 // Friday
         ));
 
         // execution
         drivingSchool.assignInstructor(instructorID, studentID);
-        LocalDateTime after = LocalDateTime.from(scheduleSheet.earliestAvailableTime());
+        LocalDateTime after = LocalDateTime.from(instructorSchedule.earliestAvailableTime());
 
         // assertion
         assertNotEquals(before, after);
@@ -268,8 +271,8 @@ public class DrivingSchoolTest {
     void assignMoreThan4StudentsPerInstructorFails() {
         // setup
         int instructorID = drivingSchool.addInstructor("James", "Doe");
-        ScheduleSheet beforeScheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
-        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+        InstructorSchedule beforeInstructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
+        beforeInstructorSchedule.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, 5, 12, 0, 0, 0 // Friday
         ));
 
@@ -297,8 +300,8 @@ public class DrivingSchoolTest {
         for (int i = 0; i < numberOfInstructors; i++) {
             instructorIDs.add(drivingSchool.addInstructor("James" + i, "Doe"));
         }
-        ScheduleSheet beforeScheduleSheet = drivingSchool.retrieveScheduleSheet(instructorIDs.get(0));
-        beforeScheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+        InstructorSchedule beforeInstructorSchedule = drivingSchool.retrieveScheduleSheet(instructorIDs.get(0));
+        beforeInstructorSchedule.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, 5, 12, 0, 0, 0 // Friday
         ));
 
@@ -316,20 +319,24 @@ public class DrivingSchoolTest {
         assertFalse(drivingSchool.assignInstructor(instructorIDs.get(0), studentID5));
     }
 
+    static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {
+        return Stream.of(
+            Arguments.of("1", new int[] {15}, new int[7]),
+            Arguments.of("2", new int[] {15, 9}, new int[] {10, 3}),
+            Arguments.of("3", new int[] {10, 11, 9}, new int[] {4, 5, 3})
+        );
+    }
+
     @ParameterizedTest
-    @CsvSource({
-            "1",
-            "2",
-            "4",
-    })
+    @MethodSource("retrieveStudentIDBasedOnInstructorIDAndDateData")
     void retrieveStudentIDBasedOnInstructorIDAndDate(
-            int numberOfStudents
+            int numberOfStudents, int[] hours, int assignedStudents[]
     ) {
         // setup
         List<Integer> studentIDs = new ArrayList<>();
         int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
-        ScheduleSheet scheduleSheet = drivingSchool.retrieveScheduleSheet(instructorID);
-        scheduleSheet.setCurrentTime(() -> LocalDateTime.of(
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
+        instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, 5, 12, 0, 0, 0 // Friday
         ));
 
@@ -339,18 +346,19 @@ public class DrivingSchoolTest {
         for (int i = 0; i < numberOfStudents; i++) {
             studentID = drivingSchool.addStudent("Student" + i, "Smith");
             studentIDs.add(studentID);
-            assertTrue(scheduleSheet.assignStudentID(studentID));
+            assertTrue(instructorSchedule.assignStudentID(studentID));
         }
+        drivingSchool.addStudent("Joe", "Bufferson");
+        drivingSchool.addStudent("Joe", "Bufferson Jr");
 
         // execution
         int weekIndex = 2;
         DayOfWeek dow = DayOfWeek.MONDAY;
-        int[] hours = {15, 10, 9, 11, 14, 13};
         for (int i = 0; i < numberOfStudents; i++) {
             int hour = hours[i];
 
-            int studentActual = scheduleSheet.retrieveStudentForInstructorAndTime(
-                    instructorID, weekIndex, dow, hour
+            int studentActual = instructorSchedule.retrieveStudentForInstructorAndTime(
+                    weekIndex, dow, hour
             );
 
             // execution & assertion
@@ -358,9 +366,8 @@ public class DrivingSchoolTest {
             if (hour > maxHour) {
                 assertEquals(0, studentActual);
             } else {
-                assertEquals(studentIDs.get(i), studentActual, "studentIDs index " + i);
+                assertEquals(assignedStudents[i], studentActual, "studentIDs index " + i);
             }
         }
     }
-
 }

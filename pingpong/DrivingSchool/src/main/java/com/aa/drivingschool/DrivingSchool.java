@@ -10,7 +10,7 @@ public class DrivingSchool {
 
     List<Instructor> instructorList = new ArrayList<>();
 
-    private Map<Integer, ScheduleSheet> scheduleSheets = new HashMap<>();
+    private Map<Integer, InstructorSchedule> scheduleSheets = new HashMap<>();
 
     public ScheduleGrid retrieveDefaultScheduleGrid() {
         ScheduleGrid scheduleGrid = new ScheduleGrid();
@@ -43,12 +43,12 @@ public class DrivingSchool {
         );
     }
 
-    public ScheduleSheet retrieveScheduleSheet(int instructorID) {
+    public InstructorSchedule retrieveScheduleSheet(int instructorID) {
 
         if (!scheduleSheets.containsKey(instructorID)) {
             ++scheduleSheetCounter;
-            ScheduleSheet scheduleSheet = new ScheduleSheet(instructorID);
-            scheduleSheets.put(instructorID, scheduleSheet);
+            InstructorSchedule instructorSchedule = new InstructorSchedule(instructorID);
+            scheduleSheets.put(instructorID, instructorSchedule);
         }
 
         return scheduleSheets.get(instructorID);
@@ -91,9 +91,9 @@ public class DrivingSchool {
 
     public boolean assignInstructor(int instructorID, int studentID) {
         if (!scheduleSheets.containsKey(instructorID)) {
-            scheduleSheets.put(instructorID, new ScheduleSheet(instructorID));
+            scheduleSheets.put(instructorID, new InstructorSchedule(instructorID));
         }
-        ScheduleSheet scheduleSheet = scheduleSheets.get(instructorID);
-        return scheduleSheet.assignStudentID(studentID);
+        InstructorSchedule instructorSchedule = scheduleSheets.get(instructorID);
+        return instructorSchedule.assignStudentID(studentID);
     }
 }
