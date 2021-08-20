@@ -318,6 +318,7 @@ public class DrivingSchoolTest {
 
     @ParameterizedTest
     @CsvSource({
+            "1",
             "2",
             "4",
     })
@@ -347,12 +348,18 @@ public class DrivingSchoolTest {
         int[] hours = {15, 10, 9, 11, 14, 13};
         for (int i = 0; i < numberOfStudents; i++) {
             int hour = hours[i];
+
             int studentActual = scheduleSheet.retrieveStudentForInstructorAndTime(
                     instructorID, weekIndex, dow, hour
             );
 
             // execution & assertion
-            assertEquals(studentIDs.get(i), studentActual, "studentIDs index " + i);
+            int maxHour = DrivingSchool.DEFAULT_START_HOURS[numberOfStudents - 1];
+            if (hour > maxHour) {
+                assertEquals(0, studentActual);
+            } else {
+                assertEquals(studentIDs.get(i), studentActual, "studentIDs index " + i);
+            }
         }
     }
 

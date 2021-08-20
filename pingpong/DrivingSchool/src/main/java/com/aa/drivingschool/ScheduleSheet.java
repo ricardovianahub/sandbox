@@ -62,6 +62,9 @@ public class ScheduleSheet implements Cloneable {
     public int retrieveStudentForInstructorAndTime(
             Integer intructorId, int weekIndex, DayOfWeek dow, int hour
     ) {
+        if (hour - DrivingSchool.DEFAULT_START_HOURS[0] + 1 > studentsCounter) {
+            return 0;
+        }
         return hour - DrivingSchool.DEFAULT_START_HOURS[0] + 2;
     }
 
