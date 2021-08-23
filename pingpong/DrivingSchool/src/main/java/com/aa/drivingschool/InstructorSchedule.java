@@ -8,7 +8,6 @@ import java.util.Map;
 public class InstructorSchedule implements Cloneable {
     private final int instructorID;
     private CurrentTime currentTime;
-    private int studentID;
     private int studentsCounter = 0;
 
     Map<Integer, Integer> assignedHours = new HashMap<>();
@@ -46,14 +45,6 @@ public class InstructorSchedule implements Cloneable {
         }
     }
 
-    public void setStudentID(int studentID) {
-        this.studentID = studentID;
-    }
-
-    public int getStudentID() {
-        return studentID;
-    }
-
     void setCurrentTime(CurrentTime currentTime) {
         this.currentTime = currentTime;
     }
@@ -67,13 +58,14 @@ public class InstructorSchedule implements Cloneable {
     public int retrieveStudentForInstructorAndTime(
             int weekIndex, DayOfWeek dow, int hour
     ) {
-        if (hour - DrivingSchool.DEFAULT_START_HOURS[0] + 1 > studentsCounter) {
-            return 0;
+        Integer result =  assignedHours.get(hour);
+        if (result == null) {
+            throw new IllegalStateException();
         }
-        return assignedHours.get(hour);
-    }
-
-    public int numberOfStudents() {
-        return this.studentsCounter;
+        return result;
     }
 }
+// Instructor max 4
+// "earliest available time"
+// [1234] [] [] [] []  --   [1] [][][][] -- [1] [][][][] -- [1] [] [] [] [] --- 6 weeks --- exception
+

@@ -321,16 +321,16 @@ public class DrivingSchoolTest {
 
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {
         return Stream.of(
-            Arguments.of("1", new int[] {15}, new int[7]),
-            Arguments.of("2", new int[] {15, 9}, new int[] {10, 3}),
-            Arguments.of("3", new int[] {10, 11, 9}, new int[] {4, 5, 3})
+                Arguments.of(2, 1, new int[]{10, 9}, new int[]{4, 3}),
+                Arguments.of(3, 1, new int[]{10, 11, 9}, new int[]{4, 5, 3}),
+                Arguments.of(1, 2, new int[]{9}, new int[]{3})
         );
     }
 
     @ParameterizedTest
     @MethodSource("retrieveStudentIDBasedOnInstructorIDAndDateData")
     void retrieveStudentIDBasedOnInstructorIDAndDate(
-            int numberOfStudents, int[] hours, int assignedStudents[]
+            int numberOfStudents, int weekIndex, int[] hours, int assignedStudents[]
     ) {
         // setup
         List<Integer> studentIDs = new ArrayList<>();
@@ -352,7 +352,6 @@ public class DrivingSchoolTest {
         drivingSchool.addStudent("Joe", "Bufferson Jr");
 
         // execution
-        int weekIndex = 2;
         DayOfWeek dow = DayOfWeek.MONDAY;
         for (int i = 0; i < numberOfStudents; i++) {
             int hour = hours[i];
@@ -362,12 +361,21 @@ public class DrivingSchoolTest {
             );
 
             // execution & assertion
-            int maxHour = DrivingSchool.DEFAULT_START_HOURS[numberOfStudents - 1];
-            if (hour > maxHour) {
-                assertEquals(0, studentActual);
-            } else {
-                assertEquals(assignedStudents[i], studentActual, "studentIDs index " + i);
-            }
+            assertEquals(assignedStudents[i], studentActual, "studentIDs index " + i);
         }
+    }
+
+    @Test
+    void retrieveStudentIDBasedOnInstructorIDAndDateException() {
+        // setup
+        int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
+        instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
+                2021, 8, 5, 12, 0, 0, 0 // Friday
+        ));
+
+        assertThrows(IllegalStateException.class,
+                () -> instructorSchedule.retrieveStudentForInstructorAndTime(1, DayOfWeek.MONDAY, 8)
+        );
     }
 }
