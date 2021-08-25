@@ -2,7 +2,10 @@ package com.aa.drivingschool;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InstructorSchedule implements Cloneable {
@@ -10,11 +13,17 @@ public class InstructorSchedule implements Cloneable {
     private CurrentTime currentTime;
     private int studentsCounter = 0;
 
-    Map<Integer, Integer> assignedHours = new HashMap<>();
+    private Map<Integer, Integer> assignedHours = new HashMap<>();
+    private List<ClassDay> classDays = new ArrayList<>();
 
     public InstructorSchedule(int instructorID) {
+        this(instructorID, new ArrayList<>());
+    }
+
+    public InstructorSchedule(int instructorID, List<ClassDay> classDays) {
         this.instructorID = instructorID;
         this.currentTime = new CurrentServerTime();
+        this.classDays = classDays;
     }
 
     public int getInstructorId() {
@@ -63,6 +72,14 @@ public class InstructorSchedule implements Cloneable {
             throw new IllegalStateException();
         }
         return result;
+    }
+
+    public int getStudentIdDayHour(DayOfWeek dayOfWeek, int hour) {
+        return 0;
+    }
+
+    public List<ClassDay> getClassDays() {
+        return Collections.unmodifiableList(this.classDays);
     }
 }
 // Instructor max 4

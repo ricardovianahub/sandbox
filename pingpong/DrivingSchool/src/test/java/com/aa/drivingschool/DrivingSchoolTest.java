@@ -188,24 +188,24 @@ public class DrivingSchoolTest {
 
         int instructorID = drivingSchool.addInstructor("John", "Doe");
 
-        List<ClassDay> actual = drivingSchool.retrieveInstructorSchedule(instructorID);
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveInstructorSchedule(instructorID);
 
-        assertEquals(10, actual.size());
-        for (ClassDay classDay : actual) {
+        assertEquals(10, instructorSchedule.getClassDays().size());
+        for (ClassDay classDay : instructorSchedule.getClassDays()) {
             assertEquals(instructorID, classDay.getInstructorID());
         }
     }
 
-    @Test
+    @Test // revise
     void retrieveScheduleSheetWithInstructorParamWhen2InstructorsPresent() {
 
         int instructorID = drivingSchool.addInstructor("John", "Doe");
         drivingSchool.addInstructor("Jane", "Doe");
 
-        List<ClassDay> actual = drivingSchool.retrieveInstructorSchedule(instructorID);
+        InstructorSchedule actual = drivingSchool.retrieveInstructorSchedule(instructorID);
 
-        assertEquals(10, actual.size());
-        for (ClassDay classDay : actual) {
+        assertEquals(10, actual.getClassDays());
+        for (ClassDay classDay : actual.getClassDays()) {
             assertEquals(instructorID, classDay.getInstructorID());
         }
     }
@@ -320,12 +320,12 @@ public class DrivingSchoolTest {
         drivingSchool.assignInstructor(instructorIDs.get(0), studentID5);
 
         // execution & assertion
-        List<ClassDay> classDays = drivingSchool.retrieveInstructorSchedule(instructorIDs.get(0));
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveInstructorSchedule(instructorIDs.get(0));
 
-        assertEquals(instructorIDs.get(0), classDays.get(0).getInstructorID());
-        assertEquals(studentID3, classDays.get(0).getStudentIdForHour(11));
-        assertEquals(studentID5, classDays.get(1).getStudentIdForHour(9));
-        assertEquals(studentID1, classDays.get(0).getStudentIdForHour(9));
+        assertEquals(instructorIDs.get(0), instructorSchedule.getInstructorId());
+        assertEquals(studentID3, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 11));
+        assertEquals(studentID5, instructorSchedule.getStudentIdDayHour(DayOfWeek.TUESDAY, 9));
+        assertEquals(studentID1, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 9));
     }
 
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {

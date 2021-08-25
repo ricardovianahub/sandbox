@@ -80,10 +80,13 @@ public class DrivingSchool {
         return instructor.getId();
     }
 
-    public List<ClassDay> retrieveInstructorSchedule(int instructorId) {
+    public InstructorSchedule retrieveInstructorSchedule(int instructorId) {
         for (Instructor instructor : instructorList) {
             if (instructor.getId() == instructorId) {
-                return retrieveDefaultScheduleGrid(instructorId);
+                return new InstructorSchedule(
+                        instructorId,
+                        retrieveDefaultScheduleGrid(instructorId)
+                );
             }
         }
         throw new IllegalArgumentException();
