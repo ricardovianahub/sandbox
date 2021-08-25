@@ -67,5 +67,10 @@ public class InstructorSchedule implements Cloneable {
 }
 // Instructor max 4
 // "earliest available time"
-// [1234] [] [] [] []  --   [1] [][][][] -- [1] [][][][] -- [1] [] [] [] [] --- 6 weeks --- exception
-
+// [1234] [] [] [] []
+// [1234] [] [] [] []
+// [1234] [] [] [] []
+// [1234] [] [] [] []
+// [1234] [] [] [] []
+// 6 weeks [][][][][] --- exception
+//

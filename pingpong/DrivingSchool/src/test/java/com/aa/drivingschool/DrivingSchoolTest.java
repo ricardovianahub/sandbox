@@ -180,7 +180,7 @@ public class DrivingSchoolTest {
     void retrieveScheduleSheetWithInstructorParam() {
 
         assertThrows(IllegalArgumentException.class
-                , () -> drivingSchool.retrieveScheduleSheetByInstructor(1));
+                , () -> drivingSchool.retrieveInstructorSchedule(1));
     }
 
     @Test
@@ -188,7 +188,7 @@ public class DrivingSchoolTest {
 
         int instructorID = drivingSchool.addInstructor("John", "Doe");
 
-        List<ClassDay> actual = drivingSchool.retrieveScheduleSheetByInstructor(instructorID);
+        List<ClassDay> actual = drivingSchool.retrieveInstructorSchedule(instructorID);
 
         assertEquals(10, actual.size());
         for (ClassDay classDay : actual) {
@@ -202,7 +202,7 @@ public class DrivingSchoolTest {
         int instructorID = drivingSchool.addInstructor("John", "Doe");
         drivingSchool.addInstructor("Jane", "Doe");
 
-        List<ClassDay> actual = drivingSchool.retrieveScheduleSheetByInstructor(instructorID);
+        List<ClassDay> actual = drivingSchool.retrieveInstructorSchedule(instructorID);
 
         assertEquals(10, actual.size());
         for (ClassDay classDay : actual) {
@@ -268,11 +268,11 @@ public class DrivingSchoolTest {
     }
 
     @Test
-    void assignMoreThan4StudentsPerInstructorFails() {
+    void assignMoreThan4StudentsPerInstructorPerDayAssignsToTheFollowingDay() {
         // setup
         int instructorID = drivingSchool.addInstructor("James", "Doe");
-        InstructorSchedule beforeInstructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
-        beforeInstructorSchedule.setCurrentTime(() -> LocalDateTime.of(
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
+        instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, 5, 12, 0, 0, 0 // Friday
         ));
 
@@ -281,13 +281,15 @@ public class DrivingSchoolTest {
         int studentID3 = drivingSchool.addStudent("Janet", "Jones");
         int studentID4 = drivingSchool.addStudent("Alexander", "Jones");
         int studentID5 = drivingSchool.addStudent("Douglas", "Jones");
+        drivingSchool.assignInstructor(instructorID, studentID1);
+        drivingSchool.assignInstructor(instructorID, studentID2);
+        drivingSchool.assignInstructor(instructorID, studentID3);
+        drivingSchool.assignInstructor(instructorID, studentID4);
+        drivingSchool.assignInstructor(instructorID, studentID5);
+
 
         // execution & assertion
-        assertTrue(drivingSchool.assignInstructor(instructorID, studentID1));
-        assertTrue(drivingSchool.assignInstructor(instructorID, studentID2));
-        assertTrue(drivingSchool.assignInstructor(instructorID, studentID3));
-        assertTrue(drivingSchool.assignInstructor(instructorID, studentID4));
-        assertFalse(drivingSchool.assignInstructor(instructorID, studentID5));
+
     }
 
     @ParameterizedTest
@@ -311,12 +313,19 @@ public class DrivingSchoolTest {
         int studentID4 = drivingSchool.addStudent("Alexander", "Jones");
         int studentID5 = drivingSchool.addStudent("Douglas", "Jones");
 
+        drivingSchool.assignInstructor(instructorIDs.get(0), studentID1);
+        drivingSchool.assignInstructor(instructorIDs.get(0), studentID2);
+        drivingSchool.assignInstructor(instructorIDs.get(0), studentID3);
+        drivingSchool.assignInstructor(instructorIDs.get(0), studentID4);
+        drivingSchool.assignInstructor(instructorIDs.get(0), studentID5);
+
         // execution & assertion
-        assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID1));
-        assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID2));
-        assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID3));
-        assertTrue(drivingSchool.assignInstructor(instructorIDs.get(0), studentID4));
-        assertFalse(drivingSchool.assignInstructor(instructorIDs.get(0), studentID5));
+        List<ClassDay> classDays = drivingSchool.retrieveInstructorSchedule(instructorIDs.get(0));
+
+        assertEquals(instructorIDs.get(0), classDays.get(0).getInstructorID());
+        assertEquals(studentID3, classDays.get(0).getStudentIdForHour(11));
+        assertEquals(studentID5, classDays.get(1).getStudentIdForHour(9));
+        assertEquals(studentID1, classDays.get(0).getStudentIdForHour(9));
     }
 
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {

@@ -10,7 +10,7 @@ public class DrivingSchool {
 
     List<Instructor> instructorList = new ArrayList<>();
 
-    private Map<Integer, InstructorSchedule> scheduleSheets = new HashMap<>();
+    private Map<Integer, InstructorSchedule> instructorSchedules = new HashMap<>();
 
     public ScheduleGrid retrieveDefaultScheduleGrid() {
         ScheduleGrid scheduleGrid = new ScheduleGrid();
@@ -45,13 +45,13 @@ public class DrivingSchool {
 
     public InstructorSchedule retrieveScheduleSheet(int instructorID) {
 
-        if (!scheduleSheets.containsKey(instructorID)) {
+        if (!instructorSchedules.containsKey(instructorID)) {
             ++scheduleSheetCounter;
             InstructorSchedule instructorSchedule = new InstructorSchedule(instructorID);
-            scheduleSheets.put(instructorID, instructorSchedule);
+            this.instructorSchedules.put(instructorID, instructorSchedule);
         }
 
-        return scheduleSheets.get(instructorID);
+        return instructorSchedules.get(instructorID);
     }
 
     public int amountOfScheduleSheets() {
@@ -80,7 +80,7 @@ public class DrivingSchool {
         return instructor.getId();
     }
 
-    public List<ClassDay> retrieveScheduleSheetByInstructor(int instructorId) {
+    public List<ClassDay> retrieveInstructorSchedule(int instructorId) {
         for (Instructor instructor : instructorList) {
             if (instructor.getId() == instructorId) {
                 return retrieveDefaultScheduleGrid(instructorId);
@@ -90,10 +90,10 @@ public class DrivingSchool {
     }
 
     public boolean assignInstructor(int instructorID, int studentID) {
-        if (!scheduleSheets.containsKey(instructorID)) {
-            scheduleSheets.put(instructorID, new InstructorSchedule(instructorID));
+        if (!instructorSchedules.containsKey(instructorID)) {
+            instructorSchedules.put(instructorID, new InstructorSchedule(instructorID));
         }
-        InstructorSchedule instructorSchedule = scheduleSheets.get(instructorID);
+        InstructorSchedule instructorSchedule = this.instructorSchedules.get(instructorID);
         return instructorSchedule.assignStudentID(studentID);
     }
 }

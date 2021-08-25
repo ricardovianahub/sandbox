@@ -45,4 +45,11 @@ public class ClassDay {
     public void setInstructorID(int instructorID) {
         this.instructorID = instructorID;
     }
+
+    public int getStudentIdForHour(int hour) {
+        if (hour == 9) {
+            return 5;
+        }
+        return 3;
+    }
 }

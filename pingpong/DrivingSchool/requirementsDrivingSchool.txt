@@ -44,7 +44,7 @@ one class per week, for 5 weeks. Each student should be made aware that classes 
          - Retrieve Student ID based on Instructor ID and day
     - Make sure the same student can't be assigned twice (or to a second instructor)
 
-- Instructors can't have more than 4 students assigned to them at any given time
+- Instructors can't have more than 4 students assigned to them per day
 - Students will have daily classes
 - A student can leave a course at any time. No refunds will be offered. Their slots will then be available for the instructor
 to receive new students
