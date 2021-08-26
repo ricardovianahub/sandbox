@@ -8,9 +8,9 @@ public class DrivingSchool {
     private int studentCounter = 0;
     private int scheduleSheetCounter = 0;
 
-    List<Instructor> instructorList = new ArrayList<>();
-
     private Map<Integer, InstructorSchedule> instructorSchedules = new HashMap<>();
+
+    private Map<Integer, Instructor> instructors = new HashMap<>();
 
     public ScheduleGrid retrieveDefaultScheduleGrid() {
         ScheduleGrid scheduleGrid = new ScheduleGrid();
@@ -55,7 +55,7 @@ public class DrivingSchool {
     }
 
     public int amountOfScheduleSheets() {
-        return scheduleSheetCounter;
+        return this.instructorSchedules.size();
     }
 
     public int addStudent(String first, String last) {
@@ -70,26 +70,25 @@ public class DrivingSchool {
     }
 
     public int addInstructor(String firstName, String lastName) {
-
         Instructor instructor = new Instructor(firstName, lastName, ++instructorCounter);
-        if (instructorList.contains(instructor)) {
+        if (instructors.containsValue(new Instructor(firstName, lastName))) {
             throw new IllegalStateException();
         }
-        instructorList.add(instructor);
+        instructors.put(instructor.getId(), instructor);
+        instructorSchedules.put(
+                instructor.getId(),
+                new InstructorSchedule(instructor.getId(), retrieveDefaultScheduleGrid(instructor.getId()))
+        );
 
         return instructor.getId();
     }
 
     public InstructorSchedule retrieveInstructorSchedule(int instructorId) {
-        for (Instructor instructor : instructorList) {
-            if (instructor.getId() == instructorId) {
-                return new InstructorSchedule(
-                        instructorId,
-                        retrieveDefaultScheduleGrid(instructorId)
-                );
-            }
+        InstructorSchedule instructorSchedule = instructorSchedules.get(instructorId);
+        if (instructorSchedule == null) {
+            throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException();
+        return instructorSchedule;
     }
 
     public boolean assignInstructor(int instructorID, int studentID) {

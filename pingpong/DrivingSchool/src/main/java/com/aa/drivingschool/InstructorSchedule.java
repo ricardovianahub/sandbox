@@ -67,7 +67,7 @@ public class InstructorSchedule implements Cloneable {
     public int retrieveStudentForInstructorAndTime(
             int weekIndex, DayOfWeek dow, int hour
     ) {
-        Integer result =  assignedHours.get(hour);
+        Integer result = assignedHours.get(hour);
         if (result == null) {
             throw new IllegalStateException();
         }
@@ -75,7 +75,11 @@ public class InstructorSchedule implements Cloneable {
     }
 
     public int getStudentIdDayHour(DayOfWeek dayOfWeek, int hour) {
-        return 0;
+        Integer result = assignedHours.get(hour);
+        if (result == null) {
+            throw new IllegalStateException();
+        }
+        return result;
     }
 
     public List<ClassDay> getClassDays() {

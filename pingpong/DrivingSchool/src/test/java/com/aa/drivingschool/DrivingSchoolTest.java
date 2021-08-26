@@ -136,7 +136,7 @@ public class DrivingSchoolTest {
 
         int actual = drivingSchool.amountOfScheduleSheets();
 
-        assertEquals(0, actual);
+        assertEquals(1, actual);
     }
 
     @Test
@@ -204,7 +204,7 @@ public class DrivingSchoolTest {
 
         InstructorSchedule actual = drivingSchool.retrieveInstructorSchedule(instructorID);
 
-        assertEquals(10, actual.getClassDays());
+        assertEquals(10, actual.getClassDays().size());
         for (ClassDay classDay : actual.getClassDays()) {
             assertEquals(instructorID, classDay.getInstructorID());
         }
@@ -287,9 +287,10 @@ public class DrivingSchoolTest {
         drivingSchool.assignInstructor(instructorID, studentID4);
         drivingSchool.assignInstructor(instructorID, studentID5);
 
-
         // execution & assertion
-
+        assertEquals(studentID1, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 9));
+        assertEquals(studentID4, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 13));
+        assertEquals(studentID5, instructorSchedule.getStudentIdDayHour(DayOfWeek.TUESDAY, 9));
     }
 
     @ParameterizedTest
@@ -323,10 +324,12 @@ public class DrivingSchoolTest {
         InstructorSchedule instructorSchedule = drivingSchool.retrieveInstructorSchedule(instructorIDs.get(0));
 
         assertEquals(instructorIDs.get(0), instructorSchedule.getInstructorId());
+        assertEquals(studentID1, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 9));
         assertEquals(studentID3, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 11));
         assertEquals(studentID5, instructorSchedule.getStudentIdDayHour(DayOfWeek.TUESDAY, 9));
-        assertEquals(studentID1, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 9));
     }
+
+    // Hour 12 is being incorrectly assigned
 
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {
         return Stream.of(
