@@ -12,17 +12,19 @@ public class InstructorSchedule implements Cloneable {
     private final int instructorID;
     private CurrentTime currentTime;
     private int studentsCounter = 0;
+    final int[] defaultStartHours;
 
     private Map<Integer, Integer> assignedHours = new HashMap<>();
     private List<ClassDay> classDays = new ArrayList<>();
 
-    public InstructorSchedule(int instructorID) {
-        this(instructorID, new ArrayList<>());
+    public InstructorSchedule(int instructorID, int[] defaultStartHours) {
+        this(instructorID, defaultStartHours, new ArrayList<>());
     }
 
-    public InstructorSchedule(int instructorID, List<ClassDay> classDays) {
+    public InstructorSchedule(int instructorID, int[] defaultStartHours, List<ClassDay> classDays) {
         this.instructorID = instructorID;
         this.currentTime = new CurrentServerTime();
+        this.defaultStartHours = defaultStartHours;
         this.classDays = classDays;
     }
 
@@ -39,8 +41,7 @@ public class InstructorSchedule implements Cloneable {
                 .plusDays(
                         addDaysPerWeekday(this.currentTime.now().getDayOfWeek())
                 )
-                .withHour(9)
-                .plusHours(this.studentsCounter);
+                .withHour(this.defaultStartHours[this.studentsCounter]);
     }
 
     private int addDaysPerWeekday(DayOfWeek dayOfWeek) {

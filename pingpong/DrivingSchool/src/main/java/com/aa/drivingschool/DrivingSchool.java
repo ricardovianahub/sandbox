@@ -1,16 +1,18 @@
 package com.aa.drivingschool;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DrivingSchool {
     static final int[] DEFAULT_START_HOURS = {9, 10, 11, 13, 14, 15};
     private int instructorCounter = 0;
     private int studentCounter = 0;
-    private int scheduleSheetCounter = 0;
 
-    private Map<Integer, InstructorSchedule> instructorSchedules = new HashMap<>();
+    private final Map<Integer, InstructorSchedule> instructorSchedules = new HashMap<>();
 
-    private Map<Integer, Instructor> instructors = new HashMap<>();
+    private final Map<Integer, Instructor> instructors = new HashMap<>();
 
     public ScheduleGrid retrieveDefaultScheduleGrid() {
         ScheduleGrid scheduleGrid = new ScheduleGrid();
@@ -46,15 +48,14 @@ public class DrivingSchool {
     public InstructorSchedule retrieveScheduleSheet(int instructorID) {
 
         if (!instructorSchedules.containsKey(instructorID)) {
-            ++scheduleSheetCounter;
-            InstructorSchedule instructorSchedule = new InstructorSchedule(instructorID);
+            InstructorSchedule instructorSchedule = new InstructorSchedule(instructorID, DEFAULT_START_HOURS);
             this.instructorSchedules.put(instructorID, instructorSchedule);
         }
 
         return instructorSchedules.get(instructorID);
     }
 
-    public int amountOfScheduleSheets() {
+    public int amountOfInstructorSchedules() {
         return this.instructorSchedules.size();
     }
 
@@ -77,7 +78,11 @@ public class DrivingSchool {
         instructors.put(instructor.getId(), instructor);
         instructorSchedules.put(
                 instructor.getId(),
-                new InstructorSchedule(instructor.getId(), retrieveDefaultScheduleGrid(instructor.getId()))
+                new InstructorSchedule(
+                        instructor.getId(),
+                        DEFAULT_START_HOURS,
+                        retrieveDefaultScheduleGrid(instructor.getId())
+                )
         );
 
         return instructor.getId();
@@ -93,7 +98,7 @@ public class DrivingSchool {
 
     public boolean assignInstructor(int instructorID, int studentID) {
         if (!instructorSchedules.containsKey(instructorID)) {
-            instructorSchedules.put(instructorID, new InstructorSchedule(instructorID));
+            instructorSchedules.put(instructorID, new InstructorSchedule(instructorID, DEFAULT_START_HOURS));
         }
         InstructorSchedule instructorSchedule = this.instructorSchedules.get(instructorID);
         return instructorSchedule.assignStudentID(studentID);
