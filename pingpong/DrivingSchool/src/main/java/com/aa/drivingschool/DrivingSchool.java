@@ -96,11 +96,11 @@ public class DrivingSchool {
         return instructorSchedule;
     }
 
-    public boolean assignInstructor(int instructorID, int studentID) {
+    public void assignInstructor(int instructorID, int studentID) {
         if (!instructorSchedules.containsKey(instructorID)) {
             instructorSchedules.put(instructorID, new InstructorSchedule(instructorID, DEFAULT_START_HOURS));
         }
         InstructorSchedule instructorSchedule = this.instructorSchedules.get(instructorID);
-        return instructorSchedule.assignStudentID(studentID);
+        instructorSchedule.assignStudentID(studentID);
     }
 }

@@ -358,7 +358,7 @@ public class DrivingSchoolTest {
         for (int i = 0; i < numberOfStudents; i++) {
             studentID = drivingSchool.addStudent("Student" + i, "Smith");
             studentIDs.add(studentID);
-            assertTrue(instructorSchedule.assignStudentID(studentID));
+            instructorSchedule.assignStudentID(studentID);
         }
         drivingSchool.addStudent("Joe", "Bufferson");
         drivingSchool.addStudent("Joe", "Bufferson Jr");

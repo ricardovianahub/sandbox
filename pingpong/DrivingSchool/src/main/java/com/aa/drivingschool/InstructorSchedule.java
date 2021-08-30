@@ -11,10 +11,9 @@ import java.util.Map;
 public class InstructorSchedule implements Cloneable {
     private final int instructorID;
     private CurrentTime currentTime;
-    private int studentsCounter = 0;
     final int[] defaultStartHours;
 
-    private Map<Integer, Integer> assignedHours = new HashMap<>();
+    private Map<String, Integer> assignedHours = new HashMap<>();
     private List<ClassDay> classDays = new ArrayList<>();
 
     public InstructorSchedule(int instructorID, int[] defaultStartHours) {
@@ -41,7 +40,7 @@ public class InstructorSchedule implements Cloneable {
                 .plusDays(
                         addDaysPerWeekday(this.currentTime.now().getDayOfWeek())
                 )
-                .withHour(this.defaultStartHours[this.studentsCounter]);
+                .withHour(this.defaultStartHours[this.assignedHours.size()]);
     }
 
     private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
@@ -59,16 +58,28 @@ public class InstructorSchedule implements Cloneable {
         this.currentTime = currentTime;
     }
 
-    public boolean assignStudentID(int studentID) {
-        assignedHours.put(earliestAvailableTime().getHour(), studentID);
-        this.studentsCounter++;
-        return this.studentsCounter <= 4;
+    public void assignStudentID(int studentID) {
+        LocalDateTime earliestAvailableTime = earliestAvailableTime();
+        assignedHours.put(
+                ""
+                        + earliestAvailableTime.getDayOfWeek().getValue()
+                        + "-"
+                        + earliestAvailableTime.getHour(),
+                studentID
+        );
     }
+
+    // Map<Integer, Integer> = Hour, StudentID
+    // Add DayOfWeek to the Key
+    // DOW + hour --- 9
+    //            --- MONDAY9
+    //            --- TUESDAY9
+    // <String, Integer>
 
     public int retrieveStudentForInstructorAndTime(
             int weekIndex, DayOfWeek dow, int hour
     ) {
-        Integer result = assignedHours.get(hour);
+        Integer result = assignedHours.get("" + dow.getValue() + "-" + hour);
         if (result == null) {
             throw new IllegalStateException();
         }
@@ -76,7 +87,7 @@ public class InstructorSchedule implements Cloneable {
     }
 
     public int getStudentIdDayHour(DayOfWeek dayOfWeek, int hour) {
-        Integer result = assignedHours.get(hour);
+        Integer result = assignedHours.get("" + dayOfWeek.getValue() + "-" + hour);
         if (result == null) {
             throw new IllegalStateException();
         }
