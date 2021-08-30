@@ -273,7 +273,7 @@ public class DrivingSchoolTest {
         int instructorID = drivingSchool.addInstructor("James", "Doe");
         InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
         instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 5, 12, 0, 0, 0 // Friday
+                2021, 8, 6, 12, 0, 0, 0 // Friday
         ));
 
         int studentID1 = drivingSchool.addStudent("Alan", "Jones");
@@ -305,7 +305,7 @@ public class DrivingSchoolTest {
         }
         InstructorSchedule beforeInstructorSchedule = drivingSchool.retrieveScheduleSheet(instructorIDs.get(0));
         beforeInstructorSchedule.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 5, 12, 0, 0, 0 // Friday
+                2021, 8, 6, 12, 0, 0, 0 // Friday
         ));
 
         int studentID1 = drivingSchool.addStudent("Alan", "Jones");
@@ -349,7 +349,7 @@ public class DrivingSchoolTest {
         int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
         InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
         instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 5, 12, 0, 0, 0 // Friday
+                2021, 8, 6, 12, 0, 0, 0 // Friday
         ));
 
         int studentID;
@@ -383,7 +383,7 @@ public class DrivingSchoolTest {
         int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
         InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
         instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 5, 12, 0, 0, 0 // Friday
+                2021, 8, 6, 12, 0, 0, 0 // Friday
         ));
 
         assertThrows(IllegalStateException.class,
