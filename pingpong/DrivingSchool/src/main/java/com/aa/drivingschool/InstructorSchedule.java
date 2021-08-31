@@ -36,21 +36,26 @@ public class InstructorSchedule implements Cloneable {
     }
 
     public LocalDateTime earliestAvailableTime() {
+        boolean isDayFull = this.assignedHours.size() >= 4;
         return this.currentTime.now()
                 .plusDays(
-                        addDaysPerWeekday(this.currentTime.now().getDayOfWeek())
+                        addDaysPerWeekday(this.currentTime.now().getDayOfWeek(), isDayFull)
                 )
-                .withHour(this.defaultStartHours[this.assignedHours.size()]);
+                .withHour(this.defaultStartHours[
+                        isDayFull ? 0 : this.assignedHours.size()
+                        ]
+                );
     }
 
-    private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
+    private int addDaysPerWeekday(DayOfWeek dayOfWeek, boolean isDayFull) {
+        int additionalDay = isDayFull ? 1 : 0;
         switch (dayOfWeek) {
             case FRIDAY:
-                return 3;
+                return 3 + additionalDay;
             case SATURDAY:
-                return 2;
+                return 2 + additionalDay;
             default:
-                return 1;
+                return 1 + additionalDay;
         }
     }
 

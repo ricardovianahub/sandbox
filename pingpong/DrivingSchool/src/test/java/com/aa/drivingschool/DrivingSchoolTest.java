@@ -294,39 +294,37 @@ public class DrivingSchoolTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"3", "1"})
+    @CsvSource({
+            "1,MONDAY,9",
+            "2,MONDAY,10",
+            "3,MONDAY,11",
+            "4,MONDAY,13",
+            "5,TUESDAY,9",
+            "6,TUESDAY,10",
+    })
     void assignMoreThan4StudentsPerInstructorFailsForMultipleInstructors(
-            int numberOfInstructors
+            int numberOfStudents, DayOfWeek dayOfWeek, int hour
     ) {
         // setup
-        List<Integer> instructorIDs = new ArrayList<>();
-        for (int i = 0; i < numberOfInstructors; i++) {
-            instructorIDs.add(drivingSchool.addInstructor("James" + i, "Doe"));
-        }
-        InstructorSchedule beforeInstructorSchedule = drivingSchool.retrieveScheduleSheet(instructorIDs.get(0));
+        int instructorId = drivingSchool.addInstructor("Zane", "Doe");
+        InstructorSchedule beforeInstructorSchedule = drivingSchool
+                .retrieveScheduleSheet(instructorId);
         beforeInstructorSchedule.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, 6, 12, 0, 0, 0 // Friday
         ));
 
-        int studentID1 = drivingSchool.addStudent("Alan", "Jones");
-        int studentID2 = drivingSchool.addStudent("Ellen", "Jones");
-        int studentID3 = drivingSchool.addStudent("Janet", "Jones");
-        int studentID4 = drivingSchool.addStudent("Alexander", "Jones");
-        int studentID5 = drivingSchool.addStudent("Douglas", "Jones");
-
-        drivingSchool.assignInstructor(instructorIDs.get(0), studentID1);
-        drivingSchool.assignInstructor(instructorIDs.get(0), studentID2);
-        drivingSchool.assignInstructor(instructorIDs.get(0), studentID3);
-        drivingSchool.assignInstructor(instructorIDs.get(0), studentID4);
-        drivingSchool.assignInstructor(instructorIDs.get(0), studentID5);
+        for (int i = 0; i < numberOfStudents; i++) {
+            drivingSchool.assignInstructor(
+                    instructorId, drivingSchool.addStudent("Alan" + i, "Jones")
+            );
+        }
 
         // execution & assertion
-        InstructorSchedule instructorSchedule = drivingSchool.retrieveInstructorSchedule(instructorIDs.get(0));
+        InstructorSchedule instructorSchedule = drivingSchool
+                .retrieveInstructorSchedule(instructorId);
 
-        assertEquals(instructorIDs.get(0), instructorSchedule.getInstructorId());
-        assertEquals(studentID1, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 9));
-        assertEquals(studentID3, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 11));
-        assertEquals(studentID5, instructorSchedule.getStudentIdDayHour(DayOfWeek.TUESDAY, 9));
+        assertEquals(instructorId, instructorSchedule.getInstructorId());
+        assertEquals(numberOfStudents, instructorSchedule.getStudentIdDayHour(dayOfWeek, hour));
     }
 
     // Hour 12 is being incorrectly assigned
