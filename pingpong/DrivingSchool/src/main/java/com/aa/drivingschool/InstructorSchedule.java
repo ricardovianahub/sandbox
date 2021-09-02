@@ -8,13 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InstructorSchedule implements Cloneable {
+public class InstructorSchedule {
+    public static final int MAX_NUMBER_STUDENTS_PER_DAY = 4;
     private final int instructorID;
     private CurrentTime currentTime;
     final int[] defaultStartHours;
 
-    private Map<String, Integer> assignedHours = new HashMap<>();
-    private List<ClassDay> classDays = new ArrayList<>();
+    private final Map<String, Integer> assignedHours = new HashMap<>();
+    private final List<ClassDay> classDays;
 
     public InstructorSchedule(int instructorID, int[] defaultStartHours) {
         this(instructorID, defaultStartHours, new ArrayList<>());
@@ -36,27 +37,30 @@ public class InstructorSchedule implements Cloneable {
     }
 
     public LocalDateTime earliestAvailableTime() {
-        boolean isDayFull = this.assignedHours.size() >= 4;
         return this.currentTime.now()
-                .plusDays(
-                        addDaysPerWeekday(this.currentTime.now().getDayOfWeek(), isDayFull)
-                )
-                .withHour(this.defaultStartHours[
-                        this.assignedHours.size() % 4
-                        ]
+                .plusDays(addDaysPerWeekday(this.currentTime.now().getDayOfWeek()))
+                .withHour(this.defaultStartHours[nextAvailableHour()]
                 );
     }
 
-    private int addDaysPerWeekday(DayOfWeek dayOfWeek, boolean isDayFull) {
-        int additionalDay = isDayFull ? this.assignedHours.size() / 4 : 0;
+    private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
+        int numberOfAdditionalDays = daysAddedBasedOnMaxStudentsPerDay();
         switch (dayOfWeek) {
             case FRIDAY:
-                return 3 + additionalDay;
+                return 3 + numberOfAdditionalDays;
             case SATURDAY:
-                return 2 + additionalDay;
+                return 2 + numberOfAdditionalDays;
             default:
-                return 1 + additionalDay;
+                return 1 + numberOfAdditionalDays;
         }
+    }
+
+    private int nextAvailableHour() {
+        return this.assignedHours.size() % 4;
+    }
+
+    private int daysAddedBasedOnMaxStudentsPerDay() {
+        return this.assignedHours.size() / MAX_NUMBER_STUDENTS_PER_DAY;
     }
 
     void setCurrentTime(CurrentTime currentTime) {
@@ -73,13 +77,6 @@ public class InstructorSchedule implements Cloneable {
                 studentID
         );
     }
-
-    // Map<Integer, Integer> = Hour, StudentID
-    // Add DayOfWeek to the Key
-    // DOW + hour --- 9
-    //            --- MONDAY9
-    //            --- TUESDAY9
-    // <String, Integer>
 
     public int retrieveStudentForInstructorAndTime(
             int weekIndex, DayOfWeek dow, int hour
@@ -103,12 +100,4 @@ public class InstructorSchedule implements Cloneable {
         return Collections.unmodifiableList(this.classDays);
     }
 }
-// Instructor max 4
-// "earliest available time"
-// [1234] [] [] [] []
-// [1234] [] [] [] []
-// [1234] [] [] [] []
-// [1234] [] [] [] []
-// [1234] [] [] [] []
-// 6 weeks [][][][][] --- exception
-//
+
