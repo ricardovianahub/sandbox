@@ -301,6 +301,10 @@ public class DrivingSchoolTest {
             "4,MONDAY,13",
             "5,TUESDAY,9",
             "6,TUESDAY,10",
+            "7,TUESDAY,11",
+            "8,TUESDAY,13",
+            "10,WEDNESDAY,10",
+            "20,FRIDAY,13"
     })
     void assignMoreThan4StudentsPerInstructorFailsForMultipleInstructors(
             int numberOfStudents, DayOfWeek dayOfWeek, int hour

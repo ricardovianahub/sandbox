@@ -42,13 +42,13 @@ public class InstructorSchedule implements Cloneable {
                         addDaysPerWeekday(this.currentTime.now().getDayOfWeek(), isDayFull)
                 )
                 .withHour(this.defaultStartHours[
-                        isDayFull ? 0 : this.assignedHours.size()
+                        this.assignedHours.size() % 4
                         ]
                 );
     }
 
     private int addDaysPerWeekday(DayOfWeek dayOfWeek, boolean isDayFull) {
-        int additionalDay = isDayFull ? 1 : 0;
+        int additionalDay = isDayFull ? this.assignedHours.size() / 4 : 0;
         switch (dayOfWeek) {
             case FRIDAY:
                 return 3 + additionalDay;
