@@ -331,13 +331,13 @@ public class DrivingSchoolTest {
         assertEquals(numberOfStudents, instructorSchedule.getStudentIdDayHour(dayOfWeek, hour));
     }
 
-    // Hour 12 is being incorrectly assigned
-
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {
         return Stream.of(
                 Arguments.of(2, 1, new int[]{10, 9}, new int[]{4, 3}),
                 Arguments.of(3, 1, new int[]{10, 11, 9}, new int[]{4, 5, 3}),
-                Arguments.of(1, 2, new int[]{9}, new int[]{3})
+                Arguments.of(1, 2, new int[]{9}, new int[]{3}),
+                Arguments.of(7, 6, new int[]{11}, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9})
+//                Arguments.of(11, 6, new int[]{9, 10}, new int[]{11}),
         );
     }
 
@@ -368,14 +368,21 @@ public class DrivingSchoolTest {
         // execution
         DayOfWeek dow = DayOfWeek.MONDAY;
         for (int i = 0; i < numberOfStudents; i++) {
-            int hour = hours[i];
+            int hoursIndex = i % hours.length;
+            int hour = hours[hoursIndex];
 
             int studentActual = instructorSchedule.retrieveStudentForInstructorAndTime(
                     weekIndex, dow, hour
             );
 
             // execution & assertion
-            assertEquals(assignedStudents[i], studentActual, "studentIDs index " + i);
+            assertEquals(assignedStudents[i],
+                    studentActual,
+                    String.format(
+                            "studentIDs index %d - weekIndex %d - Day of Week %s - hour %d",
+                            i, weekIndex, dow, hour
+                    )
+            );
         }
     }
 
