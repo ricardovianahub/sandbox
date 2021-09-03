@@ -336,7 +336,7 @@ public class DrivingSchoolTest {
                 Arguments.of(2, 1, new int[]{10, 9}, new int[]{4, 3}),
                 Arguments.of(3, 1, new int[]{10, 11, 9}, new int[]{4, 5, 3}),
                 Arguments.of(1, 2, new int[]{9}, new int[]{3}),
-                Arguments.of(7, 6, new int[]{11}, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9})
+                Arguments.of(7, 6, new int[]{11}, new int[]{3, 4, 5, 6, 7, 8, 9})
 //                Arguments.of(11, 6, new int[]{9, 10}, new int[]{11}),
         );
     }
