@@ -1,6 +1,11 @@
 package com.aa.drivingschool;
 
 import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
+import static java.time.DayOfWeek.FRIDAY;
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.DayOfWeek.THURSDAY;
+import static java.time.DayOfWeek.TUESDAY;
+import static java.time.DayOfWeek.WEDNESDAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -288,8 +293,8 @@ public class DrivingSchoolTest {
         drivingSchool.assignInstructor(instructorID, studentID5);
 
         // execution & assertion
-        assertEquals(studentID1, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 9));
-        assertEquals(studentID4, instructorSchedule.getStudentIdDayHour(DayOfWeek.MONDAY, 13));
+        assertEquals(studentID1, instructorSchedule.getStudentIdDayHour(1, MONDAY, 9));
+        assertEquals(studentID4, instructorSchedule.getStudentIdDayHour(1, MONDAY, 13));
 //        assertEquals(studentID5, instructorSchedule.getStudentIdDayHour(DayOfWeek.TUESDAY, 9));
     }
 
@@ -328,23 +333,29 @@ public class DrivingSchoolTest {
                 .retrieveInstructorSchedule(instructorId);
 
         assertEquals(instructorId, instructorSchedule.getInstructorId());
-        assertEquals(numberOfStudents, instructorSchedule.getStudentIdDayHour(dayOfWeek, hour));
+        assertEquals(numberOfStudents,
+                instructorSchedule.getStudentIdDayHour(1, dayOfWeek, hour)
+        );
     }
 
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {
         return Stream.of(
-                Arguments.of(2, 1, new int[]{10, 9}, new int[]{4, 3}),
-                Arguments.of(3, 1, new int[]{10, 11, 9}, new int[]{4, 5, 3}),
-                Arguments.of(1, 2, new int[]{9}, new int[]{3}),
-                Arguments.of(7, 6, new int[]{11}, new int[]{3, 4, 5, 6, 7, 8, 9})
+//                Arguments.of(1, new int[]{10, 9}, new int[]{4, 3}),
+//                Arguments.of(1, new int[]{10, 11, 9}, new int[]{4, 5, 3}),
+//                Arguments.of(2, new int[]{9}, new int[]{3}),
+                Arguments.of(6,
+                        new DayOfWeek[]
+                                {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, MONDAY, TUESDAY},
+                        new int[]{11}, new int[]{3, 4, 5, 6, 7, 8, 9}
+                )
 //                Arguments.of(11, 6, new int[]{9, 10}, new int[]{11}),
         );
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] number of students - {0}")
     @MethodSource("retrieveStudentIDBasedOnInstructorIDAndDateData")
     void retrieveStudentIDBasedOnInstructorIDAndDate(
-            int numberOfStudents, int weekIndex, int[] hours, int assignedStudents[]
+            int weekIndex, DayOfWeek[] dayOfWeek, int[] hours, int assignedStudents[]
     ) {
         // setup
         List<Integer> studentIDs = new ArrayList<>();
@@ -357,7 +368,7 @@ public class DrivingSchoolTest {
         int studentID;
         drivingSchool.addStudent("Buffer", "Bufferson");
         drivingSchool.addStudent("Buffer", "Bufferson Jr");
-        for (int i = 0; i < numberOfStudents; i++) {
+        for (int i = 0; i < assignedStudents.length; i++) {
             studentID = drivingSchool.addStudent("Student" + i, "Smith");
             studentIDs.add(studentID);
             instructorSchedule.assignStudentID(studentID);
@@ -366,13 +377,12 @@ public class DrivingSchoolTest {
         drivingSchool.addStudent("Joe", "Bufferson Jr");
 
         // execution
-        DayOfWeek dow = DayOfWeek.MONDAY;
-        for (int i = 0; i < numberOfStudents; i++) {
+        for (int i = 0; i < assignedStudents.length; i++) {
             int hoursIndex = i % hours.length;
             int hour = hours[hoursIndex];
 
             int studentActual = instructorSchedule.retrieveStudentForInstructorAndTime(
-                    weekIndex, dow, hour
+                    weekIndex, dayOfWeek[i], hour
             );
 
             // execution & assertion
@@ -380,7 +390,7 @@ public class DrivingSchoolTest {
                     studentActual,
                     String.format(
                             "studentIDs index %d - weekIndex %d - Day of Week %s - hour %d",
-                            i, weekIndex, dow, hour
+                            i, weekIndex, dayOfWeek[i], hour
                     )
             );
         }
@@ -396,7 +406,7 @@ public class DrivingSchoolTest {
         ));
 
         assertThrows(IllegalStateException.class,
-                () -> instructorSchedule.retrieveStudentForInstructorAndTime(1, DayOfWeek.MONDAY, 8)
+                () -> instructorSchedule.retrieveStudentForInstructorAndTime(1, MONDAY, 8)
         );
     }
 }

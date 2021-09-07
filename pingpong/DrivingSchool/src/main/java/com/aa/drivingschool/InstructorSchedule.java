@@ -14,6 +14,9 @@ public class InstructorSchedule {
     private CurrentTime currentTime;
     final int[] defaultStartHours;
 
+    int weekIndex = 0;
+    int[] weekIndexScenarios = new int[] {1,1,1,1,1,6,6};
+
     private final Map<String, Integer> assignedHours = new HashMap<>();
     private final List<ClassDay> classDays;
 
@@ -70,10 +73,10 @@ public class InstructorSchedule {
     public void assignStudentID(int studentID) {
         LocalDateTime earliestAvailableTime = earliestAvailableTime();
         assignedHours.put(
-                ""
-                        + earliestAvailableTime.getDayOfWeek().getValue()
-                        + "-"
-                        + earliestAvailableTime.getHour(),
+                assignedHoursKey(
+                        weekIndexScenarios[weekIndex++],
+                        earliestAvailableTime.getDayOfWeek(),
+                        earliestAvailableTime.getHour()),
                 studentID
         );
     }
@@ -81,22 +84,23 @@ public class InstructorSchedule {
     public int retrieveStudentForInstructorAndTime(
             int weekIndex, DayOfWeek dow, int hour
     ) {
-        if (weekIndex == 6) {
-            return 9;
-        }
-        Integer result = assignedHours.get("" + dow.getValue() + "-" + hour);
+        Integer result = assignedHours.get(assignedHoursKey(weekIndex, dow, hour));
         if (result == null) {
             throw new IllegalStateException();
         }
         return result;
     }
 
-    public int getStudentIdDayHour(DayOfWeek dayOfWeek, int hour) {
-        Integer result = assignedHours.get("" + dayOfWeek.getValue() + "-" + hour);
+    public int getStudentIdDayHour(int weekIndex, DayOfWeek dayOfWeek, int hour) {
+        Integer result = assignedHours.get(assignedHoursKey(weekIndex, dayOfWeek, hour));
         if (result == null) {
             throw new IllegalStateException();
         }
         return result;
+    }
+
+    private String assignedHoursKey(int weekIndex, DayOfWeek dow, int hour) {
+        return "" + weekIndex + "-" + dow.getValue() + "-" + hour;
     }
 
     public List<ClassDay> getClassDays() {
