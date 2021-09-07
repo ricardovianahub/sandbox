@@ -14,9 +14,6 @@ public class InstructorSchedule {
     private CurrentTime currentTime;
     final int[] defaultStartHours;
 
-    int weekIndex = 0;
-    int[] weekIndexScenarios = new int[] {1,1,1,1,1,6,6};
-
     private final Map<String, Integer> assignedHours = new HashMap<>();
     private final List<ClassDay> classDays;
 
@@ -59,7 +56,7 @@ public class InstructorSchedule {
     }
 
     private int nextAvailableHour() {
-        return this.assignedHours.size() % 4;
+        return this.assignedHours.size() % MAX_NUMBER_STUDENTS_PER_DAY;
     }
 
     private int daysAddedBasedOnMaxStudentsPerDay() {
@@ -72,13 +69,11 @@ public class InstructorSchedule {
 
     public void assignStudentID(int studentID) {
         LocalDateTime earliestAvailableTime = earliestAvailableTime();
-        assignedHours.put(
-                assignedHoursKey(
-                        weekIndexScenarios[weekIndex++],
-                        earliestAvailableTime.getDayOfWeek(),
-                        earliestAvailableTime.getHour()),
-                studentID
-        );
+        String key = assignedHoursKey(
+                1,
+                earliestAvailableTime.getDayOfWeek(),
+                earliestAvailableTime.getHour());
+        assignedHours.put(key, studentID);
     }
 
     public int retrieveStudentForInstructorAndTime(

@@ -343,10 +343,12 @@ public class DrivingSchoolTest {
 //                Arguments.of(1, new int[]{10, 9}, new int[]{4, 3}),
 //                Arguments.of(1, new int[]{10, 11, 9}, new int[]{4, 5, 3}),
 //                Arguments.of(2, new int[]{9}, new int[]{3}),
-                Arguments.of(6,
+                Arguments.of(
+                        new int[]{3, 4, 5, 6, 7, 8, 9},
+                        new int[]{1, 1, 1, 1, 1, 6, 6},
                         new DayOfWeek[]
                                 {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, MONDAY, TUESDAY},
-                        new int[]{11}, new int[]{3, 4, 5, 6, 7, 8, 9}
+                        new int[]{11}
                 )
 //                Arguments.of(11, 6, new int[]{9, 10}, new int[]{11}),
         );
@@ -355,10 +357,9 @@ public class DrivingSchoolTest {
     @ParameterizedTest(name = "[{index}] number of students - {0}")
     @MethodSource("retrieveStudentIDBasedOnInstructorIDAndDateData")
     void retrieveStudentIDBasedOnInstructorIDAndDate(
-            int weekIndex, DayOfWeek[] dayOfWeek, int[] hours, int assignedStudents[]
+            int[] assignedStudents, int[] weekIndices, DayOfWeek[] daysOfWeek, int[] hours
     ) {
         // setup
-        List<Integer> studentIDs = new ArrayList<>();
         int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
         InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
         instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
@@ -370,7 +371,6 @@ public class DrivingSchoolTest {
         drivingSchool.addStudent("Buffer", "Bufferson Jr");
         for (int i = 0; i < assignedStudents.length; i++) {
             studentID = drivingSchool.addStudent("Student" + i, "Smith");
-            studentIDs.add(studentID);
             instructorSchedule.assignStudentID(studentID);
         }
         drivingSchool.addStudent("Joe", "Bufferson");
@@ -382,7 +382,7 @@ public class DrivingSchoolTest {
             int hour = hours[hoursIndex];
 
             int studentActual = instructorSchedule.retrieveStudentForInstructorAndTime(
-                    weekIndex, dayOfWeek[i], hour
+                    weekIndices[i], daysOfWeek[i], hour
             );
 
             // execution & assertion
@@ -390,7 +390,7 @@ public class DrivingSchoolTest {
                     studentActual,
                     String.format(
                             "studentIDs index %d - weekIndex %d - Day of Week %s - hour %d",
-                            i, weekIndex, dayOfWeek[i], hour
+                            i, weekIndices[i], daysOfWeek[i], hour
                     )
             );
         }
