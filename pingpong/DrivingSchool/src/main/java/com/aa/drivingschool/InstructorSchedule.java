@@ -95,7 +95,7 @@ public class InstructorSchedule {
     }
 
     private String assignedHoursKey(int weekIndex, DayOfWeek dow, int hour) {
-        return "" + weekIndex + "-" + dow.getValue() + "-" + hour;
+        return String.format("%d-%d-%d", weekIndex, dow.getValue(), hour);
     }
 
     public List<ClassDay> getClassDays() {

@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DrivingSchool {
-    static final int[] DEFAULT_START_HOURS = {9, 10, 11, 13, 14, 15};
+    private static final int[] START_HOURS_DEFAULT = {9, 10, 11, 13, 14, 15};
+    private final int[] startHours;
     private int instructorCounter = 0;
     private int studentCounter = 0;
 
@@ -14,41 +15,53 @@ public class DrivingSchool {
 
     private final Map<Integer, Instructor> instructors = new HashMap<>();
 
+    public DrivingSchool() {
+        this(START_HOURS_DEFAULT);
+    }
+    public DrivingSchool(int[] startHours) {
+        this.startHours = startHours;
+    }
+
+    public int[] getStartHours() {
+        return this.startHours;
+    }
+
     public ScheduleGrid retrieveDefaultScheduleGrid() {
         ScheduleGrid scheduleGrid = new ScheduleGrid();
-        scheduleGrid.add("MON", DEFAULT_START_HOURS);
-        scheduleGrid.add("TUE", DEFAULT_START_HOURS);
-        scheduleGrid.add("WED", DEFAULT_START_HOURS);
-        scheduleGrid.add("THU", DEFAULT_START_HOURS);
-        scheduleGrid.add("FRI", DEFAULT_START_HOURS);
-        scheduleGrid.add("MON", DEFAULT_START_HOURS);
-        scheduleGrid.add("TUE", DEFAULT_START_HOURS);
-        scheduleGrid.add("WED", DEFAULT_START_HOURS);
-        scheduleGrid.add("THU", DEFAULT_START_HOURS);
-        scheduleGrid.add("FRI", DEFAULT_START_HOURS);
+        scheduleGrid.add("MON", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("TUE", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("WED", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("THU", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("FRI", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("MON", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("TUE", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("WED", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("THU", new int[]{9, 10, 11, 13, 14, 15});
+        scheduleGrid.add("FRI", new int[]{9, 10, 11, 13, 14, 15});
 
         return scheduleGrid;
     }
 
     private List<ClassDay> retrieveDefaultScheduleGrid(int instructorId) {
         return Arrays.asList(
-                new ClassDay("MON", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("TUE", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("WED", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("THU", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("FRI", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("MON", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("TUE", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("WED", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("THU", DEFAULT_START_HOURS, instructorId),
-                new ClassDay("FRI", DEFAULT_START_HOURS, instructorId)
+                new ClassDay("MON", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("TUE", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("WED", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("THU", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("FRI", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("MON", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("TUE", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("WED", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("THU", new int[]{9, 10, 11, 13, 14, 15}, instructorId),
+                new ClassDay("FRI", new int[]{9, 10, 11, 13, 14, 15}, instructorId)
         );
     }
 
     public InstructorSchedule retrieveScheduleSheet(int instructorID) {
 
         if (!instructorSchedules.containsKey(instructorID)) {
-            InstructorSchedule instructorSchedule = new InstructorSchedule(instructorID, DEFAULT_START_HOURS);
+            InstructorSchedule instructorSchedule =
+                    new InstructorSchedule(instructorID, new int[]{9, 10, 11, 13, 14, 15});
             this.instructorSchedules.put(instructorID, instructorSchedule);
         }
 
@@ -80,7 +93,7 @@ public class DrivingSchool {
                 instructor.getId(),
                 new InstructorSchedule(
                         instructor.getId(),
-                        DEFAULT_START_HOURS,
+                        new int[]{9, 10, 11, 13, 14, 15},
                         retrieveDefaultScheduleGrid(instructor.getId())
                 )
         );
@@ -98,7 +111,7 @@ public class DrivingSchool {
 
     public void assignInstructor(int instructorID, int studentID) {
         if (!instructorSchedules.containsKey(instructorID)) {
-            instructorSchedules.put(instructorID, new InstructorSchedule(instructorID, DEFAULT_START_HOURS));
+            instructorSchedules.put(instructorID, new InstructorSchedule(instructorID, new int[]{9, 10, 11, 13, 14, 15}));
         }
         InstructorSchedule instructorSchedule = this.instructorSchedules.get(instructorID);
         instructorSchedule.assignStudentID(studentID);

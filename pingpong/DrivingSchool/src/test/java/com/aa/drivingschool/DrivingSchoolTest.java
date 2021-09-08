@@ -1,6 +1,5 @@
 package com.aa.drivingschool;
 
-import static com.aa.drivingschool.DrivingSchool.DEFAULT_START_HOURS;
 import static java.time.DayOfWeek.FRIDAY;
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.DayOfWeek.THURSDAY;
@@ -9,13 +8,10 @@ import static java.time.DayOfWeek.WEDNESDAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,19 +35,19 @@ public class DrivingSchoolTest {
 
         ScheduleGrid expectedScheduleGrid = new ScheduleGrid();
 
-        expectedScheduleGrid.add("MON", DEFAULT_START_HOURS);
-        expectedScheduleGrid.add("TUE", DEFAULT_START_HOURS);
-        expectedScheduleGrid.add("WED", DEFAULT_START_HOURS);
-        expectedScheduleGrid.add("THU", DEFAULT_START_HOURS);
-        expectedScheduleGrid.add("FRI", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("MON", drivingSchool.getStartHours());
+        expectedScheduleGrid.add("TUE", drivingSchool.getStartHours());
+        expectedScheduleGrid.add("WED", drivingSchool.getStartHours());
+        expectedScheduleGrid.add("THU", drivingSchool.getStartHours());
+        expectedScheduleGrid.add("FRI", drivingSchool.getStartHours());
 
         assertEquals(5, expectedScheduleGrid.numberOfClassDays());
 
-        expectedScheduleGrid.add("MON", DEFAULT_START_HOURS);
-        expectedScheduleGrid.add("TUE", DEFAULT_START_HOURS);
-        expectedScheduleGrid.add("WED", DEFAULT_START_HOURS);
-        expectedScheduleGrid.add("THU", DEFAULT_START_HOURS);
-        expectedScheduleGrid.add("FRI", DEFAULT_START_HOURS);
+        expectedScheduleGrid.add("MON", drivingSchool.getStartHours());
+        expectedScheduleGrid.add("TUE", drivingSchool.getStartHours());
+        expectedScheduleGrid.add("WED", drivingSchool.getStartHours());
+        expectedScheduleGrid.add("THU", drivingSchool.getStartHours());
+        expectedScheduleGrid.add("FRI", drivingSchool.getStartHours());
 
         assertEquals(10, expectedScheduleGrid.numberOfClassDays());
 
@@ -268,8 +264,8 @@ public class DrivingSchoolTest {
 
         // assertion
         assertNotEquals(before, after);
-        assertEquals(DEFAULT_START_HOURS[0], before.getHour());
-        assertEquals(DEFAULT_START_HOURS[1], after.getHour());
+        assertEquals(drivingSchool.getStartHours()[0], before.getHour());
+        assertEquals(drivingSchool.getStartHours()[1], after.getHour());
     }
 
     @Test
@@ -360,6 +356,7 @@ public class DrivingSchoolTest {
             int[] assignedStudents, int[] weekIndices, DayOfWeek[] daysOfWeek, int[] hours
     ) {
         // setup
+        DrivingSchool drivingSchool = new DrivingSchool(hours);
         int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
         InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
         instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
