@@ -336,7 +336,13 @@ public class DrivingSchoolTest {
 
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {
         return Stream.of(
-//                Arguments.of(1, new int[]{10, 9}, new int[]{4, 3}),
+                Arguments.of(
+                        new int[]{1},
+                        new int[]{4, 3},
+                        new DayOfWeek[]
+                                {MONDAY, MONDAY},
+                        new int[]{10, 9}
+                ),
 //                Arguments.of(1, new int[]{10, 11, 9}, new int[]{4, 5, 3}),
 //                Arguments.of(2, new int[]{9}, new int[]{3}),
                 Arguments.of(

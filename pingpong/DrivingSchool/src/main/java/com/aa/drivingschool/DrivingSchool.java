@@ -61,7 +61,7 @@ public class DrivingSchool {
 
         if (!instructorSchedules.containsKey(instructorID)) {
             InstructorSchedule instructorSchedule =
-                    new InstructorSchedule(instructorID, new int[]{9, 10, 11, 13, 14, 15});
+                    new InstructorSchedule(instructorID, getStartHours());
             this.instructorSchedules.put(instructorID, instructorSchedule);
         }
 

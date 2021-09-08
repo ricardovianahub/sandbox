@@ -56,11 +56,13 @@ public class InstructorSchedule {
     }
 
     private int nextAvailableHour() {
-        return this.assignedHours.size() % MAX_NUMBER_STUDENTS_PER_DAY;
+        return this.assignedHours.size() %
+                Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultStartHours.length);
     }
 
     private int daysAddedBasedOnMaxStudentsPerDay() {
-        return this.assignedHours.size() / MAX_NUMBER_STUDENTS_PER_DAY;
+        return this.assignedHours.size() /
+                Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultStartHours.length);
     }
 
     void setCurrentTime(CurrentTime currentTime) {
