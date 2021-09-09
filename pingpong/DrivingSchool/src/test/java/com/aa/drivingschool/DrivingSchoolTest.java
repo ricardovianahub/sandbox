@@ -400,8 +400,7 @@ public class DrivingSchoolTest {
 
         // execution
         for (int i = 0; i < assignedStudents.length; i++) {
-            int hoursIndex = i % hours.length;
-            int hour = hours[hoursIndex];
+            int hour = hours[i % hours.length];
 
             int studentActual = instructorSchedule.retrieveStudentForInstructorAndTime(
                     weekIndices[i], daysOfWeek[i], hour
@@ -411,7 +410,7 @@ public class DrivingSchoolTest {
             assertEquals(assignedStudents[i],
                     studentActual,
                     String.format(
-                            "studentIDs index %d - weekIndex %d - Day of Week %s - hour %d",
+                            "Loop index = %d --> weekIndex %d - Day of Week %s - hour %d",
                             i, weekIndices[i], daysOfWeek[i], hour
                     )
             );
