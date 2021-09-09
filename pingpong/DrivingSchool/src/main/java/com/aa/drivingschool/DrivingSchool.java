@@ -93,7 +93,7 @@ public class DrivingSchool {
                 instructor.getId(),
                 new InstructorSchedule(
                         instructor.getId(),
-                        new int[]{9, 10, 11, 13, 14, 15},
+                        this.startHours,
                         retrieveDefaultScheduleGrid(instructor.getId())
                 )
         );

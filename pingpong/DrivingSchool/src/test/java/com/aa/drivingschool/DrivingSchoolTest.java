@@ -337,22 +337,41 @@ public class DrivingSchoolTest {
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {
         return Stream.of(
                 Arguments.of(
-                        new int[]{1},
-                        new int[]{4, 3},
+                        new int[]{3}, new int[]{1},
+                        new DayOfWeek[]
+                                {MONDAY},
+                        new int[]{9}
+                ),
+                Arguments.of(
+                        new int[]{4, 3}, new int[]{1, 1},
                         new DayOfWeek[]
                                 {MONDAY, MONDAY},
                         new int[]{10, 9}
                 ),
-//                Arguments.of(1, new int[]{10, 11, 9}, new int[]{4, 5, 3}),
-//                Arguments.of(2, new int[]{9}, new int[]{3}),
                 Arguments.of(
-                        new int[]{3, 4, 5, 6, 7, 8, 9},
-                        new int[]{1, 1, 1, 1, 1, 6, 6},
+                        new int[]{4, 5, 3}, new int[]{1, 1, 1},
+                        new DayOfWeek[]
+                                {MONDAY, MONDAY, MONDAY},
+                        new int[]{10, 11, 9}
+                ),
+                Arguments.of(
+                        new int[]{3, 4, 5}, new int[]{1, 1, 1},
+                        new DayOfWeek[]
+                                {MONDAY, MONDAY, TUESDAY},
+                        new int[]{9, 10}
+                ),
+                Arguments.of(
+                        new int[]{3, 4, 5, 6, 7}, new int[]{1, 1, 1, 1, 1},
+                        new DayOfWeek[]
+                                {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY},
+                        new int[]{11}
+                ),
+                Arguments.of(
+                        new int[]{3, 4, 5, 6, 7, 8, 9}, new int[]{1, 1, 1, 1, 1, 6, 6},
                         new DayOfWeek[]
                                 {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, MONDAY, TUESDAY},
                         new int[]{11}
                 )
-//                Arguments.of(11, 6, new int[]{9, 10}, new int[]{11}),
         );
     }
 
@@ -373,8 +392,8 @@ public class DrivingSchoolTest {
         drivingSchool.addStudent("Buffer", "Bufferson");
         drivingSchool.addStudent("Buffer", "Bufferson Jr");
         for (int i = 0; i < assignedStudents.length; i++) {
-            studentID = drivingSchool.addStudent("Student" + i, "Smith");
-            instructorSchedule.assignStudentID(studentID);
+            drivingSchool.addStudent("Student" + i, "Smith");
+            instructorSchedule.assignStudentID(assignedStudents[i]);
         }
         drivingSchool.addStudent("Joe", "Bufferson");
         drivingSchool.addStudent("Joe", "Bufferson Jr");

@@ -55,13 +55,13 @@ public class InstructorSchedule {
         }
     }
 
-    private int nextAvailableHour() {
-        return this.assignedHours.size() %
+    private int daysAddedBasedOnMaxStudentsPerDay() {
+        return this.assignedHours.size() /
                 Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultStartHours.length);
     }
 
-    private int daysAddedBasedOnMaxStudentsPerDay() {
-        return this.assignedHours.size() /
+    private int nextAvailableHour() {
+        return this.assignedHours.size() %
                 Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultStartHours.length);
     }
 
@@ -83,7 +83,7 @@ public class InstructorSchedule {
     ) {
         Integer result = assignedHours.get(assignedHoursKey(weekIndex, dow, hour));
         if (result == null) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Key: " + assignedHoursKey(weekIndex, dow, hour));
         }
         return result;
     }
