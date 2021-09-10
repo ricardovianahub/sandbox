@@ -348,6 +348,8 @@ public class DrivingSchoolTest {
                                 {MONDAY, MONDAY},
                         new int[]{10, 9}
                 ),
+                // [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][]
+                // [][][][][]
                 Arguments.of(
                         new int[]{4, 5, 3}, new int[]{1, 1, 1},
                         new DayOfWeek[]
@@ -366,6 +368,8 @@ public class DrivingSchoolTest {
                                 {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY},
                         new int[]{11}
                 ),
+                // [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7]
+                // [8][9][][][]
                 Arguments.of(
                         new int[]{3, 4, 5, 6, 7, 8, 9}, new int[]{1, 1, 1, 1, 1, 6, 6},
                         new DayOfWeek[]

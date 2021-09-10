@@ -44,7 +44,7 @@ public class InstructorSchedule {
     }
 
     private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
-        int numberOfAdditionalDays = daysAddedBasedOnMaxStudentsPerDay();
+        int numberOfAdditionalDays = daysAddedBasedOnMaxStudents();
         switch (dayOfWeek) {
             case FRIDAY:
                 return 3 + numberOfAdditionalDays;
@@ -55,7 +55,7 @@ public class InstructorSchedule {
         }
     }
 
-    private int daysAddedBasedOnMaxStudentsPerDay() {
+    private int daysAddedBasedOnMaxStudents() {
         return this.assignedHours.size() /
                 Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultStartHours.length);
     }
@@ -105,3 +105,15 @@ public class InstructorSchedule {
     }
 }
 
+// Signs that a TDD-created class is not done:
+//
+// - You discover that there are repetitions/duplications between the classes that
+//   your main class (class under test) has as attributes (usually these classes are
+//   created based on Unit Tests focused on the main class)
+// - The freedom to refactor classes under control of the main class implies that
+//   your shouldn't be exposing those "composed classes" to the clients, or any
+//   refactoring will break bw compatibility and impact the client
+// - Delegation may represent more typing at first, but it's a insurance for
+//   future refactorings. > 90% of the life of any class is maintenance. So, we should
+//   invest on maintainable code, not to rush stuff out the door. The way to be faster
+//   is to ease the load (small bathces) *not* to rush
