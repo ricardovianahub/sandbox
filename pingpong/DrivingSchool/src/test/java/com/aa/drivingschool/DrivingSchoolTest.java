@@ -337,55 +337,70 @@ public class DrivingSchoolTest {
     static Stream<Arguments> retrieveStudentIDBasedOnInstructorIDAndDateData() {
         return Stream.of(
                 Arguments.of(
-                        new int[]{3}, new int[]{1},
-                        new DayOfWeek[]
-                                {MONDAY},
+                        new Assignment[]{
+                                new Assignment(3, 1, MONDAY, 9)
+                        },
                         new int[]{9}
                 ),
                 Arguments.of(
-                        new int[]{4, 3}, new int[]{1, 1},
-                        new DayOfWeek[]
-                                {MONDAY, MONDAY},
+                        new Assignment[]{
+                                new Assignment(4, 1, MONDAY, 10),
+                                new Assignment(3, 1, MONDAY, 9)
+                        },
                         new int[]{10, 9}
                 ),
                 // [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][]
                 // [][][][][]
                 Arguments.of(
-                        new int[]{4, 5, 3}, new int[]{1, 1, 1},
-                        new DayOfWeek[]
-                                {MONDAY, MONDAY, MONDAY},
+                        new Assignment[]{
+                                new Assignment(4, 1, MONDAY, 10),
+                                new Assignment(5, 1, MONDAY, 11),
+                                new Assignment(3, 1, MONDAY, 9)
+                        },
                         new int[]{10, 11, 9}
                 ),
                 Arguments.of(
-                        new int[]{3, 4, 5}, new int[]{1, 1, 1},
-                        new DayOfWeek[]
-                                {MONDAY, MONDAY, TUESDAY},
+                        new Assignment[]{
+                                new Assignment(3, 1, MONDAY, 9),
+                                new Assignment(4, 1, MONDAY, 10),
+                                new Assignment(5, 1, TUESDAY, 9)
+                        },
                         new int[]{9, 10}
                 ),
                 Arguments.of(
-                        new int[]{3, 4, 5, 6, 7}, new int[]{1, 1, 1, 1, 1},
-                        new DayOfWeek[]
-                                {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY},
-                        new int[]{11}
-                ),
-                // [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7]
-                // [8][9][][][]
-                Arguments.of(
-                        new int[]{3, 4, 5, 6, 7, 8, 9}, new int[]{1, 1, 1, 1, 1, 6, 6},
-                        new DayOfWeek[]
-                                {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, MONDAY, TUESDAY},
+                        new Assignment[]{
+                                new Assignment(3, 1, MONDAY, 11),
+                                new Assignment(4, 1, TUESDAY, 11),
+                                new Assignment(5, 1, WEDNESDAY, 11),
+                                new Assignment(6, 1, THURSDAY, 11),
+                                new Assignment(7, 1, FRIDAY, 11)
+                        },
                         new int[]{11}
                 )
+                // [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7]
+                // [8][9][][][]
+//                Arguments.of(
+//                        new Assignment[] {
+//                                new Assignment(3,1,MONDAY, 11),
+//                                new Assignment(4,1,TUESDAY, 11),
+//                                new Assignment(5,1,WEDNESDAY, 11),
+//                                new Assignment(6,1,THURSDAY, 11),
+//                                new Assignment(7,1,FRIDAY, 11),
+//                                new Assignment(8,6,MONDAY, 11),
+//                                new Assignment(9,6,TUESDAY, 11)
+//                        },
+//                        new int[]{11}
+//                )
         );
     }
 
     @ParameterizedTest(name = "[{index}] number of students - {0}")
     @MethodSource("retrieveStudentIDBasedOnInstructorIDAndDateData")
     void retrieveStudentIDBasedOnInstructorIDAndDate(
-            int[] assignedStudents, int[] weekIndices, DayOfWeek[] daysOfWeek, int[] hours
+            Assignment[] assignments, int[] startHours
     ) {
         // setup
-        DrivingSchool drivingSchool = new DrivingSchool(hours);
+        DrivingSchool drivingSchool = new DrivingSchool(startHours);
         int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
         InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
         instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
@@ -395,27 +410,29 @@ public class DrivingSchoolTest {
         int studentID;
         drivingSchool.addStudent("Buffer", "Bufferson");
         drivingSchool.addStudent("Buffer", "Bufferson Jr");
-        for (int i = 0; i < assignedStudents.length; i++) {
+        for (int i = 0; i < assignments.length; i++) {
             drivingSchool.addStudent("Student" + i, "Smith");
-            instructorSchedule.assignStudentID(assignedStudents[i]);
+            instructorSchedule.assignStudentID(assignments[i].getAssignedStudent());
         }
         drivingSchool.addStudent("Joe", "Bufferson");
         drivingSchool.addStudent("Joe", "Bufferson Jr");
 
         // execution
-        for (int i = 0; i < assignedStudents.length; i++) {
-            int hour = hours[i % hours.length];
-
+        for (int i = 0; i < assignments.length; i++) {
             int studentActual = instructorSchedule.retrieveStudentForInstructorAndTime(
-                    weekIndices[i], daysOfWeek[i], hour
+                    assignments[i].getWeekIndex(),
+                    assignments[i].getDayOfWeek(),
+                    assignments[i].getHour()
             );
 
             // execution & assertion
-            assertEquals(assignedStudents[i],
+            assertEquals(assignments[i].getAssignedStudent(),
                     studentActual,
                     String.format(
                             "Loop index = %d --> weekIndex %d - Day of Week %s - hour %d",
-                            i, weekIndices[i], daysOfWeek[i], hour
+                            i, assignments[i].getWeekIndex(),
+                            assignments[i].getDayOfWeek(),
+                            assignments[i].getHour()
                     )
             );
         }
