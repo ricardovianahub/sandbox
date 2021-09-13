@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class InstructorSchedule {
     public static final int MAX_NUMBER_STUDENTS_PER_DAY = 4;
+    public static final int NUMBER_OF_COURSE_WEEKS = 5;
     private final int instructorID;
     private CurrentTime currentTime;
     final int[] defaultStartHours;
@@ -47,7 +48,7 @@ public class InstructorSchedule {
         int numberOfAdditionalDays = daysAddedBasedOnMaxStudents();
         switch (dayOfWeek) {
             case FRIDAY:
-                return 3 + numberOfAdditionalDays;
+                return 3 + numberOfAdditionalDays + (nextAvailableHour() == 0 ? 31 : 0);
             case SATURDAY:
                 return 2 + numberOfAdditionalDays;
             default:
@@ -55,13 +56,20 @@ public class InstructorSchedule {
         }
     }
 
+    // [1][2][3][4][5] - [1][][][][] - [1][][][][] - [1][][][][] - [1][][][][]
+    // [6][7][][][10] - [6][7][][][10] - [6][7][][][10] - [6][7][][][10] - [6][7][][][10]
+    // [11][][][][] - [][][][][] - [][][][][] - [][][][][] - [][][][][]
+    // [][][][][] - [][][][][] - [][][][][] - [][][][][] - [][][][][]
+    // [][][][][] - [][][][][] - [][][][][] - [][][][][] - [][][][][]
+    // [][][][][] - [][][][][] - [][][][][] - [][][][][] - [][][][][]
+
     private int daysAddedBasedOnMaxStudents() {
-        return this.assignedHours.size() /
+        return (this.assignedHours.size() / NUMBER_OF_COURSE_WEEKS) /
                 Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultStartHours.length);
     }
 
     private int nextAvailableHour() {
-        return this.assignedHours.size() %
+        return (this.assignedHours.size() / NUMBER_OF_COURSE_WEEKS) %
                 Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultStartHours.length);
     }
 
@@ -71,11 +79,14 @@ public class InstructorSchedule {
 
     public void assignStudentID(int studentID) {
         LocalDateTime earliestAvailableTime = earliestAvailableTime();
-        String key = assignedHoursKey(
-                1,
-                earliestAvailableTime.getDayOfWeek(),
-                earliestAvailableTime.getHour());
-        assignedHours.put(key, studentID);
+        String key;
+        for (int i = 1; i <= NUMBER_OF_COURSE_WEEKS; i++) {
+            key = assignedHoursKey(
+                    i,
+                    earliestAvailableTime.getDayOfWeek(),
+                    earliestAvailableTime.getHour());
+            assignedHours.put(key, studentID);
+        }
     }
 
     public int retrieveStudentForInstructorAndTime(
@@ -111,9 +122,12 @@ public class InstructorSchedule {
 //   your main class (class under test) has as attributes (usually these classes are
 //   created based on Unit Tests focused on the main class)
 // - The freedom to refactor classes under control of the main class implies that
-//   your shouldn't be exposing those "composed classes" to the clients, or any
+//   you shouldn't be exposing those "composed classes" to the clients, or any
 //   refactoring will break bw compatibility and impact the client
+// - Your Production classes still have a lot of "magic numbers" spread around. Either generalize
+//   the code around them or convert them into true Constants to declare to the next person that these
+//   numbers are intentionally constant
 // - Delegation may represent more typing at first, but it's a insurance for
 //   future refactorings. > 90% of the life of any class is maintenance. So, we should
 //   invest on maintainable code, not to rush stuff out the door. The way to be faster
-//   is to ease the load (small bathces) *not* to rush
+//   is to ease the load (small batches) *not* to rush

@@ -349,8 +349,6 @@ public class DrivingSchoolTest {
                         },
                         new int[]{10, 9}
                 ),
-                // [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][] [3,4,5][][][][]
-                // [][][][][]
                 Arguments.of(
                         new Assignment[]{
                                 new Assignment(4, 1, MONDAY, 10),
@@ -376,21 +374,21 @@ public class DrivingSchoolTest {
                                 new Assignment(7, 1, FRIDAY, 11)
                         },
                         new int[]{11}
-                )
+                ),
                 // [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7]
                 // [8][9][][][]
-//                Arguments.of(
-//                        new Assignment[] {
-//                                new Assignment(3,1,MONDAY, 11),
-//                                new Assignment(4,1,TUESDAY, 11),
-//                                new Assignment(5,1,WEDNESDAY, 11),
-//                                new Assignment(6,1,THURSDAY, 11),
-//                                new Assignment(7,1,FRIDAY, 11),
-//                                new Assignment(8,6,MONDAY, 11),
-//                                new Assignment(9,6,TUESDAY, 11)
-//                        },
-//                        new int[]{11}
-//                )
+                Arguments.of(
+                        new Assignment[] {
+                                new Assignment(3,1,MONDAY, 11),
+                                new Assignment(4,1,TUESDAY, 11),
+                                new Assignment(5,1,WEDNESDAY, 11),
+                                new Assignment(6,1,THURSDAY, 11),
+                                new Assignment(7,1,FRIDAY, 11),
+                                new Assignment(8,6,MONDAY, 11),
+                                new Assignment(9,6,TUESDAY, 11)
+                        },
+                        new int[]{11}
+                )
         );
     }
 
@@ -404,7 +402,7 @@ public class DrivingSchoolTest {
         int instructorID = drivingSchool.addInstructor("Sherman", "Doe");
         InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorID);
         instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
-                2021, 8, 6, 12, 0, 0, 0 // Friday
+                2021, 9, 12, 12, 0, 0, 0 // Friday
         ));
 
         int studentID;
