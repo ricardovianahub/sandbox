@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class InstructorSchedule {
     public static final int MAX_NUMBER_STUDENTS_PER_DAY = 4;
-    public static final int NUMBER_OF_COURSE_WEEKS = 5;
     public static final int WEEKS_OF_CLASS = 5;
     public static final int WORKDAYS_IN_A_WEEK = 5;
     private final int instructorID;
@@ -48,7 +47,7 @@ public class InstructorSchedule {
 
     private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
         int baselineWithStudentAmount =
-                (int) (Math.floor(this.assignedHours.size() / weeklyBlock()) * (NUMBER_OF_COURSE_WEEKS + 1) * 7)
+                (int) (Math.floor(this.assignedHours.size() / weeklyBlock()) * (WEEKS_OF_CLASS + 1) * 7)
                         + daysAddedBasedOnMaxStudents();
         switch (dayOfWeek) {
             case FRIDAY:
@@ -76,7 +75,7 @@ public class InstructorSchedule {
     }
 
     private int numberOfStudentsThisWeek() {
-        return this.assignedHours.size() % weeklyBlock() / NUMBER_OF_COURSE_WEEKS;
+        return this.assignedHours.size() % weeklyBlock() / WEEKS_OF_CLASS;
     }
 
     private int weeklyBlock() {
@@ -96,7 +95,7 @@ public class InstructorSchedule {
         String key;
         int startWeekIndex = (int)
                 Math.floor(this.assignedHours.size() / weeklyBlock()) * 5 + 1;
-        for (int i = 0; i < NUMBER_OF_COURSE_WEEKS; i++) {
+        for (int i = 0; i < WEEKS_OF_CLASS; i++) {
             key = assignedHoursKey(
                     startWeekIndex + i,
                     earliestAvailableTime.getDayOfWeek(),
