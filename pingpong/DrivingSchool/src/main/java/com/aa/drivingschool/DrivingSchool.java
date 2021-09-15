@@ -18,6 +18,7 @@ public class DrivingSchool {
     public DrivingSchool() {
         this(START_HOURS_DEFAULT);
     }
+
     public DrivingSchool(int[] startHours) {
         this.startHours = startHours;
     }
@@ -111,7 +112,10 @@ public class DrivingSchool {
 
     public void assignInstructor(int instructorID, int studentID) {
         if (!instructorSchedules.containsKey(instructorID)) {
-            instructorSchedules.put(instructorID, new InstructorSchedule(instructorID, new int[]{9, 10, 11, 13, 14, 15}));
+            instructorSchedules.put(
+                    instructorID,
+                    new InstructorSchedule(instructorID, this.startHours)
+            );
         }
         InstructorSchedule instructorSchedule = this.instructorSchedules.get(instructorID);
         instructorSchedule.assignStudentID(studentID);

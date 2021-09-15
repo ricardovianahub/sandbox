@@ -291,7 +291,7 @@ public class DrivingSchoolTest {
         // execution & assertion
         assertEquals(studentID1, instructorSchedule.getStudentIdDayHour(1, MONDAY, 9));
         assertEquals(studentID4, instructorSchedule.getStudentIdDayHour(1, MONDAY, 13));
-//        assertEquals(studentID5, instructorSchedule.getStudentIdDayHour(DayOfWeek.TUESDAY, 9));
+        assertEquals(studentID5, instructorSchedule.getStudentIdDayHour(1, TUESDAY, 9));
     }
 
     @ParameterizedTest
@@ -308,28 +308,25 @@ public class DrivingSchoolTest {
             "20,FRIDAY,13"
     })
     void assignMoreThan4StudentsPerInstructorFailsForMultipleInstructors(
-            int numberOfStudents, DayOfWeek dayOfWeek, int hour
+            int lastStudent, DayOfWeek dayOfWeek, int hour
     ) {
         // setup
         int instructorId = drivingSchool.addInstructor("Zane", "Doe");
-        InstructorSchedule beforeInstructorSchedule = drivingSchool
-                .retrieveScheduleSheet(instructorId);
-        beforeInstructorSchedule.setCurrentTime(() -> LocalDateTime.of(
+        InstructorSchedule instructorSchedule = drivingSchool.retrieveScheduleSheet(instructorId);
+        instructorSchedule.setCurrentTime(() -> LocalDateTime.of(
                 2021, 8, 6, 12, 0, 0, 0 // Friday
         ));
 
-        for (int i = 0; i < numberOfStudents; i++) {
+        for (int i = 1; i <= lastStudent; i++) {
             drivingSchool.assignInstructor(
                     instructorId, drivingSchool.addStudent("Alan" + i, "Jones")
             );
         }
 
         // execution & assertion
-        InstructorSchedule instructorSchedule = drivingSchool
-                .retrieveInstructorSchedule(instructorId);
 
         assertEquals(instructorId, instructorSchedule.getInstructorId());
-        assertEquals(numberOfStudents,
+        assertEquals(lastStudent,
                 instructorSchedule.getStudentIdDayHour(1, dayOfWeek, hour)
         );
     }
@@ -378,14 +375,14 @@ public class DrivingSchoolTest {
                 // [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7] [3][4][5][6][7]
                 // [8][9][][][]
                 Arguments.of(
-                        new Assignment[] {
-                                new Assignment(3,1,MONDAY, 11),
-                                new Assignment(4,1,TUESDAY, 11),
-                                new Assignment(5,1,WEDNESDAY, 11),
-                                new Assignment(6,1,THURSDAY, 11),
-                                new Assignment(7,1,FRIDAY, 11),
-                                new Assignment(8,6,MONDAY, 11),
-                                new Assignment(9,6,TUESDAY, 11)
+                        new Assignment[]{
+                                new Assignment(3, 1, MONDAY, 11),
+                                new Assignment(4, 1, TUESDAY, 11),
+                                new Assignment(5, 1, WEDNESDAY, 11),
+                                new Assignment(6, 1, THURSDAY, 11),
+                                new Assignment(7, 1, FRIDAY, 11),
+                                new Assignment(8, 6, MONDAY, 11),
+                                new Assignment(9, 6, TUESDAY, 11)
                         },
                         new int[]{11}
                 )
@@ -417,7 +414,7 @@ public class DrivingSchoolTest {
 
         // execution
         for (int i = 0; i < assignments.length; i++) {
-            int studentActual = instructorSchedule.retrieveStudentForInstructorAndTime(
+            int studentActual = instructorSchedule.getStudentIdDayHour(
                     assignments[i].getWeekIndex(),
                     assignments[i].getDayOfWeek(),
                     assignments[i].getHour()
@@ -446,7 +443,7 @@ public class DrivingSchoolTest {
         ));
 
         assertThrows(IllegalStateException.class,
-                () -> instructorSchedule.retrieveStudentForInstructorAndTime(1, MONDAY, 8)
+                () -> instructorSchedule.getStudentIdDayHour(1, MONDAY, 8)
         );
     }
 }
