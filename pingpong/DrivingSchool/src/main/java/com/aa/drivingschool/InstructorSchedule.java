@@ -1,9 +1,13 @@
 package com.aa.drivingschool;
 
+import static java.time.DayOfWeek.FRIDAY;
+import static java.time.DayOfWeek.SATURDAY;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +16,15 @@ public class InstructorSchedule {
     public static final int MAX_NUMBER_STUDENTS_PER_DAY = 4;
     public static final int WEEKS_OF_CLASS = 5;
     public static final int WORKDAYS_IN_A_WEEK = 5;
+    public static final int WEEK_CALENDAR_DAYS = 7;
     private final int instructorID;
     private CurrentTime currentTime;
     final int[] defaultTimeSlots;
+
+    Map<DayOfWeek, Integer> addedDaysPerWeekday = new HashMap<>() {{
+        put(FRIDAY, 3);
+        put(SATURDAY, 2);
+    }};
 
     private final Map<String, Integer> assignedHours = new LinkedHashMap<>();
     private final List<ClassDay> classDays;
@@ -47,24 +57,14 @@ public class InstructorSchedule {
 
     private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
         int baselineWithStudentAmount =
-                (int) (Math.floor(this.assignedHours.size() / weeklyBlock()) * (WEEKS_OF_CLASS + 1) * 7)
+                (int) (
+                        Math.floor(this.assignedHours.size() / weeklyAvailabilityBlock())
+                                * (WEEKS_OF_CLASS + 1) * WEEK_CALENDAR_DAYS
+                )
                         + daysAddedBasedOnMaxStudents();
-        switch (dayOfWeek) {
-            case FRIDAY:
-                return baselineWithStudentAmount + 3;
-            case SATURDAY:
-                return baselineWithStudentAmount + 2;
-            default:
-                return baselineWithStudentAmount + 1;
-        }
+        return baselineWithStudentAmount
+                + addedDaysPerWeekday.getOrDefault(dayOfWeek, 1);
     }
-
-    // [1][2][3][4][5] - [1][][][][] - [1][][][][] - [1][][][][] - [1][][][][]
-    // [6][7][][][10] - [6][7][][][10] - [6][7][][][10] - [6][7][][][10] - [6][7][][][10]
-    // [11][][][][] - [][][][][] - [][][][][] - [][][][][] - [][][][][]
-    // [][][][][] - [][][][][] - [][][][][] - [][][][][] - [][][][][]
-    // [][][][][] - [][][][][] - [][][][][] - [][][][][] - [][][][][]
-    // [][][][][] - [][][][][] - [][][][][] - [][][][][] - [][][][][]
 
     private int daysAddedBasedOnMaxStudents() {
         return numberOfStudentsThisWeek() / maxStudentsPerDay();
@@ -75,10 +75,10 @@ public class InstructorSchedule {
     }
 
     private int numberOfStudentsThisWeek() {
-        return this.assignedHours.size() % weeklyBlock() / WEEKS_OF_CLASS;
+        return this.assignedHours.size() % weeklyAvailabilityBlock() / WEEKS_OF_CLASS;
     }
 
-    private int weeklyBlock() {
+    private int weeklyAvailabilityBlock() {
         return WORKDAYS_IN_A_WEEK * WEEKS_OF_CLASS * this.defaultTimeSlots.length;
     }
 
@@ -94,7 +94,7 @@ public class InstructorSchedule {
         LocalDateTime earliestAvailableTime = earliestAvailableTime();
         String key;
         int startWeekIndex = (int)
-                Math.floor(this.assignedHours.size() / weeklyBlock()) * 5 + 1;
+                Math.floor(this.assignedHours.size() / weeklyAvailabilityBlock()) * 5 + 1;
         for (int i = 0; i < WEEKS_OF_CLASS; i++) {
             key = assignedHoursKey(
                     startWeekIndex + i,
