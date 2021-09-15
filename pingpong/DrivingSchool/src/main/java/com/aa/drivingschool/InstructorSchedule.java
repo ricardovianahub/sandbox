@@ -4,7 +4,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,21 +11,23 @@ import java.util.Map;
 public class InstructorSchedule {
     public static final int MAX_NUMBER_STUDENTS_PER_DAY = 4;
     public static final int NUMBER_OF_COURSE_WEEKS = 5;
+    public static final int WEEKS_OF_CLASS = 5;
+    public static final int WORKDAYS_IN_A_WEEK = 5;
     private final int instructorID;
     private CurrentTime currentTime;
-    final int[] defaultStartHours;
+    final int[] defaultTimeSlots;
 
     private final Map<String, Integer> assignedHours = new LinkedHashMap<>();
     private final List<ClassDay> classDays;
 
-    public InstructorSchedule(int instructorID, int[] defaultStartHours) {
-        this(instructorID, defaultStartHours, new ArrayList<>());
+    public InstructorSchedule(int instructorID, int[] defaultTimeSlots) {
+        this(instructorID, defaultTimeSlots, new ArrayList<>());
     }
 
-    public InstructorSchedule(int instructorID, int[] defaultStartHours, List<ClassDay> classDays) {
+    public InstructorSchedule(int instructorID, int[] defaultTimeSlots, List<ClassDay> classDays) {
         this.instructorID = instructorID;
         this.currentTime = new CurrentServerTime();
-        this.defaultStartHours = defaultStartHours;
+        this.defaultTimeSlots = defaultTimeSlots;
         this.classDays = classDays;
     }
 
@@ -41,7 +42,7 @@ public class InstructorSchedule {
     public LocalDateTime earliestAvailableTime() {
         return this.currentTime.now()
                 .plusDays(addDaysPerWeekday(this.currentTime.now().getDayOfWeek()))
-                .withHour(this.defaultStartHours[nextAvailableHour()]
+                .withHour(this.defaultTimeSlots[nextAvailableHour()]
                 );
     }
 
@@ -79,11 +80,11 @@ public class InstructorSchedule {
     }
 
     private int weeklyBlock() {
-        return 25 * this.defaultStartHours.length;
+        return WORKDAYS_IN_A_WEEK * WEEKS_OF_CLASS * this.defaultTimeSlots.length;
     }
 
     private int maxStudentsPerDay() {
-        return Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultStartHours.length);
+        return Math.min(MAX_NUMBER_STUDENTS_PER_DAY, defaultTimeSlots.length);
     }
 
     void setCurrentTime(CurrentTime currentTime) {
