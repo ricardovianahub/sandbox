@@ -74,14 +74,9 @@ public class DrivingSchool {
     }
 
     public int addStudent(String first, String last) {
-        guardAddStudent(first, last);
+        new Student(first, last);
+        //guardAddStudent(first, last);
         return ++studentCounter;
-    }
-
-    private void guardAddStudent(String first, String last) {
-        if (first == null || last == null || "".equals(last) || "".equals(first)) {
-            throw new IllegalArgumentException();
-        }
     }
 
     public int addInstructor(String firstName, String lastName) {

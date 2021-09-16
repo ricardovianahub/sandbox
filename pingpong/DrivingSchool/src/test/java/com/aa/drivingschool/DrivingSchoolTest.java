@@ -156,24 +156,14 @@ public class DrivingSchoolTest {
 
     @Test
     void addStudentWithInvalidArgumentsThrowsException() {
-
         assertThrows(
                 IllegalArgumentException.class
                 , () -> drivingSchool.addStudent("", "second")
         );
         assertThrows(
                 IllegalArgumentException.class
-                , () -> drivingSchool.addStudent("first", "")
-        );
-        assertThrows(
-                IllegalArgumentException.class
-                , () -> drivingSchool.addStudent(null, "second")
-        );
-        assertThrows(
-                IllegalArgumentException.class
                 , () -> drivingSchool.addStudent("first", null)
         );
-
     }
 
     @Test
