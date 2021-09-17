@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -435,5 +437,32 @@ public class DrivingSchoolTest {
         assertThrows(IllegalStateException.class,
                 () -> instructorSchedule.getStudentIdDayHour(1, MONDAY, 8)
         );
+    }
+
+    @Test
+    void sameStudentCantBeAssignedMoreThanOnceToSameInstructor() {
+        int student = drivingSchool.addStudent("Marty", "McFly");
+        int instructor = drivingSchool.addInstructor("Emmet", "Brown");
+
+        drivingSchool.assignInstructor(instructor, student);
+        assertThrows(IllegalStateException.class, () -> drivingSchool.assignInstructor(instructor, student));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2,1,2",
+            "2,2,1"
+    })
+    void sameStudentCantBeAssignedToMoreThanOneInstructorParam(
+            int numberOfInstructors, int firstInstructor, int secondInstructor
+    ) {
+        int student = drivingSchool.addStudent("Marty", "McFly");
+
+        for (int i = 0; i < numberOfInstructors; i++) {
+            drivingSchool.addInstructor("Name" + i, "Lastname");
+        }
+
+        drivingSchool.assignInstructor(firstInstructor, student);
+        assertThrows(IllegalStateException.class, () -> drivingSchool.assignInstructor(secondInstructor, student));
     }
 }

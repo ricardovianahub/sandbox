@@ -26,7 +26,7 @@ public class InstructorSchedule {
         put(SATURDAY, 2);
     }};
 
-    private final Map<String, Integer> assignedHours = new LinkedHashMap<>();
+    private final Map<String, Integer> assignedStudentsByHour = new LinkedHashMap<>();
     private final List<ClassDay> classDays;
 
     public InstructorSchedule(int instructorID, int[] defaultTimeSlots) {
@@ -58,7 +58,7 @@ public class InstructorSchedule {
     private int addDaysPerWeekday(DayOfWeek dayOfWeek) {
         int baselineWithStudentAmount =
                 (int) (
-                        Math.floor(this.assignedHours.size() / weeklyAvailabilityBlock())
+                        Math.floor(this.assignedStudentsByHour.size() / weeklyAvailabilityBlock())
                                 * (WEEKS_OF_CLASS + 1) * WEEK_CALENDAR_DAYS
                 )
                         + daysAddedBasedOnMaxStudents();
@@ -75,7 +75,7 @@ public class InstructorSchedule {
     }
 
     private int numberOfStudentsThisWeek() {
-        return this.assignedHours.size() % weeklyAvailabilityBlock() / WEEKS_OF_CLASS;
+        return this.assignedStudentsByHour.size() % weeklyAvailabilityBlock() / WEEKS_OF_CLASS;
     }
 
     private int weeklyAvailabilityBlock() {
@@ -91,21 +91,24 @@ public class InstructorSchedule {
     }
 
     public void assignStudentID(int studentID) {
+        if (assignedStudentsByHour.values().contains(studentID)) {
+            throw new IllegalStateException("Duplicated student found: " + studentID);
+        }
         LocalDateTime earliestAvailableTime = earliestAvailableTime();
         String key;
         int startWeekIndex = (int)
-                Math.floor(this.assignedHours.size() / weeklyAvailabilityBlock()) * 5 + 1;
+                Math.floor(this.assignedStudentsByHour.size() / weeklyAvailabilityBlock()) * 5 + 1;
         for (int i = 0; i < WEEKS_OF_CLASS; i++) {
             key = assignedHoursKey(
                     startWeekIndex + i,
                     earliestAvailableTime.getDayOfWeek(),
                     earliestAvailableTime.getHour());
-            assignedHours.put(key, studentID);
+            assignedStudentsByHour.put(key, studentID);
         }
     }
 
     public int getStudentIdDayHour(int weekIndex, DayOfWeek dayOfWeek, int hour) {
-        Integer result = assignedHours.get(assignedHoursKey(weekIndex, dayOfWeek, hour));
+        Integer result = assignedStudentsByHour.get(assignedHoursKey(weekIndex, dayOfWeek, hour));
         guardResult(weekIndex, dayOfWeek, hour, result);
         return result;
     }
@@ -122,6 +125,10 @@ public class InstructorSchedule {
 
     public List<ClassDay> getClassDays() {
         return Collections.unmodifiableList(this.classDays);
+    }
+
+    public boolean containsStudent(int studentID) {
+        return false;
     }
 }
 

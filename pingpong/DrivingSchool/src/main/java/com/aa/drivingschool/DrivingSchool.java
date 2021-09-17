@@ -112,6 +112,12 @@ public class DrivingSchool {
                     new InstructorSchedule(instructorID, this.startHours)
             );
         }
+        for (InstructorSchedule instructorSchedule : instructorSchedules.values()) {
+            if (instructorSchedule.containsStudent(studentID)) {
+                throw new IllegalStateException("Student already assigned to another instructor: "
+                        + studentID);
+            }
+        }
         InstructorSchedule instructorSchedule = this.instructorSchedules.get(instructorID);
         instructorSchedule.assignStudentID(studentID);
     }

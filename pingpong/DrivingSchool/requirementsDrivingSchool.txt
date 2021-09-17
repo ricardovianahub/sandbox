@@ -42,10 +42,14 @@ one class per week, for 5 weeks. Each student should be made aware that classes 
          X Ensure that no classes are scheduled for weekends
          X Assign
          X Retrieve Student ID based on Instructor ID and day
-    - Make sure the same student can't be assigned twice (or to a second instructor)
+    X Make sure the same student can't be assigned more than once to same instructor
+    - Make sure the same student can't be assigned more than once to another instructor
+        - Ensure that all students assigned to instructorSchedule belong to the drivingSchool
 
-- Instructors can't have more than 4 students assigned to them per day
-- Students will have daily classes
+LIMITATIONS
+X Instructors can't have more than 4 students assigned to them per day
+X Students will have weekly classes
+
 - A student can leave a course at any time. No refunds will be offered. Their slots will then be available for the instructor
 to receive new students
 - Students should be between the ages of 15 and 79
