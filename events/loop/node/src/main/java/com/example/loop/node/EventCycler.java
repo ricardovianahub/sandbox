@@ -10,9 +10,6 @@ import com.example.loop.node.exercise.EventHandler;
 @Component
 public class EventCycler {
 
-    @Value("${eventSignature}")
-    private String eventSignature;
-
     @Value("${targetURL}")
     private String targetURL;
 
@@ -26,7 +23,7 @@ public class EventCycler {
     public void checkForEvents() {
         System.out.print("handleEvent: ");
         RestTemplate restTemplate = new RestTemplate();
-        String payload = restTemplate.getForObject(String.format(targetURL + "/popNextRequestEvent/" + eventSignature), String.class);
+        String payload = restTemplate.getForObject(String.format(targetURL + "/popNextRequestEvent/" + eventHandler.eventSignature()), String.class);
         if ("[empty]".equals(payload)) {
             System.out.println("*** PAYLOAD ***> " + payload);
             return;
@@ -42,6 +39,15 @@ public class EventCycler {
         restTemplate.getForObject(
                 String.format(targetURL + "/sendResponseEvent/%s/%s", originalEventId, result), String.class
         );
+
+        EventHandler.NextEvent nextEvent = eventHandler.nextEvent();
+        if (nextEvent.eventSignature() != null) {
+            String[] params = nextEvent.eventParameters(eventParams);
+            restTemplate.getForObject(String.format(
+                    "%s/sendRequestEvent/%s/%s!%s!%s", targetURL, nextEvent.eventSignature(), params[0], params[1], params[2]
+            ), String.class);
+        }
+
     }
 
 }

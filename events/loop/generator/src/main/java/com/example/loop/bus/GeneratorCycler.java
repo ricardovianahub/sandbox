@@ -20,10 +20,10 @@ public class GeneratorCycler {
         RestTemplate restTemplate = new RestTemplate();
         int first = random.nextInt(10) + 1;
         int second = random.nextInt(10) + 1;
-        System.out.print(String.format("calc : %d x %d = ", first, second));
         String id = restTemplate.getForObject(String.format("%s/sendRequestEvent/calc/%d!x!%d", targetURL, first, second), String.class);
         Thread.sleep(1200);
-        System.out.println(restTemplate.getForObject(String.format("%s/popResponseEvent/%s", targetURL, id), String.class));
+        String result = restTemplate.getForObject(String.format("%s/popResponseEvent/%s", targetURL, id), String.class);
+        System.out.printf("calc : %d x %d = %s%n", first, second, result);
     }
 
 }

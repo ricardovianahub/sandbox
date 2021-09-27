@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BusApplication {
 
-    private Map<String, Map<Integer, String>> eventRequests = new HashMap<>();
-    private Map<Integer, String> eventResponses = new HashMap<>();
+    private final Map<String, Map<Integer, String>> eventRequests = new HashMap<>();
+    private final Map<Integer, String> eventResponses = new HashMap<>();
 
     private static int autoKey = 1;
 
@@ -35,11 +35,10 @@ public class BusApplication {
 
     @GetMapping(value = "/sendRequestEvent/{eventType}/{eventPayload}")
     String sendRequestEvent(@PathVariable String eventType, @PathVariable String eventPayload) {
-        if (this.eventRequests.get(eventType) == null) {
-            this.eventRequests.put(eventType, new LinkedHashMap<>());
-        }
+        this.eventRequests.computeIfAbsent(eventType, k -> new LinkedHashMap<>());
         int key = nextKey();
         this.eventRequests.get(eventType).put(key, eventPayload);
+        System.out.printf("sendRequestEvent[%s] = %s%n", eventType, eventPayload);
         return "" + key;
     }
 
@@ -58,10 +57,12 @@ public class BusApplication {
         }
     }
 
-    @GetMapping(value = "/sendResponseEvent/{eventId}/{result}")
-    private String sendResponseEvent(@PathVariable Integer eventId, @PathVariable String result) {
-        this.eventResponses.put(eventId, result);
-        return "" + eventId + "," + result;
+    @GetMapping(value = "/sendResponseEvent/{eventId}/{response}")
+    private String sendResponseEvent(@PathVariable Integer eventId, @PathVariable String response) {
+        this.eventResponses.put(eventId, response);
+        String result = "" + eventId + "," + response;
+        System.out.printf("sendResponseEvent[%d] = %s%n", eventId, result);
+        return result;
     }
 
     @GetMapping(value = "/popResponseEvent/{eventId}")
