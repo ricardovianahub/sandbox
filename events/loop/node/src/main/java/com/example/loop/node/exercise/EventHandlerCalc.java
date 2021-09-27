@@ -6,16 +6,13 @@ import org.springframework.stereotype.Component;
 public class EventHandlerCalc implements EventHandler {
     @Override
     public String eventSignature() {
-        return "calc";
+        return null;
     }
 
+
     @Override
-    public String handleEvent(String[] eventParams) {
-        if (eventParams[1].equals("x")) {
-            return "" + (Integer.parseInt(eventParams[0]) * Integer.parseInt(eventParams[2]));
-        } else {
-            return "[error]";
-        }
+    public String handleEvent(String[] params) {
+        return null;
     }
 
 }
