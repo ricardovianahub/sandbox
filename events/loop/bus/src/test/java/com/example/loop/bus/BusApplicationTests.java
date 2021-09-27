@@ -56,26 +56,26 @@ class BusApplicationTests {
             "3!x!4,12,5!x!6,30"
     })
     void sendEventsOutOfSequence(String request1, String expected1, String request2, String expected2) {
-        String clientEventId1 = sendEvent(request1, "http://localhost:%d/sendRequestEvent/calc/");
-        String clientEventId2 = sendEvent(request2, "http://localhost:%d/sendRequestEvent/calc/");
+        String clientEventId1 = sendEvent("http://localhost:%d/sendRequestEvent/calc/", request1);
+        String clientEventId2 = sendEvent("http://localhost:%d/sendRequestEvent/calc/", request2);
 
         processOtherNode();
         processOtherNode();
 
-        String result2 = sendEvent(clientEventId2, "http://localhost:%d/popResponseEvent/");
-        assertEquals(expected2, result2);
-        String result1 = sendEvent(clientEventId1, "http://localhost:%d/popResponseEvent/");
+        String result1 = sendEvent("http://localhost:%d/popResponseEvent/", clientEventId1);
         assertEquals(expected1, result1);
+        String result2 = sendEvent("http://localhost:%d/popResponseEvent/", clientEventId2);
+        assertEquals(expected2, result2);
 
-        String emptyResult1 = sendEvent(clientEventId1, "http://localhost:%d/popResponseEvent/");
+        String emptyResult1 = sendEvent("http://localhost:%d/popResponseEvent/", clientEventId1);
         assertEquals("[empty]", emptyResult1);
-        String emptyResult2 = sendEvent(clientEventId2, "http://localhost:%d/popResponseEvent/");
+        String emptyResult2 = sendEvent("http://localhost:%d/popResponseEvent/", clientEventId2);
         assertEquals("[empty]", emptyResult2);
     }
 
-    private String sendEvent(String request, String s) {
+    private String sendEvent(String url, String request) {
         return testRestTemplate.getForObject(
-                String.format(s + request, port), String.class
+                String.format(url + request, port), String.class
         );
     }
 
