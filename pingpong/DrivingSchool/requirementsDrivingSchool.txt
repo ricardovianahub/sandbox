@@ -44,7 +44,8 @@ one class per week, for 5 weeks. Each student should be made aware that classes 
          X Retrieve Student ID based on Instructor ID and day
     X Make sure the same student can't be assigned more than once to same instructor
     - Make sure the same student can't be assigned more than once to another instructor
-        - Ensure that all students assigned to instructorSchedule belong to the drivingSchool
+
+    - Ensure that all students assigned to instructorSchedule belong to the drivingSchool
 
 LIMITATIONS
 X Instructors can't have more than 4 students assigned to them per day
