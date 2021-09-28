@@ -2,6 +2,29 @@ plugins {
 	id 'org.springframework.boot' version '2.5.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+    id 'com.palantir.docker' version '0.25.0'
+    id 'com.palantir.docker-run' version '0.25.0'
+}
+
+String imageName = "ricardoviana/images:bus"
+String jarFile = "bus.jar"
+
+bootJar {
+    archiveName = "${jarFile}"
+}
+
+docker {
+    name imageName
+    files "build/libs/${jarFile}"
+    buildArgs([JAR_FILE: jarFile])
+}
+
+dockerRun {
+    name "${project.name}"
+    image imageName
+    ports '8090:8090'
+    clean true
+    daemonize true
 }
 
 group = 'com.example.loop'

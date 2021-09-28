@@ -24,7 +24,7 @@ class BusApplicationTests {
 
     @Test
     void heartbeat() {
-        String response = testRestTemplate.getForObject(String.format("http://localhost:%d/heartbeat", port), String.class);
+        String response = testRestTemplate.getForObject(String.format("http://localhost:%d/bus/heartbeat", port), String.class);
         assertEquals("alive", response);
     }
 
@@ -34,19 +34,19 @@ class BusApplicationTests {
             "5!x!6,30"
     })
     void sendEventsInSequence(String request1, String expected1) {
-        String clientEventId = testRestTemplate.getForObject(
-                String.format("http://localhost:%d/sendRequestEvent/calc/" + request1, port), String.class
+        testRestTemplate.getForObject(
+                String.format("http://localhost:%d/bus/sendRequestEvent/calc/" + request1, port), String.class
         );
 
         processOtherNode();
 
         String result = testRestTemplate.getForObject(
-                String.format("http://localhost:%d/popResponseEvent/" + clientEventId, port), String.class
+                String.format("http://localhost:%d/bus/popNextResponseEvent/calc", port), String.class
         );
         assertEquals(expected1, result);
 
         String emptyResult = testRestTemplate.getForObject(
-                String.format("http://localhost:%d/popResponseEvent/" + clientEventId, port), String.class
+                String.format("http://localhost:%d/bus/popNextResponseEvent/calc", port), String.class
         );
         assertEquals("[empty]", emptyResult);
     }
@@ -56,20 +56,20 @@ class BusApplicationTests {
             "3!x!4,12,5!x!6,30"
     })
     void sendEventsOutOfSequence(String request1, String expected1, String request2, String expected2) {
-        String clientEventId1 = sendEvent("http://localhost:%d/sendRequestEvent/calc/", request1);
-        String clientEventId2 = sendEvent("http://localhost:%d/sendRequestEvent/calc/", request2);
+        String clientEventId1 = sendEvent("http://localhost:%d/bus/sendRequestEvent/calc/", request1);
+        String clientEventId2 = sendEvent("http://localhost:%d/bus/sendRequestEvent/calc/", request2);
 
         processOtherNode();
         processOtherNode();
 
-        String result1 = sendEvent("http://localhost:%d/popResponseEvent/", clientEventId1);
+        String result1 = sendEvent("http://localhost:%d/bus/popNextResponseEvent/", "calc");
         assertEquals(expected1, result1);
-        String result2 = sendEvent("http://localhost:%d/popResponseEvent/", clientEventId2);
+        String result2 = sendEvent("http://localhost:%d/bus/popNextResponseEvent/", "calc");
         assertEquals(expected2, result2);
 
-        String emptyResult1 = sendEvent("http://localhost:%d/popResponseEvent/", clientEventId1);
+        String emptyResult1 = sendEvent("http://localhost:%d/bus/popNextResponseEvent/", "calc");
         assertEquals("[empty]", emptyResult1);
-        String emptyResult2 = sendEvent("http://localhost:%d/popResponseEvent/", clientEventId2);
+        String emptyResult2 = sendEvent("http://localhost:%d/bus/popNextResponseEvent/", "calc");
         assertEquals("[empty]", emptyResult2);
     }
 
@@ -80,7 +80,7 @@ class BusApplicationTests {
     }
 
     private void processOtherNode() {
-        String payload = testRestTemplate.getForObject(String.format("http://localhost:%d/popNextRequestEvent/calc", port), String.class);
+        String payload = testRestTemplate.getForObject(String.format("http://localhost:%d/bus/popNextRequestEvent/calc", port), String.class);
         String[] request = payload.split(",");
         String originalEventId = request[0];
         String eventContent = request[1];
@@ -90,7 +90,7 @@ class BusApplicationTests {
             result = Integer.parseInt(calc[0]) * Integer.parseInt(calc[2]);
             testRestTemplate.getForObject(
                     String.format(
-                            "http://localhost:%d/sendResponseEvent/%s/%s", port, originalEventId, result
+                            "http://localhost:%d/bus/sendResponseEvent/calc/%s/%s", port, originalEventId, result
                     ), String.class
             );
         }

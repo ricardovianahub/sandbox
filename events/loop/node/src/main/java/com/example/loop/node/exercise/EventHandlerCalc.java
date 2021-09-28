@@ -9,7 +9,6 @@ public class EventHandlerCalc implements EventHandler {
         return "calc";
     }
 
-
     @Override
     public String handleEvent(String[] params) {
         int first = Integer.parseInt(params[0]);

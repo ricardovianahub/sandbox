@@ -23,7 +23,7 @@ public class EventCycler {
     public void checkForEvents() {
         System.out.print("handleEvent: ");
         RestTemplate restTemplate = new RestTemplate();
-        String payload = restTemplate.getForObject(String.format(targetURL + "/popNextRequestEvent/" + eventHandler.eventSignature()), String.class);
+        String payload = restTemplate.getForObject(String.format(targetURL + "/bus/popNextRequestEvent/" + eventHandler.eventSignature()), String.class);
         if ("[empty]".equals(payload)) {
             System.out.println("*** PAYLOAD ***> " + payload);
             return;
@@ -36,15 +36,14 @@ public class EventCycler {
 
         String result = eventHandler.handleEvent(eventParams);
         System.out.println(" - result: " + result);
-        restTemplate.getForObject(
-                String.format(targetURL + "/sendResponseEvent/%s/%s", originalEventId, result), String.class
-        );
+        String responseEvent = String.format(targetURL + "/bus/sendResponseEvent/%s/%s/%s", eventHandler.eventSignature(), originalEventId, result);
+        restTemplate.getForObject(responseEvent, String.class);
 
         EventHandler.NextEvent nextEvent = eventHandler.nextEvent();
         if (nextEvent.eventSignature() != null) {
             String[] params = nextEvent.eventParameters(eventParams);
             restTemplate.getForObject(String.format(
-                    "%s/sendRequestEvent/%s/%s!%s!%s", targetURL, nextEvent.eventSignature(), params[0], params[1], params[2]
+                    "%s/bus/sendRequestEvent/%s/%s!%s!%s", targetURL, nextEvent.eventSignature(), params[0], params[1], params[2]
             ), String.class);
         }
 

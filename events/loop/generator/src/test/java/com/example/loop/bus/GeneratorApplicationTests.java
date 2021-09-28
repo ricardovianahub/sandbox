@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = GeneratorApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GeneratorApplicationTests {
 
+    public static final String EVENT_SIGNATURE = "calc";
     @LocalServerPort
     private int port;
 
@@ -24,7 +25,7 @@ class GeneratorApplicationTests {
 
     @Test
     void heartbeat() {
-        String response = testRestTemplate.getForObject(String.format("http://localhost:%d/heartbeat", port), String.class);
+        String response = testRestTemplate.getForObject(String.format("http://localhost:%d/bus/heartbeat", port), String.class);
         assertEquals("alive", response);
     }
 
@@ -35,18 +36,18 @@ class GeneratorApplicationTests {
     })
     void sendEventsInSequence(String request1, String expected1) {
         String clientEventId = testRestTemplate.getForObject(
-                String.format("http://localhost:%d/sendRequestEvent/calc/" + request1, port), String.class
+                String.format("http://localhost:%d/bus/sendRequestEvent/calc/" + request1, port), String.class
         );
 
         processOtherNode();
 
         String result = testRestTemplate.getForObject(
-                String.format("http://localhost:%d/popResponseEvent/" + clientEventId, port), String.class
+                String.format("http://localhost:%d/bus/popResponseEvent/" + clientEventId, port), String.class
         );
         assertEquals(expected1, result);
 
         String emptyResult = testRestTemplate.getForObject(
-                String.format("http://localhost:%d/popResponseEvent/" + clientEventId, port), String.class
+                String.format("http://localhost:%d/bus/popResponseEvent/" + clientEventId, port), String.class
         );
         assertEquals("[empty]", emptyResult);
     }
@@ -56,31 +57,31 @@ class GeneratorApplicationTests {
             "3!x!4,12,5!x!6,30"
     })
     void sendEventsOutOfSequence(String request1, String expected1, String request2, String expected2) {
-        String clientEventId1 = sendEvent(request1, "http://localhost:%d/sendRequestEvent/calc/");
-        String clientEventId2 = sendEvent(request2, "http://localhost:%d/sendRequestEvent/calc/");
+        sendEvent("http://localhost:%d/bus/sendRequestEvent/calc/", request1);
+        sendEvent("http://localhost:%d/bus/sendRequestEvent/calc/", request2);
 
         processOtherNode();
         processOtherNode();
 
-        String result2 = sendEvent(clientEventId2, "http://localhost:%d/popResponseEvent/");
+        String result2 = sendEvent("http://localhost:%d/bus/popResponseEvent/", EVENT_SIGNATURE);
         assertEquals(expected2, result2);
-        String result1 = sendEvent(clientEventId1, "http://localhost:%d/popResponseEvent/");
+        String result1 = sendEvent("http://localhost:%d/bus/popResponseEvent/", EVENT_SIGNATURE);
         assertEquals(expected1, result1);
 
-        String emptyResult1 = sendEvent(clientEventId1, "http://localhost:%d/popResponseEvent/");
+        String emptyResult1 = sendEvent("http://localhost:%d/bus/popResponseEvent/", EVENT_SIGNATURE);
         assertEquals("[empty]", emptyResult1);
-        String emptyResult2 = sendEvent(clientEventId2, "http://localhost:%d/popResponseEvent/");
+        String emptyResult2 = sendEvent("http://localhost:%d/bus/popResponseEvent/", EVENT_SIGNATURE);
         assertEquals("[empty]", emptyResult2);
     }
 
-    private String sendEvent(String request, String s) {
+    private String sendEvent(String url, String request) {
         return testRestTemplate.getForObject(
-                String.format(s + request, port), String.class
+                String.format(url + request, port), String.class
         );
     }
 
     private void processOtherNode() {
-        String payload = testRestTemplate.getForObject(String.format("http://localhost:%d/popNextRequestEvent/calc", port), String.class);
+        String payload = testRestTemplate.getForObject(String.format("http://localhost:%d/bus/popNextRequestEvent/calc", port), String.class);
         String[] request = payload.split(",");
         String originalEventId = request[0];
         String eventContent = request[1];
@@ -90,7 +91,7 @@ class GeneratorApplicationTests {
             result = Integer.parseInt(calc[0]) * Integer.parseInt(calc[2]);
             testRestTemplate.getForObject(
                     String.format(
-                            "http://localhost:%d/sendResponseEvent/%s/%s", port, originalEventId, result
+                            "http://localhost:%d/bus/sendResponseEvent/%s/%s", port, originalEventId, result
                     ), String.class
             );
         }
