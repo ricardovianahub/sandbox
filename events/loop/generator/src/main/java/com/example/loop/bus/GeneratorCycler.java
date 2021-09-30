@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-//@Component
+@Component
 public class GeneratorCycler {
 
     @Value("${targetURL}")
@@ -23,9 +23,13 @@ public class GeneratorCycler {
         String requestEvent = String.format("%s/bus/sendRequestEvent/calc/%d!x!%d", targetURL, first, second);
         restTemplate.getForObject(requestEvent, String.class);
         Thread.sleep(1200);
-        String responseEvent = String.format("%s/bus/popNextResponseEvent/calc", targetURL);
+        popEvent("calc", restTemplate, first, second);
+    }
+
+    private void popEvent(String eventSignature, RestTemplate restTemplate, int first, int second) {
+        String responseEvent = String.format("%s/bus/popNextResponseEvent/%s", targetURL,eventSignature);
         String result = restTemplate.getForObject(responseEvent, String.class);
-        System.out.printf("calc : %d x %d = %s%n", first, second, result);
+        System.out.printf("%s : %d x %d = %s%n", eventSignature, first, second, result);
     }
 
 }
