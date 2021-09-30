@@ -79,21 +79,23 @@ public class BusApplication {
 
     @GetMapping(value = "/popNextResponseEvent/{eventSignature}")
     private String popNextResponseEvent(@PathVariable String eventSignature) {
-        System.out.printf("POP next RESPONSE Event [%s] - ", eventSignature);
-        Map<Integer, String> eventMap =
-                this.eventResponses.computeIfAbsent(eventSignature, k -> new LinkedHashMap<>());
+        synchronized (this) {
+            System.out.printf("POP next RESPONSE Event [%s] - ", eventSignature);
+            Map<Integer, String> eventMap =
+                    this.eventResponses.computeIfAbsent(eventSignature, k -> new LinkedHashMap<>());
 
-        if (eventMap.isEmpty()) {
-            System.out.printf("[empty]%n");
-            return "[empty]";
+            if (eventMap.isEmpty()) {
+                System.out.printf("[empty]%n");
+                return "[empty]";
+            }
+
+            LinkedList<Integer> ll = new LinkedList<>(eventMap.keySet());
+            int id = ll.getLast();
+            System.out.printf("[%d] - %s %s%n", id, eventSignature, eventMap.get(id));
+            String result = String.valueOf(eventMap.get(id));
+            eventMap.remove(id);
+            return result;
         }
-
-        LinkedList<Integer> ll = new LinkedList<>(eventMap.keySet());
-        int id = ll.getLast();
-        System.out.printf("[%d] - %s %s%n", id, eventSignature, eventMap.get(id));
-        String result = String.valueOf(eventMap.get(id));
-        eventMap.remove(id);
-        return result;
     }
 
 }

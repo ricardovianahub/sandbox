@@ -24,11 +24,11 @@ class NodeApplicationTests {
             "3!x!4,12",
             "5!x!6,30"
     })
-	void happyPath(String request1, String expected1) throws InterruptedException {
-        System.out.println(String.format("targetURL=[%s] - request [%s] - expected [%s]", targetURL, request1, expected1));
+	void happyPath(String request, String expected) throws InterruptedException {
+        System.out.printf("targetURL=[%s] - request [%s] - expected [%s]%n", targetURL, request, expected);
 
         String clientEventId = testRestTemplate.getForObject(
-                String.format(targetURL + "/sendRequestEvent/calc/" + request1), String.class
+                targetURL + "/bus/sendRequestEvent/calc/" + request, String.class
         );
 
         String result;
@@ -36,13 +36,13 @@ class NodeApplicationTests {
         do {
             Thread.sleep(600);
             result = testRestTemplate.getForObject(
-                    String.format(targetURL + "/popResponseEvent/" + clientEventId), String.class
+                    targetURL + "/bus/popNextResponseEvent/calc", String.class
             );
         } while ("[empty]".equals(result));
-        assertEquals(expected1, result);
+        assertEquals(expected, result);
 
         String emptyResult = testRestTemplate.getForObject(
-                String.format(targetURL + "/popResponseEvent/" + clientEventId), String.class
+                targetURL + "/bus/popNextResponseEvent/calc", String.class
         );
         assertEquals("[empty]", emptyResult);
 	}
