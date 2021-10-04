@@ -7,7 +7,7 @@ public class EventHandlerCalc implements EventHandler {
     @Override
     public String eventSignature() {
         return "calc";
-    } // new type : "name"
+    }
 
     @Override
     public String handleEvent(String[] params) {
@@ -21,12 +21,12 @@ public class EventHandlerCalc implements EventHandler {
         return new NextEvent() {
             @Override
             public String eventSignature() {
-                return "name";
+                return "something";
             }
 
             @Override
             public String[] eventParameters(String[] params) {
-                return new String[] {"additional"};
+                return new String[] {"something first parameter"};
             }
         };
     }

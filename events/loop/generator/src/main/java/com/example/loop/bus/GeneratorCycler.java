@@ -20,36 +20,40 @@ public class GeneratorCycler {
 
     @Scheduled(fixedRate = 2000)
     private void generateEvents() throws InterruptedException {
-        String requestEvent;
-
         RestTemplate restTemplate = new RestTemplate();
+
+        sendRequestEventCalc(restTemplate);
+        sendRequestEventName(restTemplate);
+
+        Thread.sleep(500);
+
+        popAllEvents(restTemplate, "calc");
+        popAllEvents(restTemplate, "name");
+        popAllEvents(restTemplate, "something");
+    }
+
+    private void sendRequestEventName(RestTemplate restTemplate) {
+        String requestEvent;
+        requestEvent = String.format("%s/bus/sendRequestEvent/name/initial", targetURL);
+        restTemplate.getForObject(requestEvent, String.class);
+    }
+
+    private void sendRequestEventCalc(RestTemplate restTemplate) {
+        String requestEvent;
         int first = random.nextInt(10) + 1;
         int second = random.nextInt(10) + 1;
         requestEvent = String.format("%s/bus/sendRequestEvent/calc/%d!x!%d", targetURL, first, second);
         restTemplate.getForObject(requestEvent, String.class);
+    }
 
-        requestEvent = String.format("%s/bus/sendRequestEvent/name/initial", targetURL);
-        restTemplate.getForObject(requestEvent, String.class);
-
-        Thread.sleep(500);
-
-        String result;
+    private void popAllEvents(RestTemplate restTemplate, String eventSignature) {
         boolean firstRound;
-
+        String result;
         firstRound = true;
         do {
-            result = popEvent(restTemplate, "calc");
+            result = popEvent(restTemplate, eventSignature);
             if (!"[empty]".equals(result) || firstRound) {
-                System.out.printf("[" + DATE_FORMAT + "] calc : %2$s%n", new Date(), result);
-            }
-            firstRound = false;
-        } while (!"[empty]".equals(result));
-
-        firstRound = true;
-        do {
-            result = popEvent(restTemplate, "name");
-            if (!"[empty]".equals(result) || firstRound) {
-                System.out.printf("[" + DATE_FORMAT + "] name : %2$s%n", new Date(), result);
+                System.out.printf("[" + DATE_FORMAT + "] %2$s : %3$s%n", new Date(), eventSignature, result);
             }
             firstRound = false;
         } while (!"[empty]".equals(result));
@@ -57,8 +61,7 @@ public class GeneratorCycler {
 
     private String popEvent(RestTemplate restTemplate, String eventSignature) {
         String responseEvent = String.format("%s/bus/popNextResponseEvent/%s", targetURL, eventSignature);
-        String result = restTemplate.getForObject(responseEvent, String.class);
-        return result;
+        return restTemplate.getForObject(responseEvent, String.class);
     }
 
 }
