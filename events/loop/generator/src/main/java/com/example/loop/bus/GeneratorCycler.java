@@ -22,14 +22,25 @@ public class GeneratorCycler {
     private void generateEvents() throws InterruptedException {
         RestTemplate restTemplate = new RestTemplate();
 
+        // requirement for new event: eventSignature: abbreviation // parameters (first name, last name): John, Doe  // response: JD
+
         sendRequestEventCalc(restTemplate);
         sendRequestEventName(restTemplate);
+        sendRequestEventAbbreviation(restTemplate);
 
         Thread.sleep(500);
 
         popAllEvents(restTemplate, "calc");
         popAllEvents(restTemplate, "name");
         popAllEvents(restTemplate, "something");
+        popAllEvents(restTemplate, "abbreviation");
+        System.out.println();
+    }
+
+    private void sendRequestEventAbbreviation(RestTemplate restTemplate) {
+        String requestEvent;
+        requestEvent = String.format("%s/bus/sendRequestEvent/abbreviation/John!Doe", targetURL);
+        restTemplate.getForObject(requestEvent, String.class);
     }
 
     private void sendRequestEventName(RestTemplate restTemplate) {
