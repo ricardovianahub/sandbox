@@ -14,12 +14,12 @@ public class EventCarDoors implements EventHandler {
         return new NextEvent() {
             @Override
             public String eventSignature() {
-                return "carcomplete";
+                return "caroffer";
             }
 
             @Override
             public String[] eventParameters(String[] params) {
-                return new String[] {params[0] + " - 4 doors"};
+                return new String[] { "4 Doors - " + params[0] };
             }
         };
     }

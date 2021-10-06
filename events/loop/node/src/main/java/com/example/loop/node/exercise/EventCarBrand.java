@@ -14,12 +14,14 @@ public class EventCarBrand implements EventHandler {
         return new NextEvent() {
             @Override
             public String eventSignature() {
-                return "cardoors";
+                return "caroffer";
             }
 
             @Override
             public String[] eventParameters(String[] params) {
-                return new String[]{String.format("Camry (%s)", params[0])};
+                return new String[]{
+                        params[0] + (params[0].equals("Prius") ? " (Toyota)" : " (VW)")
+                };
             }
         };
     }

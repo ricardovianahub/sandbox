@@ -24,23 +24,23 @@ public class GeneratorCycler {
 
         // requirement for new event: eventSignature: abbreviation // parameters (first name, last name): John, Doe  // response: JD
 
-        sendRequestEventCalc(restTemplate);
-        sendRequestEvent(restTemplate, "abbreviation", "John!Doe");
-        sendRequestEvent(restTemplate, "name", "name");
+//        sendRequestEventCalc(restTemplate);
+//        sendRequestEvent(restTemplate, "abbreviation", "John!Doe");
+//        sendRequestEvent(restTemplate, "name", "name");
+        sendRequestEvent(restTemplate, "caroffer", "Camry");
+        sendRequestEvent(restTemplate, "carbrand", "Prius");
+        sendRequestEvent(restTemplate, "carbrand", "Bug");
+        sendRequestEvent(restTemplate, "cardoors", "Civic");
+        sendRequestEvent(restTemplate, "cardoors", "Yaris");
 
-        sendRequestEvent(restTemplate, "carprice", "14999");
-        sendRequestEvent(restTemplate, "carbrand", "honda");
-        sendRequestEvent(restTemplate, "cardoors", "station wagon");
-        sendRequestEvent(restTemplate, "carcomplete", "Call us for details");
 
         Thread.sleep(500);
 
+        popAllEvents(restTemplate, "caroffer");
 //        popAllEvents(restTemplate, "calc");
 //        popAllEvents(restTemplate, "name");
 //        popAllEvents(restTemplate, "something");
 //        popAllEvents(restTemplate, "abbreviation");
-        popAllEvents(restTemplate, "carcomplete");
-
 
         System.out.println();
     }

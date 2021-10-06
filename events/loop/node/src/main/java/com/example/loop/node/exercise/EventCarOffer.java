@@ -3,10 +3,10 @@ package com.example.loop.node.exercise;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventCarComplete implements EventHandler {
+public class EventCarOffer implements EventHandler {
     @Override
     public String eventSignature() {
-        return "carcomplete";
+        return "caroffer";
     }
 
     @Override
