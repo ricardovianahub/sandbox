@@ -25,27 +25,29 @@ public class GeneratorCycler {
         // requirement for new event: eventSignature: abbreviation // parameters (first name, last name): John, Doe  // response: JD
 
         sendRequestEventCalc(restTemplate);
-        sendRequestEventName(restTemplate);
-        sendRequestEventAbbreviation(restTemplate);
+        sendRequestEvent(restTemplate, "abbreviation", "John!Doe");
+        sendRequestEvent(restTemplate, "name", "name");
+
+        sendRequestEvent(restTemplate, "carprice", "14999");
+        sendRequestEvent(restTemplate, "carbrand", "honda");
+        sendRequestEvent(restTemplate, "cardoors", "station wagon");
+        sendRequestEvent(restTemplate, "carcomplete", "Call us for details");
 
         Thread.sleep(500);
 
-        popAllEvents(restTemplate, "calc");
-        popAllEvents(restTemplate, "name");
-        popAllEvents(restTemplate, "something");
-        popAllEvents(restTemplate, "abbreviation");
+//        popAllEvents(restTemplate, "calc");
+//        popAllEvents(restTemplate, "name");
+//        popAllEvents(restTemplate, "something");
+//        popAllEvents(restTemplate, "abbreviation");
+        popAllEvents(restTemplate, "carcomplete");
+
+
         System.out.println();
     }
 
-    private void sendRequestEventAbbreviation(RestTemplate restTemplate) {
+    private void sendRequestEvent(RestTemplate restTemplate, String eventSignature, String encodedParameters) {
         String requestEvent;
-        requestEvent = String.format("%s/bus/sendRequestEvent/abbreviation/John!Doe", targetURL);
-        restTemplate.getForObject(requestEvent, String.class);
-    }
-
-    private void sendRequestEventName(RestTemplate restTemplate) {
-        String requestEvent;
-        requestEvent = String.format("%s/bus/sendRequestEvent/name/initial", targetURL);
+        requestEvent = String.format("%s/bus/sendRequestEvent/%s/%s", targetURL, eventSignature, encodedParameters);
         restTemplate.getForObject(requestEvent, String.class);
     }
 

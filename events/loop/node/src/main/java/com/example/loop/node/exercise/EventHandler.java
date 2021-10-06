@@ -2,7 +2,9 @@ package com.example.loop.node.exercise;
 
 public interface EventHandler {
     String eventSignature();
-    String handleEvent(String[] eventParams);
+    default String handleEvent(String[] eventParams) {
+        return null;
+    }
     default NextEvent nextEvent() {
         return new NextEvent() {};
     };
