@@ -1,0 +1,19 @@
+task one
+task two
+task both
+
+both {
+    dependsOn = [one, two]
+}
+
+two {
+  doLast() {
+    println "two "
+  }
+}
+
+one {
+  doLast() {
+    print "one "
+  }
+}

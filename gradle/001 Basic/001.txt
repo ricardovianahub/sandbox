@@ -1,0 +1,31 @@
+@startmindmap
+
+* Gradle - part 1 - code
+
+** Notes
+***_ A Gradle build is a program
+***_ We will be using Groovy syntax
+***_ If we use too much Groovy, we will have too much //untested// Groovy
+***:documentation:
+https://docs.gradle.org/current/userguide/userguide.html;
+
+** Concept: tasks
+***_ Implemented using closures
+***_ Tasks are **objects**
+***_ Rich task API can be obscure
+***_:The way tasks they refer to each other is similar to how events chain together
+   //It's not linear, it's not imperative, even though it looks that way//;
+
+** Syntax
+*** **task helloWorld**
+*** **dependsOn << **//task//
+*** **dependsOn [**//task1, task2//**]**
+
+** Command line
+*** ** gradle tasks [--all] **
+****_ Lists available tasks
+*** ** gradle -q helloWorld **
+****_ **-q** eliminates lifecycle messages
+*** ** gradle -q hW **
+
+@endmindmap

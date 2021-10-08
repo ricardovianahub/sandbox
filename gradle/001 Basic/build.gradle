@@ -1,0 +1,23 @@
+plugins {
+  id 'java'
+}
+
+group 'com.aa.basic'
+version '1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(13)
+    }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
+}
