@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(13)
+    }
+}
+
+repositories {
+    maven {
+        url "${repo_contextUrl}/artifactory"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+sourceSets {
+    integration
+}
+
+test {
+    useJUnitPlatform();
+}
+
+configurations {
+    integrationImplementation.extendsFrom testImplementation
+}
+
+task integrationTest(type: Test) {
+    useJUnitPlatform();
+    maxParallelForks 5
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+}

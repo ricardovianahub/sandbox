@@ -1,0 +1,77 @@
+***_ **repo_contextUrl**=https://packages.aa.com
+
+@startmindmap
+
+* Gradle - part 3 - integration tests
+
+** Folder structure from root
+***_ **src**
+****_ main
+*****_ java
+******_ packages
+*****_ resources
+****_ test
+*****_ java
+******_ packages
+*****_ resources
+
+***_ **build**
+****_ classes
+*****_ java
+******_ packages
+*****_ resources
+
+***_ **libs**
+****_ **project.jar**
+
+** **build.gradle**
+*** Apply plugin
+**** old syntax
+*****_ apply plugin: 'java'
+**** new syntax
+*****_:plugins {
+  id 'java'
+};
+***_:**group** 'com.aa.basic'
+**version** '1';
+***_:**java** {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(13)
+    }
+};
+***_:**repositories** {
+  maven {
+      url "//${**repo_contextUrl**}///artifactory"
+  }
+  mavenCentral()
+};
+***_:**sourceSets** {
+    **integration** {
+        java.srcDir('src/integration/java')
+    }
+};
+***_:**task integrationTest**(type: Test) {
+    maxParallelForks 5
+    include 'com/aa/integration/**'
+};
+***_:**task integration**(type: Test) {
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+    outputs.upToDateWhen { false }
+};
+
+***_:**dependencies** {
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
+};
+
+
+** **gradle.properties**
+***_ **repo_contextUrl**=https://packages.aa.com
+
+** **settings.gradle**
+***_ **rootProject.name** = 'exampleProjectName'
+
+@endmindmap

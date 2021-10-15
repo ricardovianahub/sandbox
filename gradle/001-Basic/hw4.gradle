@@ -1,0 +1,29 @@
+task one
+task two
+task both
+
+both {
+    dependsOn = [two, one]
+    doFirst() {
+      signature("BEGIN")
+    }
+    doLast() {
+      signature("END")
+    }
+}
+
+two {
+  doLast() {
+    println "two "
+  }
+}
+
+one {
+  doLast() {
+    print "one "
+  }
+}
+
+def signature(text) {
+  println "=====( GRADLE " + text + " )======"
+}

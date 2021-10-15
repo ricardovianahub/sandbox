@@ -1,0 +1,24 @@
+@startmindmap
+
+* **Gradle for Java - intro**
+
+** Why
+*** Mix of adaptability and convention
+***_ Declarative x Imperative
+***_ Declarative tends to be better but also **limited**
+*** Gradle seeks a balance, pending to convention
+
+** Pros
+*** You **can** be imperative if you want to be
+***_ JVM-based
+***_ Uses common languages (Groovy, Kotlin)
+** Cons
+*** Where there can be cone, there will be code
+*** If you a like a declarative model, something like XML is more useful
+
+** Caveats
+***_ Balance is fine, but builds should be dumb and simple
+***_ If your build is too complicated, something is wrong
+*** Don't try to create a pipeline with Gradle, although you could
+
+@endmindmap

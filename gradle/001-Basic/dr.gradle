@@ -1,0 +1,115 @@
+buildscript {
+    repositories {
+        maven {
+            url "${repo_contextUrl}/maven-public"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.0.RELEASE")
+    }
+}
+
+apply from: 'basemicroservice.gradle'
+
+group = 'com.aa'
+version = '0.0.1-SNAPSHOT'
+
+task dev {
+    doLast {
+        bootRun.systemProperty 'spring.profiles.active', 'dev'
+    }
+}
+
+task local {
+    doLast {
+        bootRun.systemProperty 'spring.profiles.active', 'local-with-redis'
+    }
+}
+
+task cloud {
+    doLast {
+        bootRun.systemProperty 'spring.profiles.active', 'bluemix'
+    }
+}
+
+sourceSets {
+    integration {
+        java.srcDir('src/integration/java')
+    }
+}
+
+task unitTestonly(type: Test) {
+    exclude 'com/aa/integration/**'
+}
+
+test {
+    maxParallelForks 5
+    dependsOn 'cleanTest'
+    exclude 'com/aa/integration/'
+}
+
+task integrationtests(type: Test) {
+    include 'com/aa/integration/**'
+}
+
+dependencies {
+    // JWT Security
+    compile "com.aa:aa-jwt-authentication:0.0.9"
+    compile "io.jsonwebtoken:jjwt:0.7.0"
+    compile "joda-time:joda-time:2.9.7"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.0"
+
+    // Spring Boot
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.boot:spring-boot-starter-web-services"
+    providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
+
+    // Redis
+    compile "org.springframework.boot:spring-boot-starter-data-redis"
+    compile "redis.clients:jedis:3.1.0"
+    compile "org.springframework.cloud:spring-cloud-spring-service-connector"
+    compile "org.springframework.cloud:spring-cloud-cloudfoundry-connector"
+    compile "net.bluemix:bluemix-cloud-connectors-cloudfoundry:0.0.3"
+
+    // AA Libraries
+    compile "com.aa.cs:CSRetrieve:${csRetrieve_version}"
+    compile "com.aa.cs:CSTravelInfo:${csTravelInfo_version}"
+    compile "com.ct.fly:aa-servicerecovery-utils:0.0.2"
+
+    // Miscellaneous
+    compile "io.springfox:springfox-swagger2:${swagger2_version}"
+    compile "io.springfox:springfox-swagger-ui:${swaggerUI_version}"
+    compile "org.apache.httpcomponents:httpclient:4.5.3"
+    compile "org.apache.commons:commons-lang3:3.5"
+    compile "org.apache.commons:commons-collections4:4.0"
+    providedCompile "javax.servlet:javax.servlet-api:${javax_servlet_api_version}"
+
+    // Tests
+    testCompile("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "org.mockito", module: "mockito-core"
+    }
+    testCompile "org.mockito:mockito-core:1.10.19"
+
+    // Integration SourceSet Setup
+    integrationCompile sourceSets.main.output
+    integrationCompile sourceSets.test.output
+    integrationCompile configurations.compile
+    integrationCompile configurations.testCompile
+    integrationRuntime configurations.runtime
+    integrationRuntime configurations.testRuntime
+}
+
+task integration(type: Test) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = 'Runs all integration tests'
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+//Provide Build info via /monitor/info
+springBoot {
+    buildInfo()
+}

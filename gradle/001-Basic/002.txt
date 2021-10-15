@@ -1,0 +1,39 @@
+@startmindmap
+
+* Gradle - part 2 - java plugin
+
+** Notes
+
+** Folder structure from root
+***_ **src**
+****_ main
+*****_ java
+******_ packages
+*****_ resources
+****_ test
+*****_ java
+******_ packages
+*****_ resources
+
+***_ **build**
+****_ classes
+*****_ java
+******_ packages
+*****_ resources
+
+***_ **libs**
+****_ **project.jar**
+
+** **build.gradle**
+*** Apply plugin
+**** old syntax
+*****_ apply plugin: 'java'
+**** new syntax
+*****_:plugins {
+  id 'java'
+};
+
+
+** Command line
+
+@endmindmap

@@ -1,0 +1,28 @@
+@startmindmap
+
+* GRADLE - part 1 - intro
+
+right side
+
+** Why
+*** Mix of adaptability and convention
+***_ Declarative is considered the better solution (Maven)
+***_ Declarative is also limited
+***_ Gradle seeks a balance, pending to convention
+
+** Pros
+*** You have the **choice** to be imperative when you need
+***_ JVM based
+***_ Uses common languages (Groovy, Kotlin)
+***_ Latest versions are very fast
+** Cons
+*** When there can be code, there is code
+**** aa.com build.gradle was a nightmare
+***_ Declarative means follow a contract. XML is better
+
+** Caveats
+*** Balance is fine, but builds should be dumb simple
+***_ If your build is too complicated, there's something wrong
+***_ Don't try to create a pipeline with Gradle, although you could
+
+@endmindmap
