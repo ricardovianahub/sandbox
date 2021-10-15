@@ -1,5 +1,3 @@
-***_ **repo_contextUrl**=https://packages.aa.com
-
 @startmindmap
 
 * Gradle - part 3 - integration tests
@@ -36,7 +34,7 @@
 **version** '1';
 ***_:**java** {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(13)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 };
 ***_:**repositories** {
@@ -45,26 +43,23 @@
   }
   mavenCentral()
 };
+***_:**dependencies** {
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+};
 ***_:**sourceSets** {
-    **integration** {
-        java.srcDir('src/integration/java')
-    }
+    **integration**
+};
+***_:**test** {
+    useJUnitPlatform()
+};
+***_:**configurations** {
+    integrationImplementation.extendsFrom testImplementation
 };
 ***_:**task integrationTest**(type: Test) {
-    maxParallelForks 5
-    include 'com/aa/integration/**'
-};
-***_:**task integration**(type: Test) {
-    testClassesDirs = sourceSets.integration.output.classesDirs
-    classpath = sourceSets.integration.runtimeClasspath
-    outputs.upToDateWhen { false }
-};
-
-***_:**dependencies** {
-    implementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    implementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-    implementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
+  useJUnitPlatform()
+  maxParallelForks 5
+  testClassesDirs = sourceSets.integration.output.classesDirs
+  classpath = sourceSets.integration.runtimeClasspath
 };
 
 
