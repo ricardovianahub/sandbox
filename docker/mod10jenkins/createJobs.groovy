@@ -7,7 +7,7 @@ pipelineJob('fakeresponseDeployToDocker') {
                         url 'https://github.com/ricardovianahub/sandbox.git'
                     }
                     branch 'aalatest'
-                    scriptPath('docker/qaautomation/fakeresponse/Jenkinsfile')
+                    scriptPath('docker/mod11qaautomation/fakeresponse/Jenkinsfile')
                 }
             }
         }
