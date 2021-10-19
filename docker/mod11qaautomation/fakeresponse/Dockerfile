@@ -1,5 +1,5 @@
-FROM openjdk:17
+FROM openjdk:8
 EXPOSE 8080
 ARG JAR_FILE
 COPY ${JAR_FILE} /fakeresponse.jar
-ENTRYPOINT ["java","-jar","/fakeresponse.jar"]
+CMD ["java","-jar","/fakeresponse.jar"]
