@@ -33,7 +33,7 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 dir('./docker/mod11qaautomation/fakeresponse') {
-                    sh './gradlew dockerRun'
+                    sh './gradlew docker'
                     //sh 'docker build --tag fakeresponse .'
                 }
             }
