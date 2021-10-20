@@ -7,6 +7,7 @@ RUN apt-get update
 RUN apt-get install docker-compose -y
 RUN mkdir -p /var/run
 RUN touch /var/run/docker.sock
+RUN chown jenkins:jenkins /var/run/docker.sock
 RUN chmod g+w /var/run/docker.sock
 USER jenkins
 
