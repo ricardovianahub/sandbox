@@ -6,3 +6,4 @@ out/
 *.iml
 classes/
 node_modules/
+.DS_Store
