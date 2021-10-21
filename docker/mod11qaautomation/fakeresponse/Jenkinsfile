@@ -34,7 +34,7 @@ pipeline {
             steps {
                 dir('./docker/mod11qaautomation/fakeresponse') {
                     //sh './gradlew docker'
-                    sh 'docker login -u ricardoviana --password-stdin'
+                    sh 'docker login -u ricardoviana --password Bacalhau.gravado.50'
                     sh 'docker build --tag fakeresponse .'
                 }
             }
