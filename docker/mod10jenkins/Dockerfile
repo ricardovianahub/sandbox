@@ -4,7 +4,7 @@ USER root
 RUN curl -sSL https://get.docker.com/ | sh
 RUN usermod -a -G docker jenkins
 RUN apt-get update
-RUN apt-get install docker-compose -y
+RUN apt-get install docker-compose pass -y
 RUN mkdir -p /var/run
 RUN touch /var/run/docker.sock
 RUN chown jenkins:jenkins /var/run/docker.sock
