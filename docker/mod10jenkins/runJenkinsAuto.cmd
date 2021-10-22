@@ -2,3 +2,4 @@ rem docker run --rm -v //var/run/docker.sock:/var/run/docker.sock alpine stat -c
 rem set /p groupid=<groupid.dat
 rem echo value is %groupid%
 docker run --rm --name jenkinsauto -p:8098:8080 --group-add 0 -v //var/run/docker.sock:/var/run/docker.sock jenkinsauto
+rem docker run --rm --name jenkinsauto -p:8098:8080 --group-add 0 -v ~/.docker/run/docker.sock:/var/run/docker.sock jenkinsauto
