@@ -1,0 +1,32 @@
+def saySomething(Closure closure) {
+    println '-----------------------'
+    closure()
+    println '-----------------------'
+}
+
+node {
+    stage('Directory') {
+        sh 'ls -la /'
+    }
+    stage('saying something') {
+        saySomething() {
+            println 'This is the content'
+        }
+    }
+    stage('for loop') {
+        for (int i = 0; i < 20; i++) {
+            println '(((' + i + ')))'
+        }
+    }
+    stage('REST call') {
+        def response = new URL("http://ricbox.com/passengers").openConnection();
+        println(response.getInputStream().getText());
+    }
+    withEnv(['first=Hello','second=World']) {
+        stage('Parameters') {
+            sh 'echo $first $second'
+            println "${first} ${second}"
+            println '${first} ${second}'
+        }
+    }
+}
