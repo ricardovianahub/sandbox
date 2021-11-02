@@ -6,8 +6,16 @@ plugins {
     id 'com.palantir.docker-run' version '0.25.0'
 }
 
-String imageName = "ricardoviana/images:fakeresponse"
+String imageName = "fakeresponse"
 String jarFile = "fakeresponse-0.0.1-SNAPSHOT.jar"
+group = 'com.aa'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
 
 docker {
     name imageName
@@ -22,10 +30,6 @@ dockerRun {
     clean true
     daemonize true
 }
-
-group = 'com.aa'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
