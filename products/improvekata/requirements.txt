@@ -30,7 +30,7 @@ X Add labels to text areas
     - Mandatory fields: Title* / Awesome* / Now / Next / Breakdown
   X Gray-out disabled buttons - insert
   X Gray-out disabled buttons - delete
-  > Clear All/Reset button (to start a new record)
+  X Clear All/Reset button (to start a new record)
   - Update button
   - Gray-out disabled buttons - update
   - Gray-out disabled buttons - clear all

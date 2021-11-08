@@ -117,7 +117,6 @@ class App extends React.Component {
                 assignValueById("field2Now", "");
                 assignValueById("field3Next", "");
                 assignValueById("field4Breakdown", "");
-                assignValueById("title", "");
                 queryAllVersionsList();
                 assignValueById("uniqueId", "");
 
