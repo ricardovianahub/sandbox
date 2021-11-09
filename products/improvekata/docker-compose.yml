@@ -28,6 +28,6 @@ services:
   gui:
      image: httpd:latest
      volumes:
-       - ./gui/improvekatagui/src/simple:/usr/local/apache2/htdocs
+       - ./gui/improvekatagui/src:/usr/local/apache2/htdocs
      depends_on:
        - ben
