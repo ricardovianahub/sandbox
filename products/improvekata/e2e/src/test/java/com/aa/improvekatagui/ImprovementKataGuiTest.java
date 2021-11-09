@@ -15,10 +15,8 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -88,7 +86,7 @@ public class ImprovementKataGuiTest {
     }
 
     @AfterAll
-    void afterAll(){
+    void afterAll() {
         testRestTemplate.delete(baseURL + "/ben/deleteTeam/DOD_REACCOM");
         driver.close();
     }
@@ -383,11 +381,25 @@ public class ImprovementKataGuiTest {
         assertTrue(resetButton.isEnabled(), "reset button expected to be enabled but it is NOT");
         assertEquals("enabledButton", resetButton.getAttribute("class"));
 
-//        assignValueBySelector("[data-testid=fieldAwesome]", "field awesome text");
-//        assignValueBySelector("[data-testid=fieldNow]", "field now text");
-//        assignValueBySelector("[data-testid=fieldNext]", "field next text");
-//        assignValueBySelector("[data-testid=fieldBreakdown]", "field breakdown text");
+        assignValueBySelector("[data-testid=fieldAwesome]", "field awesome text");
+        assignValueBySelector("[data-testid=fieldNow]", "field now text");
+        assignValueBySelector("[data-testid=fieldNext]", "field next text");
+        assignValueBySelector("[data-testid=fieldBreakdown]", "field breakdown text");
+    }
 
+    @Test
+    void ensureResetButtonClearsExpectedFields() {
+        assignValueBySelector("[data-testid=title]", "TEST");
+        assignValueBySelector("[data-testid=fieldAwesome]", "TEST");
+        assignValueBySelector("[data-testid=fieldNow]", "TEST");
+        assignValueBySelector("[data-testid=fieldNext]", "TEST");
+        assignValueBySelector("[data-testid=fieldBreakdown]", "TEST");
+
+        WebElement resetButton = driver.findElement(By.cssSelector("[data-testid=resetButton]"));
+
+        resetButton.click();
+
+        assertFormIsEmpty();
     }
 
 

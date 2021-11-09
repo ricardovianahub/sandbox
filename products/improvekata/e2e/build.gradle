@@ -16,12 +16,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation(
-			'org.junit.jupiter:junit-jupiter-api:5.+',
+			'org.junit.jupiter:junit-jupiter-api:5.7.+',
 			'org.hamcrest:hamcrest-library:2.1'
 	)
 	testRuntimeOnly(
-			'org.junit.jupiter:junit-jupiter-engine:5.+',
-			'org.junit.jupiter:junit-jupiter-params:5.+'
+			'org.junit.jupiter:junit-jupiter-engine:5.7.+',
+			'org.junit.jupiter:junit-jupiter-params:5.7.+'
 	)
 
 	testCompile(
