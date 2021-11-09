@@ -1,0 +1,55 @@
+{
+  "name": "reactcalc",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^12.1.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "cross-env NODE_ENV=test jasmine",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/register": "^7.16.0",
+    "babel-preset-react-app": "^10.0.0",
+    "cross-env": "^7.0.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "ignore-styles": "^5.0.1",
+    "jasmine": "^3.10.0",
+    "jasmine-enzyme": "^7.1.2",
+    "jsdom": "^18.0.1"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  }
+}
