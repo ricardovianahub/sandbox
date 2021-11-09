@@ -73,13 +73,14 @@ class App extends React.Component {
                             <textarea id="field4Breakdown" data-testid="fieldBreakdown"/>
                         </div>
                         <br/>
-                        <button data-testid="insertButton" id="insertButton" class="disabledButton"
+                        <button data-testid="insertButton" id="insertButton" className="disabledButton"
                                 onClick={this.handleInsertButtonClick}>Insert
                         </button>
                         <button data-testid="deleteButton" id="deleteButton"
                                 onClick={this.handleDeleteButtonClick}>Delete
                         </button>
-                        <button data-testid="resetButton" id="resetButton" disabled class="disabledButton">Reset
+                        <button data-testid="resetButton" id="resetButton" className="enabledButton"
+                                onClick={this.handleResetButtonClick}>Reset
                         </button>
                         <div id="reaccom-message" data-testid="message"/>
                     </div>
@@ -117,12 +118,19 @@ class App extends React.Component {
                 assignValueById("field2Now", "");
                 assignValueById("field3Next", "");
                 assignValueById("field4Breakdown", "");
-                assignValueById("title", "");
                 queryAllVersionsList();
                 assignValueById("uniqueId", "");
 
                 disableButton("insertButton");
             });
+    }
+
+    handleResetButtonClick() {
+        assignValueById("title", "");
+        assignValueById("field1Awesome", "");
+        assignValueById("field2Now", "");
+        assignValueById("field3Next", "");
+        assignValueById("field4Breakdown", "");
     }
 
     handleInsertButtonClick() {
