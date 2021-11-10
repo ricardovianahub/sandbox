@@ -1,0 +1,6 @@
+- Calculator
+    - input text (screen)
+    - numbers 0-9
+    - operator - + x / =
+    - C
+    - CE
