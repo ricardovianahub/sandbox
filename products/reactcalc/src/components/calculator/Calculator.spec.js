@@ -11,8 +11,15 @@ describe("Calculator", function () {
         calculator = shallow(<Calculator/>);
     });
 
+    it("has className App", function () {
+        expect(calculator.props().className).toEqual("Calculator");
+    });
+
     it('should have a key to number 1', function() {
         expect(calculator.find('div.one').length).toEqual(1);
+    });
+    it('should have a key to number 2', function() {
+        expect(calculator.find('div.two').length).toEqual(1);
     });
 
 });

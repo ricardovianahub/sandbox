@@ -7,7 +7,9 @@ class Calculator extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="Calculator">
+                <div className="one"></div>
+                <div className="two"></div>
             </div>
         );
     }
