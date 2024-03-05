@@ -1,0 +1,6 @@
+{
+  "tableName": "table1",
+  "tableFields": [ {"name" : "A"}, {"age" : "C"}, { "address" : "B" } ],
+  "inputFile": "source.csv",
+  "indexes": [["name", "age"], ["name", "address"]]
+}
