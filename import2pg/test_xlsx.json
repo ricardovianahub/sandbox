@@ -1,5 +1,5 @@
 {
-  "tableName": "table1",
+  "tableName": "table_xlsx",
   "tableFields": [
     {
       "notes": "D"
@@ -8,18 +8,17 @@
       "name": "A"
     },
     {
+      "nameBackup": "A"
+    },
+    {
       "age": "C"
     },
     {
       "address": "B"
     }
   ],
-  "inputFile": "source.csv",
+  "inputFile": "source.xlsx",
   "indexes": [
-    [
-      "name",
-      "age"
-    ],
     [
       "name",
       "address"

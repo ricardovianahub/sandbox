@@ -1,12 +1,12 @@
 package net.ricardoviana.import2pg;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 public class DataGenerator {
 
@@ -25,7 +25,12 @@ public class DataGenerator {
             File jsonFile = new File(jsonFilePath);
             Map<String, Object> params = mapper.readValue(jsonFile, Map.class);
             generateDDL(params);
-            loadData(params);
+            String inputFile = (String) params.get("inputFile");
+            if (inputFile.endsWith(".xls") || inputFile.endsWith(".xlsx")) {
+                readExcelData(inputFile, params);
+            } else {
+                loadData(params);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,6 +48,22 @@ public class DataGenerator {
         ddl.setLength(ddl.length() - 2);
         ddl.append(");");
         System.out.println(ddl);
+        generateIndexes(params, tableName);
+    }
+
+    private static void generateIndexes(Map<String, Object> params, String tableName) {
+        List<List<String>> indexes = (List<List<String>>) params.get("indexes");
+        for (int i = 0; i < indexes.size(); i++) {
+            List<String> indexFields = indexes.get(i);
+            StringBuilder indexSql = new StringBuilder("CREATE INDEX IF NOT EXISTS ");
+            indexSql.append(tableName).append("_idx_").append(i).append(" ON ").append(tableName).append("(");
+            for (String field : indexFields) {
+                indexSql.append(field).append(", ");
+            }
+            indexSql.setLength(indexSql.length() - 2);
+            indexSql.append(");");
+            System.out.println(indexSql);
+        }
     }
 
     private static void loadData(Map<String, Object> params) {
@@ -61,11 +82,8 @@ public class DataGenerator {
                 }
                 sql.setLength(sql.length() - 2);
                 sql.append(") VALUES (");
-                for (Map<String, String> field : tableFields) {
-                    for (Map.Entry<String, String> entry : field.entrySet()) {
-                        int columnIndex = excelColumnToIndex(entry.getValue());
-                        sql.append("'").append(values[columnIndex].trim()).append("', ");
-                    }
+                for (String value : values) {
+                    sql.append("'").append(value.trim().replace("'", "''")).append("', ");
                 }
                 sql.setLength(sql.length() - 2);
                 sql.append(");");
@@ -73,6 +91,44 @@ public class DataGenerator {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void readExcelData(String inputFile, Map<String, Object> params) throws IOException {
+        Workbook workbook;
+        try (InputStream inputStream = new FileInputStream(inputFile)) {
+            workbook = inputFile.endsWith(".xlsx") ? new XSSFWorkbook(inputStream) : new HSSFWorkbook(inputStream);
+        }
+
+        Sheet sheet = workbook.getSheetAt(0);
+        String tableName = (String) params.get("tableName");
+        List<Map<String, String>> tableFields = (List<Map<String, String>>) params.get("tableFields");
+        DataFormatter dataFormatter = new DataFormatter();
+
+        for (Row row : sheet) {
+            StringBuilder sql = new StringBuilder("INSERT INTO ").append(tableName).append(" (");
+            for (Map<String, String> field : tableFields) {
+                for (Map.Entry<String, String> entry : field.entrySet()) {
+                    sql.append(entry.getKey()).append(", ");
+                }
+            }
+            sql.setLength(sql.length() - 2); // Remove the trailing comma and space
+            sql.append(") VALUES (");
+
+            for (Map<String, String> field : tableFields) {
+                for (Map.Entry<String, String> entry : field.entrySet()) {
+                    int columnIndex = excelColumnToIndex(entry.getValue());
+                    Cell cell = row.getCell(columnIndex);
+                    String cellValue = dataFormatter.formatCellValue(cell);
+                    cellValue = cellValue.replace("\u2019", "'");
+                    cellValue = cellValue.replace("'", "''");
+                    sql.append("'").append(cellValue).append("', ");
+                }
+            }
+
+            sql.setLength(sql.length() - 2); // Remove the trailing comma and space
+            sql.append(");");
+            System.out.println(sql);
         }
     }
 

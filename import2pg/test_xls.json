@@ -14,12 +14,8 @@
       "address": "B"
     }
   ],
-  "inputFile": "source.csv",
+  "inputFile": "source.xls",
   "indexes": [
-    [
-      "name",
-      "age"
-    ],
     [
       "name",
       "address"
