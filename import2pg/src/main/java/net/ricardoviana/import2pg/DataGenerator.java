@@ -34,7 +34,7 @@ public class DataGenerator {
     private static void generateDDL(Map<String, Object> params) {
         String tableName = (String) params.get("tableName");
         List<Map<String, String>> tableFields = (List<Map<String, String>>) params.get("tableFields");
-        StringBuilder ddl = new StringBuilder("CREATE TABLE ").append(tableName).append(" (");
+        StringBuilder ddl = new StringBuilder("CREATE TABLE IF NOT EXISTS ").append(tableName).append(" (");
         for (Map<String, String> field : tableFields) {
             for (Map.Entry<String, String> entry : field.entrySet()) {
                 ddl.append(entry.getKey()).append(" VARCHAR, ");
