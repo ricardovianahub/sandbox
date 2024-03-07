@@ -24,19 +24,22 @@ public class DataGenerator {
             ObjectMapper mapper = new ObjectMapper();
             File jsonFile = new File(jsonFilePath);
             Map<String, Object> params = mapper.readValue(jsonFile, Map.class);
-            generateDDL(params);
+            FileWriter writer = new FileWriter(jsonFilePath + ".sql");
+            generateDDL(writer, params);
             String inputFile = (String) params.get("inputFile");
             if (inputFile.endsWith(".xls") || inputFile.endsWith(".xlsx")) {
-                readExcelData(inputFile, params);
+                readExcelData(writer, inputFile, params);
             } else {
-                loadData(params);
+                loadData(writer, params);
             }
+            writer.flush();
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void generateDDL(Map<String, Object> params) {
+    private static void generateDDL(FileWriter writer, Map<String, Object> params) {
         String tableName = (String) params.get("tableName");
         List<Map<String, String>> tableFields = (List<Map<String, String>>) params.get("tableFields");
         StringBuilder ddl = new StringBuilder("CREATE TABLE IF NOT EXISTS ").append(tableName).append(" (");
@@ -47,11 +50,15 @@ public class DataGenerator {
         }
         ddl.setLength(ddl.length() - 2);
         ddl.append(");");
-        System.out.println(ddl);
-        generateIndexes(params, tableName);
+        try {
+            writer.write(ddl.toString() + "\r\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        generateIndexes(writer, params, tableName);
     }
 
-    private static void generateIndexes(Map<String, Object> params, String tableName) {
+    private static void generateIndexes(FileWriter writer, Map<String, Object> params, String tableName) {
         List<List<String>> indexes = (List<List<String>>) params.get("indexes");
         for (int i = 0; i < indexes.size(); i++) {
             List<String> indexFields = indexes.get(i);
@@ -62,11 +69,15 @@ public class DataGenerator {
             }
             indexSql.setLength(indexSql.length() - 2);
             indexSql.append(");");
-            System.out.println(indexSql);
+            try {
+                writer.write(indexSql.toString() + "\r\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private static void loadData(Map<String, Object> params) {
+    private static void loadData(FileWriter writer, Map<String, Object> params) {
         String tableName = (String) params.get("tableName");
         List<Map<String, String>> tableFields = (List<Map<String, String>>) params.get("tableFields");
         String inputFile = (String) params.get("inputFile");
@@ -87,14 +98,14 @@ public class DataGenerator {
                 }
                 sql.setLength(sql.length() - 2);
                 sql.append(");");
-                System.out.println(sql.toString());
+                writer.write(sql.toString() + "\r\n");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void readExcelData(String inputFile, Map<String, Object> params) throws IOException {
+    private static void readExcelData(FileWriter writer, String inputFile, Map<String, Object> params) throws IOException {
         Workbook workbook;
         try (InputStream inputStream = new FileInputStream(inputFile)) {
             workbook = inputFile.endsWith(".xlsx") ? new XSSFWorkbook(inputStream) : new HSSFWorkbook(inputStream);
@@ -128,7 +139,7 @@ public class DataGenerator {
 
             sql.setLength(sql.length() - 2); // Remove the trailing comma and space
             sql.append(");");
-            System.out.println(sql);
+            writer.write(sql.toString() + "\r\n");
         }
     }
 

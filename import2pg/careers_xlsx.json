@@ -1,0 +1,131 @@
+{
+  "tableName": "careers2024",
+  "tableFields": [
+    {
+      "notes": "A"
+    },
+    {
+      "socPrimaryForGroup": "B"
+    },
+    {
+      "soc": "C"
+    },
+    {
+      "socDescription": "D"
+    },
+    {
+      "currentYearJobs": "E"
+    },
+    {
+      "fiveYearProjectedJobs": "F"
+    },
+    {
+      "fiveYearProjectedChange": "G"
+    },
+    {
+      "fiveYearProjectedPercentChange": "H"
+    },
+    {
+      "currentYearHires": "I"
+    },
+    {
+      "currentYearSeparations": "J"
+    },
+    {
+      "medianAnnualEarnings": "K"
+    },
+    {
+      "colIndex": "L"
+    },
+    {
+      "colAdjustedMedianAnnualEarnings": "M"
+    },
+    {
+      "currentYearJobs2": "N"
+    },
+    {
+      "currentYearResidentWorkers": "O"
+    },
+    {
+      "currentYearNetCommuters": "P"
+    },
+    {
+      "avgAnnualOpenings": "Q"
+    },
+    {
+      "currentYearTotalDiversity": "AB"
+    },
+    {
+      "currentYearHispanicOrLatino": "AC"
+    },
+    {
+      "currentYearWhite": "AD"
+    },
+    {
+      "currentYearBlackOrAfricanAmerican": "AE"
+    },
+    {
+      "currentYearAsian": "AG"
+    },
+    {
+      "currentYearTwoOrMoreRaces": "AI"
+    },
+    {
+      "typicalEntryLevelEducation": "AJ"
+    },
+    {
+      "workExperienceRequired": "AK"
+    },
+    {
+      "typicalOnTheJobTraining": "AL"
+    },
+    {
+      "automationIndex": "AM"
+    },
+    {
+      "currentYearTotalDiversityPercentOfOccupation": "AN"
+    },
+    {
+      "currentYearHispanicOrLatinoPercentOfOccupation": "AO"
+    },
+    {
+      "currentYearWhitePercentOfOccupation": "AP"
+    },
+    {
+      "currentYearAsianPercentOfOccupation": "AS"
+    },
+    {
+      "currentYearTwoOrMoreRacesPercentOfOccupation": "AU"
+    },
+    {
+      "pathwayCategory": "BI"
+    },
+    {
+      "pathwaysSubCategory": "BJ"
+    },
+    {
+      "pathwayName": "BK"
+    },
+    {
+      "workOnComputer": "CV"
+    },
+    {
+      "workOutside": "CW"
+    },
+    {
+      "workWithHands": "CX"
+    },
+    {
+      "workWithKids": "CY"
+    },
+    {
+      "ruleStyleCodeForFuture": "CZ"
+    }
+  ],
+  "inputFile": "careers.xlsx",
+  "indexes": [
+    [
+      "soc"
+    ]
+  ]
+}

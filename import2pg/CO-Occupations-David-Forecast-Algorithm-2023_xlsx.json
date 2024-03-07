@@ -1,0 +1,63 @@
+{
+  "tableName": "david2023",
+  "tableFields": [
+    {
+      "soc": "A"
+    },
+    {
+      "Description": "B"
+    },
+    {
+      "jobs2021": "C"
+    },
+    {
+      "Jobs2031": "D"
+    },
+    {
+      "Change20212031": "E"
+    },
+    {
+      "Change20212031Percent": "F"
+    },
+    {
+      "AnnualOpenings": "G"
+    },
+    {
+      "RegionalCompletions2020": "H"
+    },
+    {
+      "MedianHourlyEarnings": "I"
+    },
+    {
+      "PainMatrixRight": "J"
+    },
+    {
+      "WorkFromHome": "K"
+    },
+    {
+      "StressLevel": "L"
+    },
+    {
+      "Pay": "M"
+    },
+    {
+      "EducationNeeded": "N"
+    },
+    {
+      "HoursWorkedOrDemand": "O"
+    },
+    {
+      "SafetyOrPhysicalDemand": "P"
+    },
+    {
+      "PainFiveScale": "Q"
+    }
+  ]
+,
+  "inputFile": "CO-Occupations-David-Forecast-Algorithm-2023.xlsx",
+  "indexes": [
+    [
+      "soc"
+    ]
+  ]
+}
