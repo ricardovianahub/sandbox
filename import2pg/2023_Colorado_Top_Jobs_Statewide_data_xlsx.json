@@ -1,0 +1,20 @@
+{
+  "tableName": "colorado_soc_tier",
+  "tableFields": [
+    {
+      "soc": "A"
+    },
+    {
+      "occupation_title": "B"
+    },
+    {
+      "tier": "C"
+    }
+  ],
+  "inputFile": "2023_Colorado_Top_Jobs_Statewide_data.xlsx",
+  "indexes": [
+    [
+      "soc"
+    ]
+  ]
+}

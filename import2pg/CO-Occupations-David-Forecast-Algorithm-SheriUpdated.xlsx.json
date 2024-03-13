@@ -1,5 +1,5 @@
 {
-  "tableName": "david2023",
+  "tableName": "david2023su",
   "tableFields": [
     {
       "soc": "A"
@@ -56,7 +56,7 @@
       "opportunity5_scale": "R"
     }
   ],
-  "inputFile": "CO-Occupations-David-Forecast-Algorithm-2023.xlsx",
+  "inputFile": "CO-Occupations-David-Forecast-Algorithm-SheriUpdated.xlsx",
   "indexes": [
     [
       "soc"
