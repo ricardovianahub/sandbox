@@ -1,0 +1,65 @@
+{
+  "tableName": "david2023su",
+  "tableFields": [
+    {
+      "soc": "A"
+    },
+    {
+      "description": "B"
+    },
+    {
+      "jobs2021": "C"
+    },
+    {
+      "jobs2031": "D"
+    },
+    {
+      "change2021to2031": "E"
+    },
+    {
+      "change20212031_percent": "F"
+    },
+    {
+      "annual_openings": "G"
+    },
+    {
+      "regional_completions2020": "H"
+    },
+    {
+      "median_hourly_earnings": "I"
+    },
+    {
+      "divider": "J"
+    },
+    {
+      "work_from_home": "K"
+    },
+    {
+      "stress_level": "L"
+    },
+    {
+      "pay": "M"
+    },
+    {
+      "education_needed": "N"
+    },
+    {
+      "hours_worked_demand": "O"
+    },
+    {
+      "safety_physical_demand": "P"
+    },
+    {
+      "pain5_scale": "Q"
+    },
+    {
+      "opportunity5_scale": "R"
+    }
+  ],
+  "inputFile": "CO-Occupations-David-Forecast-Algorithm-SheriUpdated.xlsx",
+  "indexes": [
+    [
+      "soc"
+    ]
+  ]
+}
